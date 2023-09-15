@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "brand": "Satin Lip Balm",
+    "userId": 1,
+    "products": [
+      { "productId": 1, "quantity": 2 },
+      { "productId": 2, "quantity": 1 }
+    ],
+    "totalAmount": 89.97,
+    "createdAt": "2023-08-24T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "userId": 2,
+    "products": [{ "productId": 3, "quantity": 3 }],
+    "totalAmount": 38.97,
+    "createdAt": "2023-08-24T11:30:00Z"
+  }
+]
