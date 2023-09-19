@@ -2,6 +2,12 @@ const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
 
 
+const ROLES = {
+  CUSTOMER: 'customer',
+  ADMIN: 'admin',
+};
+
+
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -25,8 +31,8 @@ const userSchema = new mongoose.Schema({
   photo: String,
   role: {
     type: String,
-    enum: ["customer", "admin"],
-    default: "customer",
+    enum: Object.values(ROLES),
+    default: ROLES.CUSTOMER, // Set a default role
   },
   address: String,
   phoneNumber: String,
