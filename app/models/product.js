@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 // Define the schema for the Product collection
 const productSchema = new mongoose.Schema({
   name: {
@@ -22,6 +21,14 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  ratingQuantity: {
+    type: Number,
+    default: 0,
+  },
+  ratingsAverage: {
+    type: Number,
+    default: 4.5,
+  },
   images: [
     {
       type: String, // Assuming image URLs as strings
@@ -31,10 +38,6 @@ const productSchema = new mongoose.Schema({
   weightQuantity: Number,
   colors: [String],
   skinType: [String],
-  reviewQuantity: {
-    type: String,
-    default: 0,
-  },
   promotionsDiscounts: {
     discountPercentage: Number,
     promoCode: String,
@@ -48,7 +51,7 @@ const productSchema = new mongoose.Schema({
   relatedProducts: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Product", // Reference to other products
+      ref: "Product",
     },
   ],
   tagsKeywords: [String],
@@ -63,5 +66,4 @@ const productSchema = new mongoose.Schema({
   ],
 });
 
-// Create and export the Product model
 module.exports = mongoose.model("Product", productSchema);
