@@ -5,3 +5,6 @@ router
   .route("/")
   .post(userController.createNewAccount)
   .get(userController.getAllUsers);
+router.post("/register", userController.createNewAccount);
+
+module.exports = router;

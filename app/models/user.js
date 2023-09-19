@@ -9,6 +9,10 @@ const ROLES = {
 
 
 const userSchema = new mongoose.Schema({
+  fullName: {
+    type: String,
+    required: [true, "please tell us your name!"],
+  },
   username: {
     type: String,
     required: true,
@@ -24,10 +28,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  fullName: {
-    type: String,
-    required: [true, "please tell us your name!"],
-  },
+  
   photo: String,
   role: {
     type: String,

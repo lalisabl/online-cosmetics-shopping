@@ -1,21 +1,21 @@
 // createNewProduct
 const User = require("../models/user");
+
+
+
 exports.createNewAccount = async (req, res) => {
   try {
-    const newUser = await Product.create(req.body);
-    res.status(201).json({
-      status: "success",
-      data: {
-        Products: newUser,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({
-      status: "fail",
-      message: err,
-    });
+    const { username, email, password, fullName, } = req.body;
+    const user = new User(req.body);
+    await user.save();
+    res.status(201).json({ message: "Registration successful" });
+  } catch (error) {
+    res
+      .status(400)
+      .json({ message: "Registration failed", error: error.message });
   }
 };
+
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
