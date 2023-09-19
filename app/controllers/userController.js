@@ -33,6 +33,7 @@ exports.getAllUsers = async (req, res) => {
     });
   }
 };
+
 exports.getEachUser = async (req, res) => {
   try {
     const userId = req.params.id;
