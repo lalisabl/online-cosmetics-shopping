@@ -1,5 +1,6 @@
 # Ignore node_modules directory
 node_modules/
+kiyutry/
 
 # Ignore log files
 npm-debug.log
