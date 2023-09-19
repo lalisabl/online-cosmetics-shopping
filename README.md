@@ -1,9 +1,9 @@
 # online-cosmetics-shopping web app
 - this project code is done by react and node with some other library and frameworks plus some other dependecies.like express.js, mongo, and other
 ### Team member
-- Firaol tesfaye
-- Lelisa Bula
+- Firaol tesfaye @firaul
+- Lelisa Bula @lalisabl
 - Tsion Ephrem
 - JIbril Arbicho
-- Tokuma Abdisa
+- Tokuma Abdisa @tokukiyu
 
