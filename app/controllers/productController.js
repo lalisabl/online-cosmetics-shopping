@@ -14,44 +14,63 @@ exports.aliasTopProducts = (req, res, next) => {
   req.query.fields = "name,price,category,brand";
   next();
 };
-exports.getAllProducts = async (req, res) => {
-  try {
-    let query = Product.find();
+class APIfeatures {
+  constructor(query, queryString) {
+    this.query = query;
+    this.queryString = queryString;
+  }
+  filter() {
     //1 build query
-    const queryObj = { ...req.query };
+    const queryObj = { ...this.queryString };
     const excludedFields = ["page", "limit", "sort", "fields"];
     excludedFields.forEach((el) => delete queryObj[el]);
     // advanced query
     let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    // const Products = await Product.find().where("category").equals("Makeup");//monogdb query sample
-    query = Product.find(JSON.parse(queryStr));
-    //2 sorting
-    if (req.query.sort) {
-      const sortBy = req.query.sort.split(",").join(" ");
-      query = query.sort(sortBy);
+    queryStr = queryStr.replace(
+      /\b(gte|gt|lte|lt|eq)\b/g,
+      (match) => `$${match}`
+    );
+    this.query = Product.find(JSON.parse(queryStr));
+    return this;
+  }
+  sort() {
+    if (this.queryString.sort) {
+      const sortBy = this.queryString.sort.split(",").join(" ");
+      this.query = this.query.sort(sortBy);
     } else {
-      query = query.sort("-dateAdded");
+      this.query = this.query.sort("-dateAdded");
     }
-    //3 limiting fields
-    if (req.query.fields) {
-      const selectedFields = req.query.fields.split(",").join(" ");
-      query = query.select(selectedFields);
-      console.log(selectedFields);
+    return this;
+  }
+  limiting() {
+    if (this.queryString.fields) {
+      const selectedFields = this.queryString.fields.split(",").join(" ");
+      this.query = this.query.select(selectedFields);
     } else {
-      query = query.select("-__v");
+      this.query = this.query.select("-__v");
     }
-    // pagination
-    const page = req.query.page * 1 || 1;
-    const limit = req.query.limit * 1 || 10;
+    return this;
+  }
+  paginatinating() {
+    const page = this.queryString.page * 1 || 1;
+    const limit = this.queryString.limit * 1 || 10;
     const skip = (page - 1) * limit;
-    query = query.skip(skip).limit(limit);
-    if (req.query.page) {
-      const numProducts = await Product.countDocuments();
-      if (skip >= numProducts) throw new error("This page does not exist!");
-    }
+    this.query = this.query.skip(skip).limit(limit);
+    return this;
+  }
+}
+
+// get all products
+exports.getAllProducts = async (req, res) => {
+  try {
     //4 excute query
-    const Products = await query;
+    const features = new APIfeatures(Product.find(), req.query)
+      .filter()
+      .sort()
+      .limiting()
+      .paginatinating();
+
+    const Products = await features.query;
     res.status(200).json({
       status: "success",
       results: Products.length,
@@ -66,6 +85,7 @@ exports.getAllProducts = async (req, res) => {
     });
   }
 };
+// getEachProduct
 exports.getEachProduct = async (req, res) => {
   const ProductId = req.params.id;
   try {
@@ -91,6 +111,7 @@ exports.getEachProduct = async (req, res) => {
     });
   }
 };
+// createNewProduct
 exports.createNewProduct = async (req, res) => {
   try {
     const newProduct = await Product.create(req.body);
@@ -107,6 +128,7 @@ exports.createNewProduct = async (req, res) => {
     });
   }
 };
+// deleteProduct
 exports.deleteProduct = async (req, res) => {
   const ProductId = req.params.id;
   try {
@@ -124,6 +146,7 @@ exports.deleteProduct = async (req, res) => {
     });
   }
 };
+// updateProduct
 exports.updateProduct = async (req, res) => {
   const ProductId = req.params.id;
   const updatedData = req.body;
@@ -134,6 +157,108 @@ exports.updateProduct = async (req, res) => {
     });
     return res.status(200).json({
       status: "success",
+      data: {
+        product: product,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: "fail",
+      message: error,
+    });
+  }
+};
+// get products statis...
+exports.getProductStat = async (req, res) => {
+  try {
+    const stats = await Product.aggregate([
+      {
+        $match: { ratingsAverage: { $gte: 4 } },
+      },
+      {
+        $group: {
+          _id: null,
+          numProducts: { $sum: 1 },
+          ratingSum: { $sum: "$ratingQuantity" },
+          totalStock: { $sum: "$stockQuantity" },
+          ratingsAve: { $avg: "$ratingsAverage" },
+          totalPrice: { $sum: "$price" },
+          avePrice: { $avg: "$price" },
+          minprice: { $min: "$price" },
+          maxprice: { $max: "$price" },
+        },
+      },
+    ]);
+    return res.status(200).json({
+      status: "success",
+      message: "Product statistics retrieved successfully",
+      data: {
+        product: stats,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "fail",
+      message: error,
+    });
+  }
+};
+// this fucntion is used while creating order model
+exports.busytMonth = async (req, res) => {
+  try {
+    const year = req.params.year * 1;
+    const plan = await Product.aggregate([{ $unwind: "$colors" }]);
+    return res.status(200).json({
+      status: "success",
+      message: "Product color is  destructed successfully by thier colors",
+      products: plan.length,
+      data: {
+        product: plan,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "fail",
+      message: error,
+    });
+  }
+};
+exports.productsCategories = async (req, res) => {
+  try {
+    const category = req.params.category;
+    const product = await Product.aggregate([
+      { $match: { category: category } },
+    ]);
+    return res.status(200).json({
+      status: "success",
+      numProducts: product.length,
+      data: {
+        product: product,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: "Internal server error.",
+    });
+  }
+};
+// this one is products subcategories
+exports.subcategories = async (req, res) => {
+  try {
+    const SubCategory = req.params.subcategory;
+    const product = await Product.aggregate([
+      { $match: { subcategory: SubCategory } },
+    ]);
+    if (product.length === 0) {
+      return res.status(404).json({
+        status: "fail",
+        message: "No products found for the given SubCategory.",
+      });
+    }
+    return res.status(200).json({
+      status: "success",
+      numProducts: product.length,
       data: {
         product: product,
       },

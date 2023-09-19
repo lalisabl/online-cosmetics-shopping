@@ -4,6 +4,10 @@ const productController = require("./../controllers/productController");
 router
   .route("/top-3-cheap")
   .get(productController.aliasTopProducts, productController.getAllProducts);
+router.route("/Stats").get(productController.getProductStat);
+router.route("/busyMonth/:year").get(productController.busytMonth);
+router.route("/category/:category").get(productController.productsCategories);
+router.route("/subcategory/:subcategory").get(productController.subcategories);
 router
   .route("/:id")
   .get(productController.getEachProduct)
