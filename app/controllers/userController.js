@@ -9,7 +9,7 @@ exports.createNewAccount = async (req, res) => {
     const user = new User(req.body);
     await user.save();
     res.status(201).json({ message: "Registration successful" });
-  } catch (error) {
+  } catch (error) { 
     res
       .status(400)
       .json({ message: "Registration failed", error: error.message });
