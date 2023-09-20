@@ -45,9 +45,25 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
-userSchema.methods.hashPassword = function (password) {
-  return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-};
+// userSchema.methods.hashPassword = function (password) {
+//   return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+// };
+
+
+userSchema.pre("save", function (next) {
+  if (!this.isModified("password")) {
+    return next(); // If password is not modified, move to the next middleware
+  }
+
+  const saltRounds = 10; // Number of salt rounds for bcrypt
+  bcrypt.hash(this.password, saltRounds, (err, hash) => {
+    if (err) {
+      return next(err);
+    }
+    this.password = hash;
+    next();
+  });
+});
 
 userSchema.methods.validatePassword = function (password) {
   return bcrypt.compareSync(password, this.password);

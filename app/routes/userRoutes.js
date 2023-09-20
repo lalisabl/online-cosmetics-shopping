@@ -5,5 +5,5 @@ router
   .route("/")
   .get(userController.getAllUsers);
 router.post("/register", userController.createNewAccount);
-
+router.get('/u')
 module.exports = router;

@@ -1,15 +1,13 @@
 // createNewProduct
 const User = require("../models/user");
 
-
-
 exports.createNewAccount = async (req, res) => {
   try {
-    const { username, email, password, fullName, } = req.body;
-    const user = new User(req.body);
+    const { username, email, password, fullName, phoneNumber } = req.body;
+    const user = new User({ username, email, password, fullName, phoneNumber });
     await user.save();
     res.status(201).json({ message: "Registration successful" });
-  } catch (error) { 
+  } catch (error) {
     res
       .status(400)
       .json({ message: "Registration failed", error: error.message });
