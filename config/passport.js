@@ -1,6 +1,6 @@
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const User = require('./models/User'); // Import your User model
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const User = require("./models/User"); // Import your User model
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
@@ -8,11 +8,11 @@ passport.use(
       const user = await User.findOne({ username });
 
       if (!user) {
-        return done(null, false, { message: 'Incorrect username.' });
+        return done(null, false, { message: "Incorrect username." });
       }
 
       if (!user.validatePassword(password)) {
-        return done(null, false, { message: 'Incorrect password.' });
+        return done(null, false, { message: "Incorrect password." });
       }
 
       return done(null, user);
@@ -34,5 +34,16 @@ passport.deserializeUser(async (id, done) => {
     done(error);
   }
 });
+
+//for role based function
+function checkUserRole(role) {
+  return (req, res, next) => {
+    if (req.isAuthenticated() && req.user.role === role) {
+      return next();
+    } else {
+      return res.status(403).send("Access denied.");
+    }
+  };
+}
 
 module.exports = passport;
