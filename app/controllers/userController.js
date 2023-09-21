@@ -1,6 +1,7 @@
 // createNewProduct
 const User = require("../models/user");
-
+const jwt = require("jsonwebtoken");
+const secretKey = "key";
 exports.createNewAccount = async (req, res) => {
   try {
     const { username, email, password, fullName, phoneNumber } = req.body;
@@ -43,11 +44,15 @@ exports.loginUsers = async (req, res) => {
       secretKey,
       { expiresIn: "1h" }
     );
-    res.json({ token });
+    res.json({ token,message:"success" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
+};
+exports.myProfile = async (req, res) => {
+  let data = req.userData;
+  res.status(201).json({ data });
 };
 
 exports.getEachUser = async (req, res) => {

@@ -1,16 +1,16 @@
 const jwt = require("jsonwebtoken");
-const secretKey = process.env.SECRET_KEY;
+const secretKey = 'key'
 
 function authenticateJWT(req, res, next) {
   const token = req.headers.authorization;
 
   if (!token) {
-    return res.status(401).json({ message: "Authentication failed" });
+    return res.status(401).json({ message: "Authentication failed here" });
   }
 
   jwt.verify(token, secretKey, (err, decodedToken) => {
     if (err) {
-      return res.status(401).json({ message: "Authentication failed" });
+      return res.status(401).json({ message: "Authentication failed down" });
     }
 
     req.userData = decodedToken;
