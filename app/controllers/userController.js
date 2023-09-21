@@ -9,7 +9,7 @@ exports.createNewAccount = async (req, res) => {
     res.status(201).json({ message: "Registration successful" });
   } catch (error) {
     res
-      .status(400)
+      .status(400) 
       .json({ message: "Registration failed", error: error.message });
   }
 };
