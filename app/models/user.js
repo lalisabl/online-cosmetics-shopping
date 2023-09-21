@@ -45,9 +45,6 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
-// userSchema.methods.hashPassword = function (password) {
-//   return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-// };
 
 
 userSchema.pre("save", function (next) {

@@ -9,7 +9,7 @@ exports.createNewAccount = async (req, res) => {
     res.status(201).json({ message: "Registration successful" });
   } catch (error) {
     res
-      .status(400) 
+      .status(400)
       .json({ message: "Registration failed", error: error.message });
   }
 };
@@ -29,6 +29,24 @@ exports.getAllUsers = async (req, res) => {
       status: "fail",
       message: error,
     });
+  }
+};
+exports.loginUsers = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user || !user.validatePassword(password)) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+    const token = jwt.sign(
+      { userId: user._id, email: user.email, role: user.role },
+      secretKey,
+      { expiresIn: "1h" }
+    );
+    res.json({ token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
