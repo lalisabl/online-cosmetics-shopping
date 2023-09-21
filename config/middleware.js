@@ -1,7 +1,5 @@
-// middleware.js
 const jwt = require("jsonwebtoken");
-// const { secretKey } = require('./config'); // Import your secret key
-const secretKey = "my-key";
+const secretKey = process.env.SECRET_KEY;
 
 function authenticateJWT(req, res, next) {
   const token = req.headers.authorization;
