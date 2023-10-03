@@ -112,7 +112,7 @@ exports.getEachProduct = async (req, res) => {
   }
 };
 // createNewProduct
-exports.createNewProduct = async (req, res) => {
+exports.createNewProduct = async (req, res, next) => {
   try {
     const newProduct = await Product.create(req.body);
     res.status(201).json({
@@ -122,28 +122,26 @@ exports.createNewProduct = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "fail",
-      message: err,
-    });
+    next(err);
   }
 };
 // deleteProduct
-exports.deleteProduct = async (req, res) => {
+exports.deleteProduct = async (req, res, next) => {
   const ProductId = req.params.id;
   try {
     const product = await Product.findByIdAndRemove(ProductId);
-    return res.status(204).json({
-      status: "success",
-      data: {
-        product: {},
-      },
-    });
+    if (!product) {
+      throw new Error(`There is no product with ${ProductId} _id`);
+    } else {
+      return res.status(204).json({
+        status: "success",
+        data: {
+          product: {},
+        },
+      });
+    }
   } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
+    next(err);
   }
 };
 // updateProduct
@@ -194,26 +192,6 @@ exports.getProductStat = async (req, res) => {
       message: "Product statistics retrieved successfully",
       data: {
         product: stats,
-      },
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: "fail",
-      message: error,
-    });
-  }
-};
-// this fucntion is used while creating order model
-exports.busytMonth = async (req, res) => {
-  try {
-    const year = req.params.year * 1;
-    const plan = await Product.aggregate([{ $unwind: "$colors" }]);
-    return res.status(200).json({
-      status: "success",
-      message: "Product color is  destructed successfully by thier colors",
-      products: plan.length,
-      data: {
-        product: plan,
       },
     });
   } catch (error) {

@@ -1,10 +1,16 @@
 const mongoose = require("mongoose");
 const orderSchema = new mongoose.Schema({
+  orderNumber: {
+    type: String,
+    unique: true,
+    required: true,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true,
+    // required: true,
   },
+
   products: [
     {
       product: {
@@ -38,6 +44,11 @@ const orderSchema = new mongoose.Schema({
     type: String,
     enum: ["Credit Card", "PayPal", "Cash on Delivery"],
     required: true,
+  },
+  paymentStatus: {
+    type: String,
+    enum: ["Paid", "Unpaid"],
+    default: "Unpaid",
   },
   orderStatus: {
     type: String,

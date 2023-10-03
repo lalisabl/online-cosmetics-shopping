@@ -3,23 +3,27 @@ const mongoose = require("mongoose");
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, "A Product must have a name"],
     unique: true,
   },
   description: {
     type: String,
-    required: true,
+    required: [true, "A Product must have a description"],
   },
   brand: String,
-  category: String,
+  category: {
+    type: String,
+    required: [true, "A product must have a cateogry"],
+  },
   subcategory: String,
   price: {
     type: Number,
-    required: true,
+    required: [true, "A Product must have a price"],
   },
   stockQuantity: {
     type: Number,
     required: true,
+    min: [0, "The stock quantity must be posative number"],
   },
   ratingQuantity: {
     type: Number,
@@ -28,6 +32,9 @@ const productSchema = new mongoose.Schema({
   ratingsAverage: {
     type: Number,
     default: 4.5,
+    min: [1, "Rating must be above 1.0"],
+    max: [5, "Rating must be less than 5.0"],
+    set: (val) => Math.round(val * 10) / 10,
   },
   images: [
     {
