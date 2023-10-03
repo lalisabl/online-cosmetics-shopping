@@ -1,9 +1,13 @@
 const express = require("express");
-const dbConn = require("../config/db");
+const globalErrorHandler = require("./controllers/errorController");
+require("../config/db");
 const app = express();
 app.use(express.json());
 const productRoute = require("./routes/productRoutes");
 const orderRoute = require("./routes/orderRoutes");
+const cartRoute = require("./routes/cartRoutes");
 app.use("/api/v1/Products/", productRoute);
-// Import your database configuration
+app.use("/api/v1/Orders/", orderRoute);
+app.use("/api/v1/carts/", cartRoute);
+app.use(globalErrorHandler);
 module.exports = app;
