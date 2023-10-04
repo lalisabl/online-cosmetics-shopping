@@ -12,6 +12,6 @@ const cartRoute = require("./routes/cartRoutes");
 app.use("/api/v1/Products/", productRoute);
 app.use("/api/v1/user/", userRoute);
 app.use("/api/v1/Orders/", orderRoute);
-app.use("/api/v1/carts/", cartRoute);
+app.use("/api/v1/cart/", cartRoute);
 app.use(globalErrorHandler);
 module.exports = app;
