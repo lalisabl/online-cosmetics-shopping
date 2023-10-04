@@ -18,7 +18,7 @@ exports.createNewAccount = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
-    req.status(200).json({
+    res.status(200).json({
       status: "success",
       totalUser: users.length,
       data: {
@@ -26,7 +26,7 @@ exports.getAllUsers = async (req, res) => {
       },
     });
   } catch (error) {
-    req.status(404).json({
+    res.status(404).json({
       status: "fail",
       message: error,
     });
@@ -44,7 +44,7 @@ exports.loginUsers = async (req, res) => {
       secretKey,
       { expiresIn: "1h" }
     );
-    res.json({ token,message:"success" });
+    res.json({ token, message: "success" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
