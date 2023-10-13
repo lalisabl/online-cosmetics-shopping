@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre("save", function (next) {
   if (!this.isModified("password")) {
-    return next(); // If password is not modified, move to the next middleware
+    return next();
   }
 
   const saltRounds = 10; // Number of salt rounds for bcrypt
