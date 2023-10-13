@@ -1,7 +1,6 @@
 const Order = require("../models/order");
 const Cart = require("../models/cart");
 const Product = require("../models/product");
-
 // Create a new order
 exports.createOrder = async (req, res) => {
   try {
@@ -35,7 +34,7 @@ exports.createOrder = async (req, res) => {
       user: userId,
     });
     const savedOrder = await newOrder.save();
-    await Cart.findByIdAndUpdate(userCart._id, { items: [] });
+    // await Cart.findByIdAndUpdate(userCart._id, { items: [] });
 
     res.status(201).json({
       status: "success",
@@ -51,7 +50,26 @@ exports.createOrder = async (req, res) => {
   }
 };
 
-// Get a list of all orders
+// Get a list of all of your orders
+exports.getYourOrders = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const orders = await Order.findOne({ user: userId });
+    res.status(200).json({
+      status: "success",
+      results: orders.length,
+      data: {
+        orders,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
+//get all Orders in a database
 exports.getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find();
@@ -69,7 +87,6 @@ exports.getAllOrders = async (req, res) => {
     });
   }
 };
-
 // Get details of a specific order by ID
 exports.getDetailOfOrder = async (req, res) => {
   try {
@@ -98,18 +115,13 @@ exports.getDetailOfOrder = async (req, res) => {
 exports.getUserOrderHistory = async (req, res) => {
   try {
     const userId = req.params.userId; // Use the authenticated user's ID
-    const orders = await Order.findOne({ user: userId })
-      .populate({
-        path: "products.product",
-        populate: {
-          path: "items.product",
-          model: "Product",
-          select: "name category price",
-        },
-      })
-      .sort({ orderDate: -1 })
-      .exec();
-    console.log(orders.products.quantity);
+    let orders = await Order.find({ user: userId });
+    console.log(orders.map((item) => item.products));
+    orders = await Order.find({ user: userId }).populate({
+      path: "products.product",
+    });
+
+    console.log(orders.map((item) => item.products));
     if (!orders) {
       return res
         .status(404)
@@ -118,6 +130,7 @@ exports.getUserOrderHistory = async (req, res) => {
     // Respond with the order history
     return res.status(200).json({
       status: "success",
+      result: orders.length,
       data: {
         orders,
       },
