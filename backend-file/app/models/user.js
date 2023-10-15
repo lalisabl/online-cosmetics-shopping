@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const validator = require("validator");
 
 const ROLES = {
-  CUSTOMER: 'customer',
-  ADMIN: 'admin',
+  CUSTOMER: "customer",
+  ADMIN: "admin",
 };
 
 const userSchema = new mongoose.Schema({
@@ -26,8 +26,9 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    select: false,
   },
-  
+
   photo: String,
   role: {
     type: String,
@@ -44,8 +45,6 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
-
-
 userSchema.pre("save", function (next) {
   if (!this.isModified("password")) {
     return next();
@@ -61,8 +60,8 @@ userSchema.pre("save", function (next) {
   });
 });
 
-userSchema.methods.validatePassword = function (password) {
-  return bcrypt.compareSync(password, this.password);
+userSchema.methods.validatePassword = function (password, userPassword) {
+  return bcrypt.compareSync(password, userPassword);
 };
 
 const User = mongoose.model("User", userSchema);

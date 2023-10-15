@@ -9,9 +9,17 @@ const productRoute = require("./routes/productRoutes");
 const userRoute = require("./routes/userRoutes");
 const orderRoute = require("./routes/orderRoutes");
 const cartRoute = require("./routes/cartRoutes");
+//global Middlewares
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  //   console.log(req.headers);
+  next();
+});
+//route Middlewares
 app.use("/api/v1/Products/", productRoute);
 app.use("/api/v1/users/", userRoute);
 app.use("/api/v1/Orders/", orderRoute);
 app.use("/api/v1/cart/", cartRoute);
 app.use(globalErrorHandler);
+
 module.exports = app;
