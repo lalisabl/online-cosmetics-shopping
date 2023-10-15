@@ -84,4 +84,10 @@ exports.restrictsto = (role) => {
     next();
   };
 };
-exports.forgetPassword = async (req, res) => {};
+exports.forgetPassword = async (req, res, next) => {
+  const user = User.findOne({ email: req.body.email });
+  if (!user) {
+    return next(new AppError("There is no user with this eamil address", 404));
+  }
+  next();
+};
