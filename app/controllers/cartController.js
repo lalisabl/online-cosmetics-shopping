@@ -67,7 +67,7 @@ exports.viewCart = async (req, res) => {
 };
 exports.updateCartItem = async (req, res) => {
   try {
-    const userId = "6509c35832f37f55702e6f43"; // Use the authenticated user's ID
+    const userId = "650b195f5162ce66a16ab88e"; // Use the authenticated user's ID
     const productId = req.params.cartItemId;
     let cart = await Cart.findOne({ user: userId });
     if (!cart) {
@@ -103,7 +103,7 @@ exports.updateCartItem = async (req, res) => {
 };
 exports.deleteCartItem = async (req, res) => {
   try {
-    const userId = "650b1e588a38ce09fff6da28"; // Use the authenticated user's ID
+    const userId = "650b195f5162ce66a16ab88e"; // Use the authenticated user's ID
     const productId = req.params.cartItemId;
     let cart = await Cart.findOne({ user: userId });
     if (!cart) {

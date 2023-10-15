@@ -34,7 +34,7 @@ exports.createOrder = async (req, res) => {
       user: userId,
     });
     const savedOrder = await newOrder.save();
-    // await Cart.findByIdAndUpdate(userCart._id, { items: [] });
+    await Cart.findByIdAndUpdate(userCart._id, { items: [] });
 
     res.status(201).json({
       status: "success",
@@ -46,26 +46,6 @@ exports.createOrder = async (req, res) => {
     res.status(400).json({
       status: "fail",
       message: err,
-    });
-  }
-};
-
-// Get a list of all of your orders
-exports.getYourOrders = async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const orders = await Order.findOne({ user: userId });
-    res.status(200).json({
-      status: "success",
-      results: orders.length,
-      data: {
-        orders,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({
-      status: "fail",
-      message: err.message,
     });
   }
 };
@@ -116,12 +96,12 @@ exports.getUserOrderHistory = async (req, res) => {
   try {
     const userId = req.params.userId; // Use the authenticated user's ID
     let orders = await Order.find({ user: userId });
-    console.log(orders.map((item) => item.products));
     orders = await Order.find({ user: userId }).populate({
       path: "products.product",
+      model: Product,
+      select: "name category",
     });
 
-    console.log(orders.map((item) => item.products));
     if (!orders) {
       return res
         .status(404)
