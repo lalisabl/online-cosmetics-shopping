@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
-const secretKey = 'key'
+const secretKey = "key";
 
 function authenticateJWT(req, res, next) {
   const token = req.headers.authorization;
-
+  //console.log(token);
   if (!token) {
     return res.status(401).json({ message: "Authentication failed here" });
   }
@@ -22,7 +22,7 @@ function authenticateJWT(req, res, next) {
 function authorizeRole(role) {
   return (req, res, next) => {
     if (req.userData && req.userData.role === role) {
-      next(); 
+      next();
     } else {
       return res.status(403).json({ message: "Access denied" });
     }

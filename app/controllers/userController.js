@@ -17,7 +17,7 @@ exports.createNewAccount = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find().select('-password');
     res.status(200).json({
       status: "success",
       totalUser: users.length,
@@ -63,7 +63,7 @@ exports.getEachUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         status: "fail",
-        message: "Product not found",
+        message: "user not found",
       });
     }
 

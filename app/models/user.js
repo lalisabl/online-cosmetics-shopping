@@ -7,7 +7,6 @@ const ROLES = {
   ADMIN: 'admin',
 };
 
-
 const userSchema = new mongoose.Schema({
   fullName: {
     type: String,
