@@ -12,7 +12,6 @@ const cartRoute = require("./routes/cartRoutes");
 //global Middlewares
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  //   console.log(req.headers);
   next();
 });
 //route Middlewares
