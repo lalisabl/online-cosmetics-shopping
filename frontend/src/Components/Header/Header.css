@@ -2,6 +2,7 @@
   background-color: #fff;
   height: 8vh;
   margin-bottom: 1.2rem;
+  box-shadow: var(--shadow-light);
 }
 .header-content {
   display: flex;
@@ -9,5 +10,14 @@
   align-items: center;
 }
 .cosmetics {
-  display: none;
+  border: transparent;
+  padding: 1rem;
+}
+.cosmetics:focus {
+  border: transparent;
+}
+.category {
+}
+.category:hover .cosmetics {
+  display: block;
 }
