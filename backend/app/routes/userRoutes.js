@@ -2,16 +2,22 @@ const express = require("express");
 const router = express.Router();
 const middleWare = require("../../config/middleware");
 const userController = require("../controllers/userController");
-const authorizationController = require("../controllers/authControler");
+const authoController = require("../controllers/authControler");
 router
   .route("/")
   .get(
-    authorizationController.protect,
-    authorizationController.restrictsto("admin"),
+    authoController.protect,
+    authoController.restrictsto("admin"),
     userController.getAllUsers
   );
 router.post("/register", userController.createNewAccount);
-//user
 router.post("/login", userController.loginUsers);
+router.post("/forgotPassword", authoController.forgotPassword);
+router.patch("/resetPassword/:token", authoController.resetPassword);
+router.patch(
+  "/updatePassword",
+  authoController.protect,
+  authoController.updatePassword
+);
 router.post("/myprofile", middleWare.authenticateJWT, userController.myProfile);
 module.exports = router;

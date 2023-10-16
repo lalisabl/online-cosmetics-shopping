@@ -17,6 +17,7 @@
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.2.4",
+    "nodemailer": "^6.9.6",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "validator": "^13.11.0"
