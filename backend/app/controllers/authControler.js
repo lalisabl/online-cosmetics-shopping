@@ -12,7 +12,6 @@ const signToken = (id) => {
 };
 exports.createNewAccount = async (req, res) => {
   try {
-    console.log("create new account");
     const newUser = await User.create({
       username: req.body.username,
       email: req.body.email,
@@ -125,7 +124,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     );
   }
 });
-exports.updatePassword = async (req, res, next) => {
+exports.updatePassword = catchAsync(async (req, res, next) => {
   // 1) Get user from collection
   const user = await User.findById(req.user.id).select("+password");
   // 2) Check if POSTed current password is correct
@@ -142,5 +141,5 @@ exports.updatePassword = async (req, res, next) => {
     status: "success",
     token: token,
   });
-};
+});
 exports.resetPassword = async (req, res, next) => {};

@@ -62,8 +62,18 @@ userSchema.pre("save", function (next) {
   });
 });
 
-userSchema.methods.validatePassword = function (password, userPassword) {
-  return bcrypt.compareSync(password, userPassword);
+// userSchema.methods.validatePassword = async function (
+//   password,
+//   userPassword
+//   ) {
+//   return await bcrypt.compareSync(password, userPassword);
+// };
+
+userSchema.methods.validatePassword = async function (
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
 };
 
 userSchema.methods.createPasswordResetToken = function () {

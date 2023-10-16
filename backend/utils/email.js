@@ -19,7 +19,7 @@ const sendEmail = async (options) => {
     // html:
   };
   // 3) Actually send the email
-  transporter.sendMail(mailOptions, (err, info) => {
+  await transporter.sendMail(mailOptions, (err, info) => {
     if (err) {
       console.log(err);
     }
