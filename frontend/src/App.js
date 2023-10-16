@@ -7,7 +7,11 @@ function App() {
   return (
     <div className="App">
       <Header />
+<<<<<<< HEAD
       <ProductList />
+=======
+      <Card />
+>>>>>>> 1b3dd8b (Addin Card and Header)
     </div>
   );
 }

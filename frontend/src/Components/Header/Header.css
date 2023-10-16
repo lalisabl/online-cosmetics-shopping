@@ -1,0 +1,13 @@
+.header {
+  background-color: #fff;
+  height: 8vh;
+  margin-bottom: 1.2rem;
+}
+.header-content {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.cosmetics {
+  display: none;
+}
