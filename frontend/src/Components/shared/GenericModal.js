@@ -13,6 +13,7 @@ import "./../../styles/modal.css";
  * 2. Pass the `isOpen` state and `onClose` callback from the parent component.
  * 3. Wrap the desired content in the `children` prop to display it within the modal.
  * 4. The modal can be closed by calling the `onClose` callback when needed.
+ * YOU CAN USE ModalTry component to try it
  */
 
 const GenericModal = ({ isOpen, onClose, children }) => {
