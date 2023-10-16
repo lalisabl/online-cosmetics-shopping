@@ -33,14 +33,9 @@ exports.createNewAccount = async (req, res) => {
   }
 };
 exports.loginUsers = async (req, res) => {
-  console.log("this function is called");
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email }).select("+password");
-    console.log(user);
-    if (!user.validatePassword(password, user.password)) {
-      console.log("the password is not the same!");
-    }
 
     if (!user || !user.validatePassword(password, user.password)) {
       return res.status(401).json({ message: "Invalid credentials" });
@@ -56,6 +51,7 @@ exports.loginUsers = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 exports.protect = catchAsync(async (req, res, next) => {
   //Getting token and check if it is there
   let token;

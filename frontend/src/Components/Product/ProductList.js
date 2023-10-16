@@ -11,7 +11,7 @@ function ProductList() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:3000/api/v1/Products/") // Replace with your API endpoint
+      .get("http://127.0.0.1:3000/api/v1/Products/") 
       .then((response) => setProducts(response.data.data.Products))
       .catch((error) => console.error(error));
   }, []);

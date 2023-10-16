@@ -9,45 +9,8 @@ const signToken = (id) => {
     expiresIn: "1h",
   });
 };
-exports.createNewAccount = async (req, res) => {
-  try {
-    const newUser = await User.create({
-      username: req.body.username,
-      email: req.body.email,
-      password: req.body.password,
-      fullName: req.body.fullName,
-      phoneNumber: req.body.phoneNumber,
-    });
-    const token = signToken(newUser._id);
-    res.status(201).json({
-      status: "success",
-      token: token,
-      message: "Registration successful",
-    });
-  } catch (error) {
-    res
-      .status(400)
-      .json({ message: "Registration failed", error: error.message });
-  }
-};
-exports.loginUsers = async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const user = await User.findOne({ email }).select("+password");
 
-    if (!user || !user.validatePassword(password, user.password)) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-    const token = signToken(user._id);
-    res.status(200).json({
-      status: "success",
-      token: token,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
+
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   const users = await User.find();
   res.status(200).json({
