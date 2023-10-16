@@ -62,7 +62,10 @@ userSchema.pre("save", function (next) {
   });
 });
 
-// userSchema.methods.validatePassword = async function (password, userPassword) {
+// userSchema.methods.validatePassword = async function (
+//   password,
+//   userPassword
+//   ) {
 //   return await bcrypt.compareSync(password, userPassword);
 // };
 

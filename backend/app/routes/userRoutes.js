@@ -10,8 +10,8 @@ router
     authoController.restrictsto("admin"),
     userController.getAllUsers
   );
-router.post("/register", userController.createNewAccount);
-router.post("/login", userController.loginUsers);
+router.post("/register", authoController.createNewAccount);
+router.post("/login", authoController.loginUsers);
 router.post("/forgotPassword", authoController.forgotPassword);
 router.patch("/resetPassword/:token", authoController.resetPassword);
 router.patch(

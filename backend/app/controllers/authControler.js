@@ -12,7 +12,6 @@ const signToken = (id) => {
 };
 exports.createNewAccount = async (req, res) => {
   try {
-    console.log("create new account");
     const newUser = await User.create({
       username: req.body.username,
       email: req.body.email,
@@ -32,30 +31,24 @@ exports.createNewAccount = async (req, res) => {
       .json({ message: "Registration failed", error: error.message });
   }
 };
-exports.loginUsers = async (req, res) => {
-  console.log("this function is called");
+exports.loginUsers = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
-  try {
-    const user = await User.findOne({ email }).select("+password");
-    console.log(user);
-    if (!user.validatePassword(password, user.password)) {
-      console.log("the password is not the same!");
-    }
-
-    if (!user || !user.validatePassword(password, user.password)) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    const token = signToken(user._id);
-    res.status(200).json({
-      status: "success",
-      token: token,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+  // 1) Check if email and password exist
+  if (!email || !password) {
+    return next(new AppError("Please provide email and password!", 400));
   }
-};
+  // 2) Check if user exists && password is correct
+  const user = await User.findOne({ email }).select("+password");
+
+  if (!user || !(await user.validatePassword(password, user.password))) {
+    return next(new AppError("Incorrect email or password", 401));
+  }
+  const token = signToken(user._id);
+  res.status(200).json({
+    status: "success",
+    token: token,
+  });
+});
 exports.protect = catchAsync(async (req, res, next) => {
   //Getting token and check if it is there
   let token;
@@ -129,7 +122,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     );
   }
 });
-exports.updatePassword = async (req, res, next) => {
+exports.updatePassword = catchAsync(async (req, res, next) => {
   // 1) Get user from collection
   const user = await User.findById(req.user.id).select("+password");
   // 2) Check if POSTed current password is correct
@@ -146,5 +139,5 @@ exports.updatePassword = async (req, res, next) => {
     status: "success",
     token: token,
   });
-};
+});
 exports.resetPassword = async (req, res, next) => {};
