@@ -35,36 +35,32 @@
   box-sizing: border-box;
 }
 body {
-  background-color: #f5f3f3;
+  background-color: #f5f3f5;
   font-family: Roboto, Helvetica, Tahoma, Arial, Microsoft YaHei, sans-serif;
 }
 html {
   font-size: 62.5%;
 }
-
 /* Card */
 .cards {
-  display: flex;
-  flex-wrap: wrap;
-
+  margin: 5px auto;
   width: 98%;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  gap: 1rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+  grid-gap: 15px;
 }
 .card {
-  width: 28rem;
+  width: 100%;
   display: flex;
+  background-color: var(--color-primary);
   flex-direction: column;
-
-  border-radius: 5px;
+  border-radius: 8px;
   background-color: #fff;
   overflow: hidden;
 }
-.card-img {
-  width: 28rem;
-  height: 20rem;
+.card-img img {
+  min-height: 20rem;
+  object-fit:cover;
 }
 .card-img:hover .card-image {
   transform: scale(1.1);
