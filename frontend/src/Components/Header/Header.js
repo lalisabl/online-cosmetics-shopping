@@ -5,7 +5,7 @@ export default function Header() {
     <div className="header">
       <div className="header-content">
         <div className="header-logo">
-          <h1>Kitto-E-Commerce</h1>
+          g<h1>Kitto-E-Commerce</h1>
         </div>
         <div className="catogories">
           <div className="category">Categories</div>
