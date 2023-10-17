@@ -1,13 +1,22 @@
 const fs = require("fs");
+const multer = require("multer");
+const sharp = require("sharp");
 const Product = require("../models/product");
+const catchAsync = require("../../utils/catchAsync");
+const AppError = require("../../utils/appError");
 let products_F = null;
+const directory = "data/images/products/";
+// Check if the directory exists, and if not, create it
+if (!fs.existsSync(directory)) {
+  fs.mkdirSync(directory, { recursive: true });
+}
+
 const productsFilePath = `${__dirname}/../data/product.json`;
 try {
   products_F = JSON.parse(fs.readFileSync(productsFilePath, "utf8"));
 } catch (error) {
   console.error("Error reading or parsing JSON:", error);
 }
-
 exports.aliasTopProducts = (req, res, next) => {
   req.query.limit = "3";
   req.query.sort = "price";
@@ -111,6 +120,38 @@ exports.getEachProduct = async (req, res) => {
     });
   }
 };
+const multerStorage = multer.memoryStorage();
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(new AppError("Not an image! Please upload only images.", 400), false);
+  }
+};
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+// exports.uploadProductImages = upload.fields({ name: "images", maxCount: 3 });
+exports.uploadProductImages = upload.fields([{ name: "images" }]);
+// resizeTourImages
+exports.resizeProductImages = catchAsync(async (req, res, next) => {
+  if (!req.files.images) return next();
+  req.body.images = [];
+  await Promise.all(
+    req.files.images.map(async (file, i) => {
+      const filename = `product-${i + 1}-${Date.now()}-${i + 1}.jpeg`;
+
+      await sharp(file.buffer)
+        .resize(2000, 1333)
+        .toFormat("jpeg")
+        .jpeg({ quality: 90 })
+        .toFile(`public/images/products/${filename}`);
+      req.body.images.push(filename);
+    })
+  );
+  next();
+});
 // createNewProduct
 exports.createNewProduct = async (req, res, next) => {
   try {

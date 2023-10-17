@@ -1,4 +1,7 @@
 import React from "react";
+<<<<<<< HEAD
+import "./Header.css"; // You can create a CSS file for styling
+=======
 import "./Header.css";
 export default function Header() {
   return (
@@ -21,11 +24,28 @@ export default function Header() {
             <option value="haircare">Hair Care</option>
           </select>
         </div>
+>>>>>>> 519c2523d0d10b5a8848243a6777a5ab38b3e091
 
-        <div className="search">
-          <input type="text" className="input"></input>
-        </div>
+const Header = () => {
+  return (
+    <header className="header">
+      <div className="logo">WUBIT</div>
+      <nav className="nav">
+        <ul>
+          <li>Products</li>
+          <li>Categories</li>
+        </ul>
+      </nav>
+      <div className="search">
+        <input type="text" placeholder="Search for products" />
+        <button>Search</button>
       </div>
-    </div>
+      <div className="cart">
+        <i className="fa fa-shopping-cart"></i> Cart
+      </div>
+      <div className="account">Login Sign Up</div>
+    </header>
   );
-}
+};
+
+export default Header;

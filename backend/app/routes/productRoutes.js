@@ -25,8 +25,8 @@ router
   .route("/")
   .get(productController.getAllProducts)
   .post(
-    authorizationController.protect,
-    authorizationController.restrictsto("admin"),
+    productController.uploadProductImages,
+    productController.resizeProductImages,
     productController.createNewProduct
   );
 module.exports = router;
