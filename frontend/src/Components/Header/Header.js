@@ -8,7 +8,6 @@ export default function Header() {
           <h1>Kitto-E-Commerce</h1>
         </div>
         <div className="catogories">
-          <div className="category">Categories</div>
           <select className="cosmetics">
             <option value="all">All</option>
             <option value="face">Face Cosmetics</option>
