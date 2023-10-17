@@ -38,9 +38,6 @@ body {
   background-color: #f5f3f5;
   font-family: Roboto, Helvetica, Tahoma, Arial, Microsoft YaHei, sans-serif;
 }
-html {
-  font-size: 62.5%;
-}
 /* Card */
 .cards {
   margin: 5px auto;

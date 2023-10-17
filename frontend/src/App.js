@@ -13,6 +13,7 @@ function RouteEcommerce() {
         <Routes>
           <Route exact path="/products" element={<ProductList />} />
           <Route path="/admin" element={<Dashboard />} />
+          <Route path="/admin/" element={<Dashboard />} />
           <Route path="/*" element={<NotFound />} />
           
         </Routes>
@@ -24,8 +25,7 @@ function RouteEcommerce() {
 function App() {
   return (
     <div className="App">
-      <Header />
-      <Card />
+   
       <RouteEcommerce />
     </div>
   );

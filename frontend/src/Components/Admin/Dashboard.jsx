@@ -5,6 +5,21 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardImg, CardTitle } from "reactstrap";
 import { timeAgo } from "../shared/SharedComp";
 import "./../../styles/dashboard.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHome,
+  faBell,
+  faChartBar,
+  faGear,
+  faUsers,
+  faClipboardList,
+  faCalendar,
+} from "@fortawesome/free-solid-svg-icons";
+import ProductManagement from "./ProductManagement";
+import UserManagement from "./UserManagement";
+import AdminNotification from "./AdminNotification";
+import Setting from "./Setting";
+import ReportGenerator from "./ReportGenerator";
 
 const APIURL = "";
 function Dashboard() {
@@ -53,9 +68,15 @@ function Navbar() {
     <nav className="navBar-header">
       <div className="logo">Dashboard Logo</div>
       <div className="nav-links Login-signUp right-side-nav">
-        <div>Home</div>
-        <div>Help</div>
-        <div className="user-info">Username</div>
+        <div>
+          <FontAwesomeIcon icon={faHome} />
+          Home
+        </div>
+        <div>
+          <FontAwesomeIcon icon={faBell} />
+          Notifications
+        </div>
+        <div className="user-info"> Username</div>
       </div>
     </nav>
   );
@@ -69,88 +90,39 @@ function MainDis({ element }) {
   );
 }
 
-function Post() {
-  return (
-    <>
-      <Product filter={"latest"} />
-    </>
-  );
-}
 function Sidebar({ onItemClick }) {
+  const [activeMenuItem, setActiveMenuItem] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    //  console.log(currentPath);
+
+    setActiveMenuItem(currentPath);
+  }, [navigate]);
   return (
     <aside className="sidebar">
       <ul>
-        <li>Analytics</li>
-        <li onClick={() => onItemClick(<Post />)}>Posts</li>
-
-        <li>System Log</li>
+        <li onClick={() => onItemClick(null)}>
+          <FontAwesomeIcon icon={faHome} /> Dashboard
+        </li>
+        <li onClick={() => onItemClick(<ProductManagement />)}>
+          <FontAwesomeIcon icon={faClipboardList} /> product management
+        </li>
+        <li onClick={() => onItemClick(<UserManagement />)}>
+          <FontAwesomeIcon icon={faUsers} /> User management
+        </li>
+        <li onClick={() => onItemClick(<AdminNotification />)}>
+          <FontAwesomeIcon icon={faBell} /> Notifications
+        </li>
+        <li onClick={() => onItemClick(<ReportGenerator />)}>
+          <FontAwesomeIcon icon={faChartBar} /> Reports
+        </li>
+        <li onClick={() => onItemClick(<Setting />)}>
+          <FontAwesomeIcon icon={faGear} /> settings
+        </li>
       </ul>
     </aside>
-  );
-}
-
-function Product({ filter }) {
-  const [products, setProduct] = useState([]);
-  const navigate = useNavigate();
-  useEffect(() => {
-    const cards = document.querySelectorAll(".fadeInAnimation");
-    cards.forEach((card, index) => {
-      setTimeout(() => {
-        card.classList.add("visible");
-      }, 50 * index);
-    });
-  }, [products]);
-  let apiUrl = `${APIURL}/api/products?sort=latest`;
-  if (filter !== "latest") {
-    apiUrl = `${APIURL}/api/products?forWhom=${filter}&sort=latest`;
-  }
-  useEffect(() => {
-    axios
-      .get(apiUrl)
-      .then((response) => {
-        setProduct(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [apiUrl]);
-
-  ///let products = ProductList.filter((prod) => prod.for === "child");
-  const handleProductDetail = (product) => {
-    navigate(`/buyer/product/${product.id}`);
-  };
-  // NEED TO BE EDITED
-  const userId = 42;
-  return (
-    <>
-      <div className="Card_list product-list">
-        {products.length > 0 ? (
-          products.map((product, key) => (
-            <Card
-              onClick={() => handleProductDetail(product)}
-              key={key}
-              className="fadeInAnimation"
-            >
-              <CardImg
-                src={`${APIURL}/api/getImage/` + product.filename}
-                alt="not found"
-              ></CardImg>
-
-              <CardTitle>
-                {product.title} <br />
-                <b>{product.price} ETB</b> <br />
-                <span className="muted">{product.num_views} views</span> <br />
-                <span className="muted">{timeAgo(product.created_at)}</span>
-                <br />
-                {product.condition}
-              </CardTitle>
-            </Card>
-          ))
-        ) : (
-          <h1>NO Product found</h1>
-        )}
-      </div>
-    </>
   );
 }
 
