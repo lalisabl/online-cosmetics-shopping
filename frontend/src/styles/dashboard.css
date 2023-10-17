@@ -63,37 +63,13 @@
   padding: 20px;
 }
 
-/* Add more styling as needed */
-.company-list {
-  max-width: 77vw;
-}
-.company-list .card {
-  margin: 2px;
-}
-.company-list .card :hover {
-  cursor: pointer;
-}
-
-.company-detail .card {
-  box-shadow: 0 0 10px 2px rgba(66, 165, 66, 0.616);
-  margin: 5px;
-}
-.company-detail {
-  text-align: center;
-}
-
-.company-detail .card img {
-  width: 100%;
-}
-/* Add this CSS in your stylesheet */
-.card-enter {
-  opacity: 0;
-  transform: translateX(-2px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
 
 .card-enter-active {
   opacity: 1;
   transform: translateY(0);
   transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.wider-displays-dshb {
+  width: 100%;
 }

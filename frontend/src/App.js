@@ -4,7 +4,8 @@ import Card from "./Components/Card/Card";
 import ProductList from "./Components/Product/ProductList";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Loading from "./Components/shared/loadingSVG";
-import Dashboard from "./Components/Admin/Dashboard";
+import Dashboard from "./Components/Admin/AdminDashboard";
+import Login from "./login";
 
 function RouteEcommerce() {
   return (
@@ -14,6 +15,7 @@ function RouteEcommerce() {
           <Route exact path="/products" element={<ProductList />} />
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/admin/" element={<Dashboard />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
@@ -24,8 +26,8 @@ function RouteEcommerce() {
 function App() {
   return (
     <div className="App">
+      <Header />
       <Card />
-      <RouteEcommerce />
     </div>
   );
 }
