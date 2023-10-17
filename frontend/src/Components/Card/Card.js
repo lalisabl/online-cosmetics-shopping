@@ -23,7 +23,10 @@ export default function Card() {
               <span className="price">120.00 bir</span>/piece
             </div>
             <div className="rating">
-              <span className="av-rating">4.8</span>🧡
+              <span className="av-rating">4.8</span>
+              <svg className="overview-icon">
+                <use xlinkHref="/images/sprite.svg#icon-chevron-right" />
+              </svg>
             </div>
             <div className="man-ex-date">
               <div className="man-date">
