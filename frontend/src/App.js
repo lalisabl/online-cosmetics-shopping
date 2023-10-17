@@ -1,7 +1,7 @@
 import "./App.css";
 
 import Header from "./Components/Header/Header";
-import Card from "./Components/Card/Card";
+import Product from "./Components/Card/Product";
 import ProductList from "./Components/Product/ProductList";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Loading from "./Components/shared/loadingSVG";
@@ -12,8 +12,10 @@ function RouteEcommerce() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route exact path="/products" element={<ProductList />} />
+          <Route exact path="/products" element={<Product />} />
           <Route path="/admin" element={<Dashboard />} />
+          <Route path="/" element={<Home />} />
+
           <Route path="/admin/" element={<Dashboard />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
@@ -21,11 +23,16 @@ function RouteEcommerce() {
     </>
   );
 }
-
+function Home() {
+  return (
+    <>
+      <h1>hello home</h1>
+    </>
+  );
+}
 function App() {
   return (
     <div className="App">
-      <Card />
       <RouteEcommerce />
     </div>
   );
