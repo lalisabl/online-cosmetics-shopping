@@ -7,9 +7,9 @@ router.post(
   authorizationController.protect,
   cartController.addToCart
 );
-router.route("/:userId").get(cartController.viewCart);
+router.route("/").get(authorizationController.protect, cartController.viewCart);
 router
   .route("/:cartItemId")
-  .patch(cartController.updateCartItem)
-  .delete(cartController.deleteCartItem);
+  .patch(authorizationController.protect, cartController.updateCartItem)
+  .delete(authorizationController.protect, cartController.deleteCartItem);
 module.exports = router;
