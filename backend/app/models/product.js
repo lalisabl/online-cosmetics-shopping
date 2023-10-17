@@ -39,6 +39,8 @@ const productSchema = new mongoose.Schema({
   images: [
     {
       type: String, // Assuming image URLs as strings
+      required: [true, "A Product must have images"],
+      unique: true,
     },
   ],
   sizeVolume: String,
