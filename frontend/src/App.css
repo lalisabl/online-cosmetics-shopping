@@ -1,0 +1,117 @@
+:root {
+  --color-primary: #eb2f64;
+  --color-Primary-light: #ff3366;
+  --color-Primary-dark: #ba265d;
+  --color-primary-green: #55c57a;
+  --color-primary-green-light: #7ed56f;
+
+  --color-primary-green-dark: #28b485;
+  --color-secondary-dark: #ff7730;
+  --color-secondary-light: #ffb900;
+
+  --color-tertiary-dark: #5643fa;
+  --color-tertiary-light: #2998ff;
+
+  --color-grey-light-1: #f7f7f7;
+  --color-grey-light-2: #eee;
+
+  --color-grey-dark-3: #333;
+  --color-Grey-light-1: #faf9f9;
+  --color-Grey-light-2: #f4f2f2;
+  --color-Grey-light-4: #ccc;
+  --line: 1px solid var(--color-Grey-light-2);
+  --color-Grey-dark-1: #333;
+  --color-Grey-dark-2: #777;
+  --color-Grey-dark-3: #999;
+  --shadow-light: 0 2rem 5rem rgba(250, 248, 248, 0.06);
+  --shadow-dark: 0 2rem 6rem rgba(0, 0, 0, 0.3);
+}
+
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body {
+  background-color: #f5f3f5;
+  font-family: Roboto, Helvetica, Tahoma, Arial, Microsoft YaHei, sans-serif;
+}
+/* Card */
+.cards {
+  margin: 5px auto;
+  width: 98%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+  grid-gap: 15px;
+}
+.card {
+  width: 100%;
+  display: flex;
+  background-color: var(--color-primary);
+  flex-direction: column;
+  border-radius: 8px;
+  background-color: #fff;
+  overflow: hidden;
+}
+.card-img img {
+  min-height: 20rem;
+  object-fit:cover;
+}
+.card-img:hover .card-image {
+  transform: scale(1.1);
+}
+.card-image {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.2s;
+}
+.card-body {
+  padding: 1rem 1.2rem;
+}
+.product-title {
+  line-height: 1.3;
+  margin-bottom: 1.2rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 500;
+  display: inline-block;
+
+  background-image: linear-gradient(to right, #28b485, #7ed56f);
+  background-clip: text;
+  color: transparent;
+}
+.product-title:hover {
+  border-bottom: 1px solid #000;
+}
+.product-descrption {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.price {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.product-price {
+  margin-bottom: 0.5rem;
+}
+.man-ex-date {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2rem;
+}
+.manfac-date {
+  color: var(--color-tertiary-dark);
+}
+.expiry-date {
+  color: var(--color-Primary-light);
+}
+.rating {
+  margin-bottom: 0.6rem;
+}
+.av-rating {
+  color: var(--color-primary);
+}

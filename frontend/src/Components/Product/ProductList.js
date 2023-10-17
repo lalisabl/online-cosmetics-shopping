@@ -1,7 +1,7 @@
 // ProductList.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, CardBody, CardImg, CardText, CardTitle } from "react-bootstrap";
 import CartModal from "./CartModal";
 
 function ProductList() {
@@ -27,22 +27,22 @@ function ProductList() {
       <div className="card-deck">
         {products.map((product) => (
           <Card key={product._id}>
-            <Card.Img
+            <CardImg
               src={product.images[0]}
               alt={product.name}
               variant="top"
             />
-            <Card.Body>
-              <Card.Title>{product.name}</Card.Title>
-              <Card.Text>{product.description}</Card.Text>
-              <Card.Text>Price: ${product.price}</Card.Text>
+            <CardBody>
+              <CardTitle>{product.name}</CardTitle>
+              <CardText>{product.description}</CardText>
+              <CardText>Price: ${product.price}</CardText>
               <Button
                 className="btn btn-primary"
                 onClick={() => handleAddToCart(product)}
               >
                 Add to Cart
               </Button>
-            </Card.Body>
+            </CardBody>
           </Card>
         ))}
       </div>
