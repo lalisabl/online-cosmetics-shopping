@@ -63,7 +63,6 @@
   padding: 20px;
 }
 
-
 .card-enter-active {
   opacity: 1;
   transform: translateY(0);
@@ -72,4 +71,15 @@
 
 .wider-displays-dshb {
   width: 100%;
+}
+.wider-displays-dshb .card {
+  display: flex;
+  padding: 5px;
+  margin: 5px;
+  flex-direction: row;
+}
+.wider-displays-dshb .card img {
+  max-width: 100px;
+  height: 100%;
+  object-fit: cover;
 }

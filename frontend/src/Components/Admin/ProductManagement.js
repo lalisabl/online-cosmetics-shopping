@@ -33,7 +33,6 @@ export default function ProductManagement() {
 }
 
 function Product({ product }) {
-  console.log(product);
   return (
     <div className="wider-displays-dshb">
       <Card>
