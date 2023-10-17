@@ -38,7 +38,7 @@ function Product({ product }) {
     <div className="wider-displays-dshb">
       <Card>
         <img
-          src={`localhost:3000/images/products` + product.images[0]}
+          src={`http://localhost:3000/images/products/` + product.images[0]}
           alt="product image 1"
         />
         <span>
