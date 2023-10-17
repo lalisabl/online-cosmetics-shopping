@@ -40,9 +40,16 @@ function Product({ product }) {
           src={`http://localhost:3000/images/products/` + product.images[0]}
           alt="product image 1"
         />
-        <span>
-          <CardTitle>{product.name}</CardTitle>
-        </span>
+        <div className="manager-admin">
+          <div>
+            <CardTitle>{product.name}</CardTitle>
+          </div>
+          <div className="action-admin">
+            <button className="btn btn-danger">remove</button> 
+            <button  className="btn btn-secondary">Hide</button>
+            <button className="btn btn-primary">Promote</button>
+          </div>
+        </div>
       </Card>
     </div>
   );
