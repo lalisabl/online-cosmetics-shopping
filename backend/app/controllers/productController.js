@@ -5,12 +5,6 @@ const Product = require("../models/product");
 const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/appError");
 let products_F = null;
-const directory = "data/images/products/";
-// Check if the directory exists, and if not, create it
-if (!fs.existsSync(directory)) {
-  fs.mkdirSync(directory, { recursive: true });
-}
-
 const productsFilePath = `${__dirname}/../data/product.json`;
 try {
   products_F = JSON.parse(fs.readFileSync(productsFilePath, "utf8"));
