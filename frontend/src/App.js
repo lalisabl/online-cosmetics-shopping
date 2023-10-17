@@ -15,7 +15,6 @@ function RouteEcommerce() {
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/admin/" element={<Dashboard />} />
           <Route path="/*" element={<NotFound />} />
-          
         </Routes>
       </BrowserRouter>
     </>
@@ -25,7 +24,7 @@ function RouteEcommerce() {
 function App() {
   return (
     <div className="App">
-   
+      <Card />
       <RouteEcommerce />
     </div>
   );
