@@ -26,7 +26,8 @@ function RouteEcommerce() {
 function App() {
   return (
     <div className="App">
-      <RouteEcommerce />
+      <Header />
+      <Card />
     </div>
   );
 }
