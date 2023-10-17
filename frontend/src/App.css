@@ -38,7 +38,13 @@ body {
   background-color: #f5f3f5;
   font-family: Roboto, Helvetica, Tahoma, Arial, Microsoft YaHei, sans-serif;
 }
+<<<<<<< HEAD
 
+=======
+/* html {
+  font-size: 62.07%;
+} */
+>>>>>>> 519c2523d0d10b5a8848243a6777a5ab38b3e091
 /* Card */
 .cards {
   margin: 5px auto;

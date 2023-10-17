@@ -5,7 +5,8 @@ import Product from "./Components/Card/Product";
 import ProductList from "./Components/Product/ProductList";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Loading from "./Components/shared/loadingSVG";
-import Dashboard from "./Components/Admin/Dashboard";
+import Dashboard from "./Components/Admin/AdminDashboard";
+import Login from "./login";
 
 function RouteEcommerce() {
   return (
@@ -17,6 +18,7 @@ function RouteEcommerce() {
           <Route path="/" element={<Home />} />
 
           <Route path="/admin/" element={<Dashboard />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
@@ -33,7 +35,12 @@ function Home() {
 function App() {
   return (
     <div className="App">
+<<<<<<< HEAD
       <RouteEcommerce />
+=======
+      <Header />
+      <Card />
+>>>>>>> 519c2523d0d10b5a8848243a6777a5ab38b3e091
     </div>
   );
 }
