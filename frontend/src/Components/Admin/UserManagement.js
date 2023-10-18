@@ -3,40 +3,69 @@ import React, { useEffect, useState } from "react";
 import { Card, CardTitle } from "reactstrap";
 import { faTrash, faBan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { LoadingCard, LoadingCardList } from "../shared/LoadingCard";
 
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
+  const [deleted, setDeleted] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  function DeleteUSer(user_id) {
+    axios
+      .delete("http://localhost:3000/api/v1/users/" + user_id)
+      .then((res) => {
+        setDeleted(setDeleted(true));
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   useEffect(() => {
     axios
       .get("http://localhost:3000/api/v1/users", {
         withCredentials: true,
       })
       .then((res) => {
-        console.log(res.data);
         setUsers(res.data.data.users);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
-  }, []);
+  }, [deleted]);
   return (
     <div>
-      {users.length > 0 ? (
-        <>
-          {users.map((user) => (
-            <div key={user.id}>
-              <User user={user} />
-            </div>
-          ))}
-        </>
+      {!loading ? (
+        users.length > 0 ? (
+          <>
+            {users.map((user) => (
+              <div key={user.id}>
+                <User DeleteUSer={DeleteUSer} user={user} />
+              </div>
+            ))}
+          </>
+        ) : (
+          <div>No user found</div>
+        )
       ) : (
-        <div>No user found</div>
+        <div>
+          <LoadingCardList />
+          <LoadingCardList />
+          <LoadingCardList />
+          <LoadingCardList />
+          <LoadingCardList />
+        </div>
       )}
     </div>
   );
 }
 
-function User({ user }) {
+function User({ user, DeleteUSer }) {
+  const [loading, setLoading] = useState(true);
+
   return (
     <div className="wider-displays-dshb user-manage">
       <Card>
@@ -53,7 +82,10 @@ function User({ user }) {
             <CardTitle>{user.fullName}</CardTitle>
           </div>
           <div className="action-admin">
-            <button className="btn btn-danger">
+            <button
+              className="btn btn-danger"
+              onClick={() => DeleteUSer(user._id)}
+            >
               {" "}
               <FontAwesomeIcon icon={faTrash} />
               Delete

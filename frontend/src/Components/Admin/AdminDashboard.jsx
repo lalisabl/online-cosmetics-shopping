@@ -74,7 +74,7 @@ function Navbar() {
         </div>
         <div>
           <FontAwesomeIcon icon={faBell} />
-          <span className="notify">Notifications</span>
+          <span className="notify">Notifications<span className="notification-num">23</span> </span>
         </div>
         <div className="user-info"> Username</div>
       </div>
@@ -113,7 +113,7 @@ function Sidebar({ onItemClick }) {
           <FontAwesomeIcon icon={faUsers} /> User management
         </li>
         <li onClick={() => onItemClick(<AdminNotification />)}>
-          <FontAwesomeIcon icon={faBell} /> Notifications
+          <FontAwesomeIcon icon={faBell} /> <span className="notify">Notifications<span className="notification-num">23</span> </span> 
         </li>
         <li onClick={() => onItemClick(<ReportGenerator />)}>
           <FontAwesomeIcon icon={faChartBar} /> Reports

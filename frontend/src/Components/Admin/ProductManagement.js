@@ -7,54 +7,68 @@ import {
   faArrowCircleUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Loading from "../shared/loadingSVG";
+import { LoadingCard, LoadingCardList } from "../shared/LoadingCard";
 
 export default function ProductManagement() {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   useEffect(() => {
     axios
       .get("http://localhost:3000/api/v1/Products")
       .then((res) => {
-        console.log(res.data.data.Products);
         setProducts(res.data.data.Products);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
+        setError(true);
       });
   }, []);
   return (
     <div>
-      {products.length > 0 ? (
-        <>
-          {products.map((product) => (
-            <div key={product.id}>
-              <Product product={product} />
-            </div>
-          ))}
-        </>
+      {!loading ? (
+        !error ? (
+          products.length > 0 ? (
+            <>
+              {products.map((product) => (
+                <div key={product.id}>
+                  <Product product={product} />
+                </div>
+              ))}
+            </>
+          ) : (
+            <div>No product found</div>
+          )
+        ) : (
+          <>Error happened while fetching data</>
+        )
       ) : (
-        <div>No product found</div>
+        <>
+          {" "}
+          <LoadingCardList />
+          <LoadingCardList />
+          <LoadingCardList />
+          <LoadingCardList />
+          <LoadingCardList />
+          <LoadingCardList />
+        </>
       )}
     </div>
   );
 }
 
 function Product({ product }) {
-  const [loading, setLoading] = useState(true);
   const [hide, setHide] = useState(false);
   const [promote, setPromote] = useState(false);
-
-  useEffect(() => {
-    setTimeout(setLoading(false), 2000);
-  }, []);
 
   useEffect(() => {}, []);
   return (
     <div className="wider-displays-dshb">
-      {loading ? (
-        <Loading />
-      ) : (
-        <Card>
+      <Card>
+        <>
+          {" "}
           <img
             src={`http://localhost:3000/images/products/` + product.images[0]}
             alt="product image 1"
@@ -80,8 +94,8 @@ function Product({ product }) {
               </button>
             </div>
           </div>
-        </Card>
-      )}
+        </>
+      </Card>
     </div>
   );
 }

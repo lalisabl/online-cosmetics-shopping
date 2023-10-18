@@ -35,7 +35,6 @@ function App() {
   return (
     <div className="App">
       <RouteEcommerce />
-
     </div>
   );
 }
