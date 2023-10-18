@@ -13,7 +13,7 @@ router
   .get(productController.getEachProduct)
   .patch(
     authorizationController.protect,
-    authorizationController.restrictsto("admin"),
+    // authorizationController.restrictsto("admin"),
     productController.updateProduct
   )
   .delete(

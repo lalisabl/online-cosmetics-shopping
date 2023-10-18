@@ -2,7 +2,6 @@ import "./App.css";
 
 import Header from "./Components/Header/Header";
 import Product from "./Components/Card/Product";
-import ProductList from "./Components/Product/ProductList";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Loading from "./Components/shared/loadingSVG";
 import Dashboard from "./Components/Admin/AdminDashboard";

@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "../Header/Header";
-
+import { CardBody } from "reactstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+ faStar
+} from "@fortawesome/free-solid-svg-icons";
 function Product() {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
@@ -54,12 +58,13 @@ function Product() {
     <>
       <Header />
       <div className="cardContainer">
-        <div className="cards">
+        <div className="cards product-displayer">
           {products.length > 0 ? (
             products.map((product) => (
               <div key={product._id} className="card">
                 <div className="card-img">
                   <img
+                    className="card-image"
                     src={
                       "http://localhost:3000/images/products/" +
                       product.images[0]
@@ -67,6 +72,8 @@ function Product() {
                     alt={product.name}
                     variant="top"
                   />
+                </div>
+                <CardBody>
                   <div className="product-title">{product.name}</div>
                   <div className="product-description">
                     {product.description}
@@ -75,7 +82,7 @@ function Product() {
                     <span className="price">{product.price} birr</span>/piece
                   </div>
                   <div className="rating">
-                    <span className="av-rating">4.8</span>🧡
+                    <span className="av-rating">4.8 <FontAwesomeIcon icon={faStar} /></span>
                   </div>
                   <div className="cart">
                     {cartItems.some((item) => item.id === product.id) ? (
@@ -94,7 +101,7 @@ function Product() {
                       </button>
                     )}
                   </div>
-                </div>
+                </CardBody>
               </div>
             ))
           ) : (

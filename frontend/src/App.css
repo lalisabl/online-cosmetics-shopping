@@ -1,3 +1,4 @@
+@import url("./styles//product-displayer.css");
 :root {
   --color-primary: #eb2f64;
   --color-Primary-light: #ff3366;
@@ -46,8 +47,8 @@ body {
   margin: 5px auto;
   width: 98%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-  grid-gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  grid-gap: 7px;
 }
 .card {
   width: 100%;
@@ -58,8 +59,12 @@ body {
   background-color: #fff;
   overflow: hidden;
 }
+.card-img {
+  overflow: hidden;
+}
 .card-img img {
-  min-height: 20rem;
+  min-height: 15rem;
+  max-height: 15rem;
   object-fit: cover;
 }
 .card-img:hover .card-image {
@@ -72,7 +77,7 @@ body {
   transition: transform 0.2s;
 }
 .card-body {
-  padding: 1rem 1.2rem;
+  padding: 0.2rem 0.8rem;
 }
 .product-title {
   line-height: 1.3;

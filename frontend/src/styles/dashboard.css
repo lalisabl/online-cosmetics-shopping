@@ -63,7 +63,6 @@
   padding: 20px;
 }
 
-
 .card-enter-active {
   opacity: 1;
   transform: translateY(0);
@@ -72,4 +71,33 @@
 
 .wider-displays-dshb {
   width: 100%;
+}
+.wider-displays-dshb .card {
+  display: flex;
+  padding: 15px 2px;
+  margin: 5px;
+  max-height: 70px;
+  flex-direction: row;
+}
+.wider-displays-dshb .card span{
+  margin:auto 3px;
+}
+.wider-displays-dshb .card img {
+  width: auto;
+  max-width: 100px;
+  max-height: 100%;
+  border-radius: 5px;
+  object-fit: contain;
+  align-self: center;
+}
+
+.manager-admin{
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+}
+.action-admin{
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
 }
