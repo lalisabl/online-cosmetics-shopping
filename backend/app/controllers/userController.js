@@ -1,4 +1,3 @@
-// createNewProduct
 const User = require("../models/user");
 const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/appError");
@@ -20,14 +19,14 @@ exports.getEachUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         status: "fail",
-        message: "Product not found",
+        message: "User not found",
       });
     }
 
     return res.status(200).json({
       status: "success",
       data: {
-        product: user,
+        user: user,
       },
     });
   } catch (error) {
@@ -37,6 +36,25 @@ exports.getEachUser = async (req, res) => {
     });
   }
 };
+exports.deleteUser = async (req, res, next) => {
+  const userId = req.params.userId;
+  try {
+    const user = await User.findByIdAndRemove(userId);
+    if (!user) {
+      throw new Error(`There is no user with ${userId} _id`);
+    } else {
+      return res.status(204).json({
+        status: "success",
+        data: {
+          user: {},
+        },
+      });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.myProfile = async (req, res) => {
   let data = req.userData;
   res.status(201).json({ data });
