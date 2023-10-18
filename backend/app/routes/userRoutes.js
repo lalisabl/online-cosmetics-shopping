@@ -6,8 +6,8 @@ const authoController = require("../controllers/authControler");
 router
   .route("/")
   .get(
-    authoController.protect,
-    authoController.restrictsto("admin"),
+    // authoController.protect,
+    // authoController.restrictsto("admin"),
     userController.getAllUsers
   );
 router.post("/register", authoController.createNewAccount);
@@ -19,5 +19,4 @@ router.patch(
   authoController.protect,
   authoController.updatePassword
 );
-router.post("/myprofile", middleWare.authenticateJWT, userController.myProfile);
 module.exports = router;

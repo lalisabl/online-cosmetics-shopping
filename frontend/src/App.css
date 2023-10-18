@@ -56,7 +56,7 @@ body {
   background-color: #fff;
   overflow: hidden;
 }
-.card-img  {
+.card-img {
   overflow: hidden;
 }
 .card-img img {
@@ -136,4 +136,15 @@ body {
 .add-cart:hover {
   background: #fc763c;
   text-decoration: none;
+}
+.notify {
+  position: relative;
+}
+.notification-num {
+  color: white;
+  position: absolute;
+  padding: 0px 4px;
+  background-color: var(--color-primary);
+  font-weight: 700;
+  border-radius: 50%;
 }

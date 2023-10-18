@@ -37,7 +37,4 @@ exports.getEachUser = async (req, res) => {
     });
   }
 };
-exports.myProfile = async (req, res) => {
-  let data = req.userData;
-  res.status(201).json({ data });
-};
+

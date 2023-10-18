@@ -1,6 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Card, CardTitle } from "reactstrap";
+import {
+  faTrash,
+  faEyeSlash,
+  faArrowCircleUp,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Loading from "../shared/loadingSVG";
 
 export default function ProductManagement() {
   const [products, setProducts] = useState([]);
@@ -33,24 +40,48 @@ export default function ProductManagement() {
 }
 
 function Product({ product }) {
+  const [loading, setLoading] = useState(true);
+  const [hide, setHide] = useState(false);
+  const [promote, setPromote] = useState(false);
+
+  useEffect(() => {
+    setTimeout(setLoading(false), 2000);
+  }, []);
+
+  useEffect(() => {}, []);
   return (
     <div className="wider-displays-dshb">
-      <Card>
-        <img
-          src={`http://localhost:3000/images/products/` + product.images[0]}
-          alt="product image 1"
-        />
-        <div className="manager-admin">
-          <div>
-            <CardTitle>{product.name}</CardTitle>
+      {loading ? (
+        <Loading />
+      ) : (
+        <Card>
+          <img
+            src={`http://localhost:3000/images/products/` + product.images[0]}
+            alt="product image 1"
+          />
+          <div className="manager-admin">
+            <div>
+              <CardTitle>{product.name}</CardTitle>
+            </div>
+            <div className="action-admin">
+              <button className="btn btn-danger">
+                {" "}
+                <FontAwesomeIcon icon={faTrash} />
+                remove
+              </button>
+              <button className="btn btn-secondary">
+                {" "}
+                <FontAwesomeIcon icon={faEyeSlash} />
+                Hide
+              </button>
+              <button className="btn btn-primary">
+                <FontAwesomeIcon icon={faArrowCircleUp} />
+                Promote
+              </button>
+            </div>
           </div>
-          <div className="action-admin">
-            <button className="btn btn-danger">remove</button> 
-            <button  className="btn btn-secondary">Hide</button>
-            <button className="btn btn-primary">Promote</button>
-          </div>
-        </div>
-      </Card>
+        </Card>
+      )}
     </div>
   );
 }
