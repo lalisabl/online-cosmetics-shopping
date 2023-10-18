@@ -35,12 +35,7 @@ function Home() {
 function App() {
   return (
     <div className="App">
-<<<<<<< HEAD
-      <RouteEcommerce />
-=======
-      <Header />
-      <Card />
->>>>>>> 519c2523d0d10b5a8848243a6777a5ab38b3e091
+      <Product />
     </div>
   );
 }
