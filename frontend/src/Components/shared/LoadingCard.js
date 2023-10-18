@@ -20,3 +20,14 @@ export function LoadingCardList() {
     </div>
   );
 }
+
+export function LoadingCardVert() {
+  return (
+    <div className="loading-container-vert">
+      <div className="big-card-vert"></div>
+      <div className="small-card-vert"></div>
+      <div className="small-card-vert"></div>
+      <div className="small-card-vert"></div>
+    </div>
+  );
+}
