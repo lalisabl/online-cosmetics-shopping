@@ -9,6 +9,7 @@ export default function UserManagement() {
   const [users, setUsers] = useState([]);
   const [deleted, setDeleted] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   function DeleteUSer(user_id) {
     axios
@@ -19,6 +20,7 @@ export default function UserManagement() {
       })
       .catch((err) => {
         console.log(err);
+        setError(true);
       });
   }
 
@@ -34,21 +36,26 @@ export default function UserManagement() {
       .catch((err) => {
         console.log(err);
         setLoading(false);
+        setError(true);
       });
   }, [deleted]);
   return (
     <div>
       {!loading ? (
-        users.length > 0 ? (
-          <>
-            {users.map((user) => (
-              <div key={user.id}>
-                <User DeleteUSer={DeleteUSer} user={user} />
-              </div>
-            ))}
-          </>
+        !error ? (
+          users.length > 0 ? (
+            <>
+              {users.map((user) => (
+                <div key={user.id}>
+                  <User DeleteUSer={DeleteUSer} user={user} />
+                </div>
+              ))}
+            </>
+          ) : (
+            <div>No user found</div>
+          )
         ) : (
-          <div>No user found</div>
+          <div>Error happened during fetching data</div>
         )
       ) : (
         <div>

@@ -13,6 +13,7 @@ export default function ProductManagement() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [deleteProd, setDeleteProduct]=useState(false)
   useEffect(() => {
     axios
       .get("http://localhost:3000/api/v1/Products")
@@ -25,7 +26,19 @@ export default function ProductManagement() {
         setLoading(false);
         setError(true);
       });
-  }, []);
+  }, [deleteProd]);
+
+  function deleteProduct(prod_id) {
+    axios
+      .delete("http://localhost:3000/api/v1/Products/" + prod_id)
+      .then((res) => {
+        // console.log(res);
+        setDeleteProduct(true)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   return (
     <div>
       {!loading ? (
@@ -34,7 +47,7 @@ export default function ProductManagement() {
             <>
               {products.map((product) => (
                 <div key={product.id}>
-                  <Product product={product} />
+                  <Product deleteProduct={deleteProduct} product={product} />
                 </div>
               ))}
             </>
@@ -59,11 +72,10 @@ export default function ProductManagement() {
   );
 }
 
-function Product({ product }) {
+function Product({ product, deleteProduct, hideProduct, promoteProduct }) {
   const [hide, setHide] = useState(false);
   const [promote, setPromote] = useState(false);
 
-  useEffect(() => {}, []);
   return (
     <div className="wider-displays-dshb">
       <Card>
@@ -78,17 +90,26 @@ function Product({ product }) {
               <CardTitle>{product.name}</CardTitle>
             </div>
             <div className="action-admin">
-              <button className="btn btn-danger">
+              <button
+                className="btn btn-danger"
+                onClick={() => deleteProduct(product._id)}
+              >
                 {" "}
                 <FontAwesomeIcon icon={faTrash} />
                 remove
               </button>
-              <button className="btn btn-secondary">
+              <button
+                className="btn btn-secondary"
+                onClick={() => hideProduct(product._id)}
+              >
                 {" "}
                 <FontAwesomeIcon icon={faEyeSlash} />
                 Hide
               </button>
-              <button className="btn btn-primary">
+              <button
+                className="btn btn-primary"
+                onClick={() => promoteProduct(product._id)}
+              >
                 <FontAwesomeIcon icon={faArrowCircleUp} />
                 Promote
               </button>
