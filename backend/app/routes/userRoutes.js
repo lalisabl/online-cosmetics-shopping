@@ -10,6 +10,7 @@ router
     // authoController.restrictsto("admin"),
     userController.getAllUsers
   );
+router.delete("/:userId", userController.deleteUser);
 router.post("/register", authoController.createNewAccount);
 router.post("/login", authoController.loginUsers);
 router.post("/forgotPassword", authoController.forgotPassword);
