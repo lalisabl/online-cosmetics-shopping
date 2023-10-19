@@ -73,7 +73,7 @@ export default function ProductManagement() {
   );
 }
 
-function Product({ product, deleteProduct, hideProduct, promoteProduct }) {
+function Product({ product, deleteProduct, hideProduct,EditProduct }) {
   const [hide, setHide] = useState(false);
   const [promote, setPromote] = useState(false);
 
@@ -93,7 +93,7 @@ function Product({ product, deleteProduct, hideProduct, promoteProduct }) {
             <div className="action-admin">
               <button
                 className="btn btn-secondary"
-                onClick={() => deleteProduct(product._id)}
+                onClick={() => EditProduct(product._id)}
               >
                 {" "}
                 <FontAwesomeIcon icon={faPencilAlt} />
@@ -115,13 +115,6 @@ function Product({ product, deleteProduct, hideProduct, promoteProduct }) {
                 {" "}
                 <FontAwesomeIcon icon={faEyeSlash} />
                 Hide
-              </button>
-              <button
-                className="btn btn-primary"
-                onClick={() => promoteProduct(product._id)}
-              >
-                <FontAwesomeIcon icon={faArrowCircleUp} />
-                Promote
               </button>
             </div>
           </div>

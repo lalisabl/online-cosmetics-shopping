@@ -45,8 +45,10 @@
   padding: 0;
 }
 
-.sidebar li {
-  margin-bottom: 10px;
+.sidebar ul li {
+  margin-bottom: 13px;
+  font-weight: 400;
+  font-size: larger;
 }
 .sidebar li:hover {
   cursor: pointer;
@@ -80,7 +82,7 @@
   max-height: 70px;
   flex-direction: row;
 }
-.wider-displays-dshb .manager-admin{
+.wider-displays-dshb .manager-admin {
   padding: 10px;
 }
 .wider-displays-dshb .card span {
@@ -107,7 +109,6 @@
   padding: 16px;
 }
 
-
 .manager-admin {
   display: flex;
   width: 80%;
@@ -120,4 +121,10 @@
   width: 60%;
   display: flex;
   justify-content: space-between;
+}
+
+.sidebar i {
+  font-weight: 900;
+  font-size: larger;
+  margin-right: 3px;
 }

@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
   faBell,
-  faChartBar,
+  faPlusSquare,
   faGear,
   faUsers,
   faClipboardList,
@@ -34,7 +34,7 @@ function SellerDashboard() {
   }
   return (
     <div>
-      <Navbar />
+      <Navbar onItemClick={handleSidebarItemClick} />
       <div className="dashboard-container">
         <Sidebar onItemClick={handleSidebarItemClick} />
         <MainDis element={selectedItem} />
@@ -42,19 +42,19 @@ function SellerDashboard() {
     </div>
   );
 }
-function Navbar() {
+function Navbar({onItemClick}) {
   return (
     <nav className="navBar-header">
       <div className="logo">Dashboard Logo</div>
       <div className="nav-links Login-signUp right-side-nav">
-        <div>
+        <div onClick={() => onItemClick(null)}>
           <FontAwesomeIcon icon={faHome} />
           Home
         </div>
-        <div>
+        <div onClick={() => onItemClick(<OrderManagement />)}>
           <FontAwesomeIcon icon={faBell} />
           <span className="notify">
-          New Order<span className="notification-num">23</span>{" "}
+            New Orders<span className="notification-num">23</span>{" "}
           </span>
         </div>
         <div className="user-info"> Username</div>
@@ -85,21 +85,39 @@ function Sidebar({ onItemClick }) {
     <aside className="sidebar">
       <ul>
         <li onClick={() => onItemClick(null)}>
-          <FontAwesomeIcon icon={faHome} /> Dashboard
+          <i>
+            <FontAwesomeIcon icon={faHome} />
+          </i>
+          Dashboard
         </li>
         <li onClick={() => onItemClick(<ProductManagement />)}>
-          <FontAwesomeIcon icon={faClipboardList} /> your product
+          <i>
+            <FontAwesomeIcon icon={faClipboardList} />
+          </i>
+          Your Products
         </li>
 
         <li onClick={() => onItemClick(<OrderManagement />)}>
-          <FontAwesomeIcon icon={faBell} />{" "}
+          <i>
+            <FontAwesomeIcon icon={faBell} />
+          </i>{" "}
           <span className="notify">
-            New Order<span className="notification-num">23</span>{" "}
+            New Orders<span className="notification-num">23</span>{" "}
           </span>
         </li>
 
         <li onClick={() => onItemClick(<ProfileSettings />)}>
-          <FontAwesomeIcon icon={faGear} /> Profile settings
+          <i>
+            <FontAwesomeIcon icon={faGear} />
+          </i>
+          Profile Settings
+        </li>
+        <li onClick={() => onItemClick(<ProfileSettings />)}>
+          <i>
+            {" "}
+            <FontAwesomeIcon icon={faPlusSquare} />
+          </i>
+          Add Product
         </li>
       </ul>
     </aside>
