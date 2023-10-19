@@ -3,21 +3,11 @@ const router = express.Router();
 const middleWare = require("../../config/middleware");
 const userController = require("../controllers/userController");
 const authoController = require("../controllers/authControler");
-<<<<<<< HEAD
 router.route("/").get(
   authoController.protect,
   // authoController.restrictsto("admin"),
   userController.getAllUsers
 );
-=======
-router
-  .route("/")
-  .get(
-    // authoController.protect,
-    // authoController.restrictsto("admin"),
-    userController.getAllUsers
-  );
->>>>>>> c02cfab2b432c26c1d0c6ec4e7617bb6393df907
 router.delete("/:userId", userController.deleteUser);
 router.post("/register", authoController.createNewAccount);
 router.post("/login", authoController.loginUsers);
