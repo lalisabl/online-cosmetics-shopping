@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Card, CardTitle } from "reactstrap";
+import { Card, CardBody, CardHeader, CardTitle } from "reactstrap";
 import {
   faTrash,
   faEyeSlash,
@@ -73,7 +73,7 @@ export default function ProductManagement() {
   );
 }
 
-function Product({ product, deleteProduct, hideProduct,EditProduct }) {
+function Product({ product, deleteProduct, hideProduct, EditProduct }) {
   const [hide, setHide] = useState(false);
   const [promote, setPromote] = useState(false);
 
@@ -121,5 +121,16 @@ function Product({ product, deleteProduct, hideProduct,EditProduct }) {
         </>
       </Card>
     </div>
+  );
+}
+
+export function CreateProduct() {
+  return (
+    <Card>
+      <CardHeader className="text-center">Create new post</CardHeader>
+      <CardBody className="m-auto">
+        
+      </CardBody>
+    </Card>
   );
 }
