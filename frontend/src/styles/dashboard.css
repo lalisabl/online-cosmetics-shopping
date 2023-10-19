@@ -128,3 +128,15 @@
   font-size: larger;
   margin-right: 3px;
 }
+
+.image-preview {
+  max-height: 120px;
+  overflow: hidden;
+
+}
+.image-preview img{
+  height: 120px;
+  margin-right: 5px;
+  width: auto;
+  border-radius: 8px;
+}
