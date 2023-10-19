@@ -10,27 +10,38 @@ const signToken = (id) => {
     expiresIn: "1h",
   });
 };
-exports.createNewAccount = async (req, res) => {
-  try {
-    const newUser = await User.create({
-      username: req.body.username,
-      email: req.body.email,
-      password: req.body.password,
-      fullName: req.body.fullName,
-      phoneNumber: req.body.phoneNumber,
-    });
-    const token = signToken(newUser._id);
-    res.status(201).json({
-      status: "success",
-      token: token,
-      message: "Registration successful",
-    });
-  } catch (error) {
-    res
-      .status(400)
-      .json({ message: "Registration failed", error: error.message });
-  }
+const createSendToken = (user, statusCode, res) => {
+  const token = signToken(user._id);
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
+  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+
+  res.cookie("jwt", token, cookieOptions);
+  // Remove password from output
+  user.password = undefined;
+
+  res.status(statusCode).json({
+    status: "success",
+    token,
+    data: {
+      user,
+    },
+  });
 };
+exports.createNewAccount = catchAsync(async (req, res) => {
+  const newUser = await User.create({
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password,
+    fullName: req.body.fullName,
+    phoneNumber: req.body.phoneNumber,
+  });
+  createSendToken(newUser, 201, res);
+});
 exports.loginUsers = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
   // 1) Check if email and password exist
@@ -42,11 +53,8 @@ exports.loginUsers = catchAsync(async (req, res, next) => {
   if (!user || !(await user.validatePassword(password, user.password))) {
     return next(new AppError("Incorrect email or password", 401));
   }
-  const token = signToken(user._id);
-  res.status(200).json({
-    status: "success",
-    token: token,
-  });
+  // 3) If everything ok, send token to client
+  createSendToken(user, 200, res);
 });
 exports.protect = catchAsync(async (req, res, next) => {
   //Getting token and check if it is there
@@ -56,6 +64,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
   if (!token) {
     return next(
@@ -130,11 +140,6 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
   await user.save();
-  // 4) Log user in, send JWT
-  const token = signToken(user._id);
-  res.status(200).json({
-    status: "success",
-    token: token,
-  });
+  createSendToken(user, 200, res);
 });
 exports.resetPassword = async (req, res, next) => {};
