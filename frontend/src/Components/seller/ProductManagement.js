@@ -125,11 +125,187 @@ function Product({ product, deleteProduct, hideProduct, EditProduct }) {
 }
 
 export function CreateProduct() {
+  
+  const [productData, setProductData] = useState({
+    promotionsDiscounts: {
+      discountPercentage: 20,
+      promoCode: "GLAM20",
+      startDate: "2023-07-01T00:00:00.000Z",
+      endDate: "2023-07-31T00:00:00.000Z",
+    },
+    name: "Matte Lipstick",
+    description: "A long-lasting matte lipstick with vibrant colors.",
+    brand: "Glam Beauty",
+    category: "Makeup",
+    subcategory: "Lipstick",
+    price: 12.99,
+    stockQuantity: 50,
+    images: [
+      "product-7-1697572686421-7.jpeg",
+      "product-4-1697572686421-4.jpeg",
+      "product-6-1697572686421-6.jpeg",
+    ],
+    sizeVolume: "4g",
+    weightQuantity: 10,
+    colors: ["Red Velvet", "Nude Charm", "Coral Crush"],
+    skinType: [],
+    reviewQuantity: "0",
+    dateAdded: "2023-06-20T00:00:00.000Z",
+    tagsKeywords: ["makeup", "lipstick", "beauty"],
+    skinType: ["white", "brown", "black"],
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setProductData({
+      ...productData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("Product Data Submitted:", productData);
+  };
+
+  const handleImageChange = (event) => {
+    const selectedImages = event.target.files;
+    const imageArray = [];
+
+    for (let i = 0; i < selectedImages.length; i++) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        imageArray.push(e.target.result);
+        if (imageArray.length === selectedImages.length) {
+          setProductData({
+            ...productData,
+            images: imageArray,
+          });
+        }
+      };
+
+      reader.readAsDataURL(selectedImages[i]);
+    }
+  };
+
   return (
     <Card>
       <CardHeader className="text-center">Create new post</CardHeader>
-      <CardBody className="m-auto">
-        
+      <CardBody className="ml-6 mr-6">
+        <div className="image-preview">
+          {productData.images.map((image, index) => (
+            <img
+              key={index}
+              src={URL.createObjectURL(image)}
+              alt={`Image ${index}`}
+            />
+          ))}
+        </div>
+        <form onSubmit={handleSubmit} className="form">
+          <label>Images:</label>
+          <input
+            type="file"
+            name="images"
+            onChange={handleImageChange}
+            className="form-control"
+            multiple
+          />
+
+          <label>Name:</label>
+          <input
+            type="text"
+            name="name"
+            value={productData.name}
+            onChange={handleInputChange}
+            className="form-control"
+          />
+          <label>Description:</label>
+          <input
+            type="text"
+            name="description"
+            value={productData.description}
+            onChange={handleInputChange}
+            className="form-control"
+          />
+          <label>Brand:</label>
+          <input
+            type="text"
+            name="brand"
+            value={productData.brand}
+            onChange={handleInputChange}
+            className="form-control"
+          />
+          <label>Category:</label>
+          <input
+            type="text"
+            name="category"
+            value={productData.category}
+            onChange={handleInputChange}
+            className="form-control"
+          />
+          <label>Subcategory:</label>
+          <input
+            type="text"
+            name="subcategory"
+            value={productData.subcategory}
+            onChange={handleInputChange}
+            className="form-control"
+          />
+          <label>Price:</label>
+          <input
+            type="number"
+            name="price"
+            value={productData.price}
+            onChange={handleInputChange}
+            className="form-control"
+          />
+
+          <label>Size/Volume:</label>
+          <input
+            type="text"
+            name="sizeVolume"
+            value={productData.sizeVolume}
+            onChange={handleInputChange}
+            className="form-control"
+          />
+          <label> Quantity:</label>
+          <input
+            type="number"
+            name="weightQuantity"
+            value={productData.weightQuantity}
+            onChange={handleInputChange}
+            className="form-control"
+          />
+          <label>Colors:</label>
+          <input
+            type="text"
+            name="colors"
+            value={productData.colors.join(", ")}
+            onChange={handleInputChange}
+            className="form-control"
+          />
+
+          <label>Tags/Keywords:</label>
+          <input
+            type="text"
+            name="tagsKeywords"
+            value={productData.tagsKeywords.join(", ")}
+            onChange={handleInputChange}
+            className="form-control"
+          />
+          <label>skin Type:</label>
+          <input
+            type="text"
+            name="skinType"
+            value={productData.skinType}
+            onChange={handleInputChange}
+            className="form-control"
+          />
+          <button type="submit" className="btn btn-primary">
+            Submit
+          </button>
+        </form>
       </CardBody>
     </Card>
   );
