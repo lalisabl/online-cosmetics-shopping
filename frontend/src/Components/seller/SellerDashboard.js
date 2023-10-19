@@ -17,7 +17,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import OrderManagement from "./OrderManagement";
 import ProfileSettings from "./ProfileSettings";
-import ProductManagement from "./ProductManagement";
+import ProductManagement, { CreateProduct } from "./ProductManagement";
 
 const APIURL = "";
 function SellerDashboard() {
@@ -42,7 +42,7 @@ function SellerDashboard() {
     </div>
   );
 }
-function Navbar({onItemClick}) {
+function Navbar({ onItemClick }) {
   return (
     <nav className="navBar-header">
       <div className="logo">Dashboard Logo</div>
@@ -112,7 +112,7 @@ function Sidebar({ onItemClick }) {
           </i>
           Profile Settings
         </li>
-        <li onClick={() => onItemClick(<ProfileSettings />)}>
+        <li onClick={() => onItemClick(<CreateProduct />)}>
           <i>
             {" "}
             <FontAwesomeIcon icon={faPlusSquare} />
