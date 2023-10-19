@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 // ... (other imports)
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
@@ -16,10 +16,9 @@ const Login = () => {
     try {
       const response = await axios.post(
         "http://localhost:3000/api/v1/users/login",
-        { username, password },
-        { withCredentials: true }
+        { email, password }
       );
-      navigate("/");
+      navigate("/admin");
     } catch (error) {
       console.error("Login error:", error);
     }
@@ -32,8 +31,8 @@ const Login = () => {
         <input
           type="text"
           placeholder="email"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
         <input

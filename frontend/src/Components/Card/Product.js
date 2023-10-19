@@ -3,18 +3,26 @@ import axios from "axios";
 import Header from "../Header/Header";
 import { CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
- faStar
-} from "@fortawesome/free-solid-svg-icons";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { LoadingCard, LoadingCardVert } from "../shared/LoadingCard";
 function Product() {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     axios
       .get("http://127.0.0.1:3000/api/v1/Products/") // Replace with your API endpoint
-      .then((response) => setProducts(response.data.data.Products))
-      .catch((error) => console.error(error));
+      .then((response) => {
+        setProducts(response.data.data.Products);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+        setError(true);
+      });
   }, []);
   // console.log(products);
   const addToCart = (product) => {
@@ -59,57 +67,82 @@ function Product() {
       <Header />
       <div className="cardContainer">
         <div className="cards product-displayer">
-          {products.length > 0 ? (
-            products.map((product) => (
-              <div key={product._id} className="card">
-                <div className="card-img">
-                  <img
-                    className="card-image"
-                    src={
-                      "http://localhost:3000/images/products/" +
-                      product.images[0]
-                    }
-                    alt={product.name}
-                    variant="top"
-                  />
-                </div>
-                <CardBody>
-                  <div className="product-title">{product.name}</div>
-                  <div className="product-description">
-                    {product.description}
+          {!loading ? (
+            !error ? (
+              products.length > 0 ? (
+                products.map((product) => (
+                  <div key={product._id} className="card">
+                    <div className="card-img">
+                      <img
+                        className="card-image"
+                        src={
+                          "http://localhost:3000/images/products/" +
+                          product.images[0]
+                        }
+                        alt={product.name}
+                        variant="top"
+                      />
+                    </div>
+                    <CardBody>
+                      <div className="product-title">{product.name}</div>
+                      <div className="product-description">
+                        {product.description}
+                      </div>
+                      <div className="product-price">
+                        <span className="price">{product.price} birr</span>
+                        /piece
+                      </div>
+                      <div className="rating">
+                        <span className="av-rating">
+                          4.8 <FontAwesomeIcon icon={faStar} />
+                        </span>
+                      </div>
+                      <div className="cart">
+                        {cartItems.some((item) => item.id === product.id) ? (
+                          <button
+                            className="remove-cart"
+                            onClick={() => removeFromCart(product)}
+                          >
+                            REMOVE FROM CART
+                          </button>
+                        ) : (
+                          <button
+                            className="add-cart"
+                            onClick={() => addToCart(product)}
+                          >
+                            ADD TO CART
+                          </button>
+                        )}
+                      </div>
+                    </CardBody>
                   </div>
-                  <div className="product-price">
-                    <span className="price">{product.price} birr</span>/piece
-                  </div>
-                  <div className="rating">
-                    <span className="av-rating">4.8 <FontAwesomeIcon icon={faStar} /></span>
-                  </div>
-                  <div className="cart">
-                    {cartItems.some((item) => item.id === product.id) ? (
-                      <button
-                        className="remove-cart"
-                        onClick={() => removeFromCart(product)}
-                      >
-                        REMOVE FROM CART
-                      </button>
-                    ) : (
-                      <button
-                        className="add-cart"
-                        onClick={() => addToCart(product)}
-                      >
-                        ADD TO CART
-                      </button>
-                    )}
-                  </div>
-                </CardBody>
+                ))
+              ) : (
+                <div>No product here</div>
+              )
+            ) : (
+              <div className="alert alert-danger">
+                error happened while fetching data
               </div>
-            ))
+            )
           ) : (
-            <div>No product here</div>
+            <>
+              <PreLoading n={8} />
+            </>
           )}
         </div>
       </div>
     </>
   );
+}
+function PreLoading({ n }) {
+  const numberOfCards = n;
+  const cards = Array.from({ length: numberOfCards }, (_, index) => (
+    <div className="card" key={index}>
+      <LoadingCardVert />
+    </div>
+  ));
+
+  return <>{cards}</>;
 }
 export default Product;

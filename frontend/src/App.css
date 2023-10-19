@@ -1,4 +1,5 @@
 @import url("./styles//product-displayer.css");
+@import url("./styles/loading.css");
 :root {
   --color-primary: #eb2f64;
   --color-Primary-light: #ff3366;
@@ -56,7 +57,7 @@ body {
   background-color: #fff;
   overflow: hidden;
 }
-.card-img  {
+.card-img {
   overflow: hidden;
 }
 .card-img img {
@@ -136,4 +137,18 @@ body {
 .add-cart:hover {
   background: #fc763c;
   text-decoration: none;
+}
+.notify {
+  position: relative;
+}
+.notification-num {
+  color: white;
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  font-size: 11px;
+  padding: 0px 3px;
+  background-color: var(--color-primary);
+  font-weight: 600;
+  border-radius: 50%;
 }

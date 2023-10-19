@@ -4,6 +4,7 @@ import { Card, CardTitle } from "reactstrap";
 import {
   faTrash,
   faEyeSlash,
+  faPencilAlt,
   faArrowCircleUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,7 +14,7 @@ export default function ProductManagement() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [deleteProd, setDeleteProduct]=useState(false)
+  const [deleteProd, setDeleteProduct] = useState(false);
   useEffect(() => {
     axios
       .get("http://localhost:3000/api/v1/Products")
@@ -33,7 +34,7 @@ export default function ProductManagement() {
       .delete("http://localhost:3000/api/v1/Products/" + prod_id)
       .then((res) => {
         // console.log(res);
-        setDeleteProduct(true)
+        setDeleteProduct(true);
       })
       .catch((error) => {
         console.log(error);
@@ -72,7 +73,7 @@ export default function ProductManagement() {
   );
 }
 
-function Product({ product, deleteProduct, hideProduct, promoteProduct }) {
+function Product({ product, deleteProduct, hideProduct,EditProduct }) {
   const [hide, setHide] = useState(false);
   const [promote, setPromote] = useState(false);
 
@@ -91,6 +92,14 @@ function Product({ product, deleteProduct, hideProduct, promoteProduct }) {
             </div>
             <div className="action-admin">
               <button
+                className="btn btn-secondary"
+                onClick={() => EditProduct(product._id)}
+              >
+                {" "}
+                <FontAwesomeIcon icon={faPencilAlt} />
+                edit
+              </button>
+              <button
                 className="btn btn-danger"
                 onClick={() => deleteProduct(product._id)}
               >
@@ -98,6 +107,7 @@ function Product({ product, deleteProduct, hideProduct, promoteProduct }) {
                 <FontAwesomeIcon icon={faTrash} />
                 remove
               </button>
+
               <button
                 className="btn btn-secondary"
                 onClick={() => hideProduct(product._id)}
@@ -105,13 +115,6 @@ function Product({ product, deleteProduct, hideProduct, promoteProduct }) {
                 {" "}
                 <FontAwesomeIcon icon={faEyeSlash} />
                 Hide
-              </button>
-              <button
-                className="btn btn-primary"
-                onClick={() => promoteProduct(product._id)}
-              >
-                <FontAwesomeIcon icon={faArrowCircleUp} />
-                Promote
               </button>
             </div>
           </div>

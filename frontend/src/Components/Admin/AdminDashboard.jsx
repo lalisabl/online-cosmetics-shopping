@@ -24,29 +24,29 @@ import ReportGenerator from "./ReportGenerator";
 const APIURL = "";
 function Dashboard() {
   const [username, setUsername] = useState("");
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState(null);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:3001/api/dashboard",
-          { withCredentials: true }
-        );
-        setUsername(response.data.user.username);
-        //ff  console.log(response.data.user.username);
-      } catch (error) {
-        // navigate("/login");
-        console.error("Fetching user data error:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "http://localhost:3001/api/dashboard",
+  //         { withCredentials: true }
+  //       );
+  //       setUsername(response.data.user.username);
+  //       //ff  console.log(response.data.user.username);
+  //     } catch (error) {
+  //       // navigate("/login");
+  //       console.error("Fetching user data error:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchUserData();
-  }, []);
+  //   fetchUserData();
+  // }, []);
   function handleSidebarItemClick(item) {
     setSelectedItem(item);
   }
@@ -74,7 +74,7 @@ function Navbar() {
         </div>
         <div>
           <FontAwesomeIcon icon={faBell} />
-          Notifications
+          <span className="notify">Notifications<span className="notification-num">23</span> </span>
         </div>
         <div className="user-info"> Username</div>
       </div>
@@ -113,7 +113,7 @@ function Sidebar({ onItemClick }) {
           <FontAwesomeIcon icon={faUsers} /> User management
         </li>
         <li onClick={() => onItemClick(<AdminNotification />)}>
-          <FontAwesomeIcon icon={faBell} /> Notifications
+          <FontAwesomeIcon icon={faBell} /> <span className="notify">Notifications<span className="notification-num">23</span> </span> 
         </li>
         <li onClick={() => onItemClick(<ReportGenerator />)}>
           <FontAwesomeIcon icon={faChartBar} /> Reports

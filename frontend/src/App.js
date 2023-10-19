@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Loading from "./Components/shared/loadingSVG";
 import Dashboard from "./Components/Admin/AdminDashboard";
 import Login from "./login";
+import SellerDashboard from "./Components/seller/SellerDashboard";
 
 function RouteEcommerce() {
   return (
@@ -14,6 +15,7 @@ function RouteEcommerce() {
         <Routes>
           <Route exact path="/products" element={<Product />} />
           <Route path="/admin" element={<Dashboard />} />
+          <Route path="/sellerDashBoard" element={<SellerDashboard />} />
           <Route path="/" element={<Home />} />
 
           <Route path="/admin/" element={<Dashboard />} />
@@ -35,7 +37,6 @@ function App() {
   return (
     <div className="App">
       <RouteEcommerce />
-
     </div>
   );
 }

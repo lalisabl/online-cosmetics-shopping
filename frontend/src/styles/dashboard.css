@@ -45,8 +45,10 @@
   padding: 0;
 }
 
-.sidebar li {
-  margin-bottom: 10px;
+.sidebar ul li {
+  margin-bottom: 13px;
+  font-weight: 400;
+  font-size: larger;
 }
 .sidebar li:hover {
   cursor: pointer;
@@ -71,33 +73,58 @@
 
 .wider-displays-dshb {
   width: 100%;
+  overflow: hidden;
 }
 .wider-displays-dshb .card {
   display: flex;
-  padding: 15px 2px;
   margin: 5px;
+  min-height: 60px;
   max-height: 70px;
   flex-direction: row;
 }
-.wider-displays-dshb .card span{
-  margin:auto 3px;
+.wider-displays-dshb .manager-admin {
+  padding: 10px;
+}
+.wider-displays-dshb .card span {
+  margin: auto 3px;
 }
 .wider-displays-dshb .card img {
   width: auto;
-  max-width: 100px;
-  max-height: 100%;
+  width: 100px;
+  margin: 3px;
+  height: 100%;
   border-radius: 5px;
   object-fit: contain;
   align-self: center;
 }
+.wider-displays-dshb.user-manage img {
+  border-radius: 50%;
+  width: 60px;
+  height: auto;
+}
+.wider-displays-dshb .card .loading-card {
+  min-height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 16px;
+}
 
-.manager-admin{
+.manager-admin {
   display: flex;
   width: 80%;
   justify-content: space-between;
 }
-.action-admin{
+.manager-admin div {
+  margin-left: 3px;
+}
+.action-admin {
   width: 60%;
   display: flex;
   justify-content: space-between;
+}
+
+.sidebar i {
+  font-weight: 900;
+  font-size: larger;
+  margin-right: 3px;
 }
