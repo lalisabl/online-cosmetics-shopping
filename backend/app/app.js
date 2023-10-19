@@ -4,7 +4,6 @@ const globalErrorHandler = require("./controllers/errorController");
 require("../config/db");
 const app = express();
 app.use(express.json());
-//app.use(cors());
 app.use(
   cors({
     origin: "http://localhost:3001", // Set the allowed origin

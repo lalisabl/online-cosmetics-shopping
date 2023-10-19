@@ -37,6 +37,18 @@ const userSchema = new mongoose.Schema({
     enum: Object.values(ROLES),
     default: ROLES.CUSTOMER, // Set a default role
   },
+  isLocked: {
+    type: Boolean,
+    default: false,
+  },
+  loginAttempts: {
+    type: Number,
+    default: 0,
+  },
+  lockedUntil: {
+    type: Date,
+    default: null,
+  },
   address: String,
   phoneNumber: String,
   orders: [
@@ -61,14 +73,6 @@ userSchema.pre("save", function (next) {
     next();
   });
 });
-
-// userSchema.methods.validatePassword = async function (
-//   password,
-//   userPassword
-//   ) {
-//   return await bcrypt.compareSync(password, userPassword);
-// };
-
 userSchema.methods.validatePassword = async function (
   candidatePassword,
   userPassword

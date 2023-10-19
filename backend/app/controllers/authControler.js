@@ -43,15 +43,47 @@ exports.createNewAccount = catchAsync(async (req, res) => {
   createSendToken(newUser, 201, res);
 });
 exports.loginUsers = catchAsync(async (req, res, next) => {
+  const MAX_LOGIN_ATTEMPTS = 5;
+  const LOCKOUT_DURATION = 5 * 60 * 1000; // 15 minutes in milliseconds
   const { email, password } = req.body;
   // 1) Check if email and password exist
   if (!email || !password) {
     return next(new AppError("Please provide email and password!", 400));
   }
-  // 2) Check if user exists && password is correct
   const user = await User.findOne({ email }).select("+password");
-  if (!user || !(await user.validatePassword(password, user.password))) {
-    return next(new AppError("Incorrect email or password", 401));
+  //1 check is user with this email exists
+  if (!user) {
+    return next(new AppError("Invalid email.", 401));
+  }
+  // check if the account is locked
+  if (user.isLocked) {
+    // Check if the lockout period has passed
+    if (user.lockedUntil > Date.now()) {
+      return next(
+        new AppError("Account is locked. Please try again later!", 401)
+      );
+    } else {
+      // If the lockout period has passed, reset the login attempts and unlock the account
+      user.loginAttempts = 0;
+      user.isLocked = false;
+      user.lockedUntil = null;
+      await user.save();
+    }
+  }
+  // check if user try up to max login attempts
+  if (user.loginAttempts >= MAX_LOGIN_ATTEMPTS) {
+    user.isLocked = true;
+    user.lockedUntil = Date.now() + LOCKOUT_DURATION;
+    await user.save();
+    return next(
+      new AppError("Account is locked. Please try again later!", 401)
+    );
+  }
+  // Check if password is correct
+  if (!(await user.validatePassword(password, user.password))) {
+    user.loginAttempts++;
+    await user.save();
+    return next(new AppError("Incorrect password", 401));
   }
   // 3) If everything ok, send token to client
   createSendToken(user, 200, res);
