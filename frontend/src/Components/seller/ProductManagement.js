@@ -1,14 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Card, CardBody, CardHeader, CardTitle } from "reactstrap";
 import {
   faTrash,
   faEyeSlash,
   faPencilAlt,
-  faArrowCircleUp,
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { LoadingCard, LoadingCardList } from "../shared/LoadingCard";
+import { LoadingCardList } from "../shared/LoadingCard";
 
 export default function ProductManagement() {
   const [products, setProducts] = useState([]);
@@ -60,7 +59,6 @@ export default function ProductManagement() {
         )
       ) : (
         <>
-          {" "}
           <LoadingCardList />
           <LoadingCardList />
           <LoadingCardList />
@@ -125,33 +123,18 @@ function Product({ product, deleteProduct, hideProduct, EditProduct }) {
 }
 
 export function CreateProduct() {
-  
   const [productData, setProductData] = useState({
-    promotionsDiscounts: {
-      discountPercentage: 20,
-      promoCode: "GLAM20",
-      startDate: "2023-07-01T00:00:00.000Z",
-      endDate: "2023-07-31T00:00:00.000Z",
-    },
-    name: "Matte Lipstick",
-    description: "A long-lasting matte lipstick with vibrant colors.",
-    brand: "Glam Beauty",
-    category: "Makeup",
-    subcategory: "Lipstick",
+    name: "",
+    description: "",
+    brand: "",
+    category: "",
+    subcategory: "",
     price: 12.99,
     stockQuantity: 50,
-    images: [
-      "product-7-1697572686421-7.jpeg",
-      "product-4-1697572686421-4.jpeg",
-      "product-6-1697572686421-6.jpeg",
-    ],
+    images: [],
     sizeVolume: "4g",
     weightQuantity: 10,
     colors: ["Red Velvet", "Nude Charm", "Coral Crush"],
-    skinType: [],
-    reviewQuantity: "0",
-    dateAdded: "2023-06-20T00:00:00.000Z",
-    tagsKeywords: ["makeup", "lipstick", "beauty"],
     skinType: ["white", "brown", "black"],
   });
 
@@ -170,22 +153,26 @@ export function CreateProduct() {
 
   const handleImageChange = (event) => {
     const selectedImages = event.target.files;
-    const imageArray = [];
+    const imageArray = [...productData.images]; // Clone the existing images
 
-    for (let i = 0; i < selectedImages.length; i++) {
-      const reader = new FileReader();
+    if (imageArray.length < 3) {
+      for (let i = 0; i < selectedImages.length; i++) {
+        if (imageArray.length < 3) {
+          const reader = new FileReader();
 
-      reader.onload = (e) => {
-        imageArray.push(e.target.result);
-        if (imageArray.length === selectedImages.length) {
-          setProductData({
-            ...productData,
-            images: imageArray,
-          });
+          reader.onload = (e) => {
+            imageArray.push(e.target.result);
+            if (imageArray.length === selectedImages.length) {
+              setProductData({
+                ...productData,
+                images: imageArray,
+              });
+            }
+          };
+
+          reader.readAsDataURL(selectedImages[i]);
         }
-      };
-
-      reader.readAsDataURL(selectedImages[i]);
+      }
     }
   };
 
@@ -195,18 +182,23 @@ export function CreateProduct() {
       <CardBody className="ml-6 mr-6">
         <div className="image-preview">
           {productData.images.map((image, index) => (
-            <img
-              key={index}
-              src={URL.createObjectURL(image)}
-              alt={`Image ${index}`}
-            />
+            <img key={index} src={image} alt={`Image ${index}`} />
           ))}
         </div>
         <form onSubmit={handleSubmit} className="form">
-          <label>Images:</label>
+          {productData.images.length >= 3 ? (
+            ""
+          ) : (
+            <label htmlFor="addImage">
+              <img width={160} src="image/addPhoto.png" />
+            </label>
+          )}
+          <br />
           <input
             type="file"
             name="images"
+            id="addImage"
+            hidden={true}
             onChange={handleImageChange}
             className="form-control"
             multiple
