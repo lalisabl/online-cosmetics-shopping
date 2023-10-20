@@ -3,20 +3,20 @@ import axios from "axios";
 import Header from "../Header/Header";
 import { CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
- faStar
-} from "@fortawesome/free-solid-svg-icons";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+
 function Product() {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [addedToCart, setAddedToCart] = useState({});
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:3000/api/v1/Products/") // Replace with your API endpoint
+      .get("http://127.0.0.1:3000/api/v1/Products/")
       .then((response) => setProducts(response.data.data.Products))
       .catch((error) => console.error(error));
   }, []);
-  // console.log(products);
+
   const addToCart = (product) => {
     axios
       .post(`http://127.0.0.1:3000/api/v1/cart/addProducts/${product._id}`, {
@@ -24,8 +24,8 @@ function Product() {
       })
       .then((response) => {
         if (response.status === 200) {
-          // Update the cartItems state to track the added product
           setCartItems([...cartItems, product]);
+          setAddedToCart({ ...addedToCart, [product.id]: true });
         }
       })
       .catch((error) => {
@@ -34,24 +34,7 @@ function Product() {
   };
 
   const removeFromCart = (product) => {
-    // Send a DELETE request to remove the product from the cart
-    // You may need to adjust the URL and payload based on your API design
-    axios
-      .delete("http://your-api-url/remove-from-cart", {
-        data: { productId: product.id },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          // Update the cartItems state to remove the product
-          const updatedCartItems = cartItems.filter(
-            (item) => item.id !== product.id
-          );
-          setCartItems(updatedCartItems);
-        }
-      })
-      .catch((error) => {
-        console.error("Error removing from cart:", error);
-      });
+    // Handle removal from cart as needed
   };
 
   return (
@@ -82,7 +65,9 @@ function Product() {
                     <span className="price">{product.price} birr</span>/piece
                   </div>
                   <div className="rating">
-                    <span className="av-rating">4.8 <FontAwesomeIcon icon={faStar} /></span>
+                    <span className="av-rating">
+                      4.8 <FontAwesomeIcon icon={faStar} />
+                    </span>
                   </div>
                   <div className="cart">
                     {cartItems.some((item) => item.id === product.id) ? (
@@ -97,7 +82,9 @@ function Product() {
                         className="add-cart"
                         onClick={() => addToCart(product)}
                       >
-                        ADD TO CART
+                        {addedToCart[product.id]
+                          ? "ADDED TO CART"
+                          : "ADD TO CART"}
                       </button>
                     )}
                   </div>
@@ -109,7 +96,22 @@ function Product() {
           )}
         </div>
       </div>
+      <Cart cartItems={cartItems} />
     </>
   );
 }
+
+function Cart({ cartItems }) {
+  return (
+    <div className="cart-container">
+      <h2>Cart Items</h2>
+      <ul>
+        {cartItems.map((item) => (
+          <li key={item.id}>{item.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export default Product;
