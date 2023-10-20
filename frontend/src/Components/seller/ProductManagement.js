@@ -14,6 +14,7 @@ export default function ProductManagement() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [deleteProd, setDeleteProduct] = useState(false);
+  
   useEffect(() => {
     axios
       .get("http://localhost:3000/api/v1/Products")
