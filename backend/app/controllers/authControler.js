@@ -8,7 +8,7 @@ const AppError = require("../../utils/appError");
 // token expired after a given minute
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.SECRET_KEY, {
-    expiresIn: "5000",
+    expiresIn: "1h",
   });
 };
 const createSendToken = (user, statusCode, res) => {
@@ -51,7 +51,9 @@ exports.loginUsers = catchAsync(async (req, res, next) => {
   if (!email || !password) {
     return next(new AppError("Please provide email and password!", 400));
   }
-  const user = await User.findOne({ email }).select("+password");
+  let user = await User.findOne({ email }).select(
+    "isLocked loginAttempts lockedUntil"
+  );
   //1 check is user with this email exists
   if (!user) {
     return next(new AppError("Invalid email.", 401));
@@ -81,6 +83,9 @@ exports.loginUsers = catchAsync(async (req, res, next) => {
     );
   }
   // Check if password is correct
+  user = await User.findOne({ email })
+    .select("+password")
+    .select("loginAttempts");
   if (!(await user.validatePassword(password, user.password))) {
     user.loginAttempts++;
     await user.save();

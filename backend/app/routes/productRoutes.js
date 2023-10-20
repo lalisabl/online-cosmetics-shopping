@@ -28,6 +28,7 @@ router
   .route("/")
   .get(productController.getAllProducts)
   .post(
+    authorizationController.protect,
     productController.uploadProductImages,
     productController.resizeProductImages,
     productController.createNewProduct
