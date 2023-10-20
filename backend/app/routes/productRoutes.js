@@ -20,7 +20,7 @@ router
     productController.updateProduct
   )
   .delete(
-    // authorizationController.protect,
+    authorizationController.protect,
     // authorizationController.restrictsto("admin"),
     productController.deleteProduct
   );

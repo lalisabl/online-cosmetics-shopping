@@ -5,9 +5,10 @@ const { promisify } = require("util");
 const sendEmail = require("../../utils/email");
 const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/appError");
+// token expired after a given minute
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.SECRET_KEY, {
-    expiresIn: "1h",
+    expiresIn: "5000",
   });
 };
 const createSendToken = (user, statusCode, res) => {

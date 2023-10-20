@@ -37,30 +37,6 @@ exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
     .toFile(`public/images/users/${req.file.filename}`);
   next();
 });
-exports.getEachUser = async (req, res) => {
-  try {
-    const userId = req.params.id;
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return res.status(404).json({
-        status: "fail",
-        message: "User not found",
-      });
-    }
-    res.status(200).json({
-      status: "success",
-      data: {
-        user: user,
-      },
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: "fail",
-      message: error.message,
-    });
-  }
-};
 exports.deleteUser = async (req, res, next) => {
   const userId = req.params.userId;
   try {
@@ -105,6 +81,24 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     status: "success",
     data: {
       user: updatedUser,
+    },
+  });
+});
+exports.getMe = catchAsync(async (req, res, next) => {
+  req.params.userId = req.user.id;
+  next();
+});
+exports.getOneUser = catchAsync(async (req, res, next) => {
+  let query = User.findById(req.params.userId);
+  const user = await query;
+  if (!user) {
+    return next(new AppError("No User found with that ID", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      data: user,
     },
   });
 });
