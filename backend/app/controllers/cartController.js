@@ -3,9 +3,10 @@ const Product = require("../models/product");
 const User = require("../models/user");
 const mongoose = require("mongoose");
 exports.addToCart = async (req, res) => {
+  console.log(req.body);
   try {
-    const userId = req.user._id;
-    const { quantity } = req.body;
+    const userId = req.body.userId;
+    const quantity = req.body.quantity;
     const productId = req.params.cartItemId;
     const product = await Product.findById(productId);
     if (!product) {
@@ -45,7 +46,7 @@ exports.addToCart = async (req, res) => {
 };
 exports.viewCart = async (req, res) => {
   try {
-    const userId = req.params.userId; // Use the authenticated user's ID
+    const userId = req.user._id;
     const userCart = await Cart.findOne({ user: userId }).populate({
       path: "items.product",
       select: "name category price",
@@ -68,7 +69,7 @@ exports.viewCart = async (req, res) => {
 };
 exports.updateCartItem = async (req, res) => {
   try {
-    const userId = "650b195f5162ce66a16ab88e"; // Use the authenticated user's ID
+    const userId = req.user._id;
     const productId = req.params.cartItemId;
     let cart = await Cart.findOne({ user: userId });
     if (!cart) {
@@ -104,7 +105,7 @@ exports.updateCartItem = async (req, res) => {
 };
 exports.deleteCartItem = async (req, res) => {
   try {
-    const userId = "650b195f5162ce66a16ab88e"; // Use the authenticated user's ID
+    const userId = req.user._id;
     const productId = req.params.cartItemId;
     let cart = await Cart.findOne({ user: userId });
     if (!cart) {
