@@ -122,19 +122,29 @@ const multerFilter = (req, file, cb) => {
     cb(new AppError("Not an image! Please upload only images.", 400), false);
   }
 };
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/images/products"); // Destination folder where files will be stored
+  },
+  filename: function (req, file, cb) {
+    const sanitizedFileName = sanitize(file.originalname);
+    cb(null, sanitizedFileName);
+  },
+});
 const upload = multer({
-  storage: multerStorage,
-  fileFilter: multerFilter,
+  storage: storage,
 });
 // exports.uploadProductImages = upload.fields({ name: "images", maxCount: 3 });
 exports.uploadProductImages = upload.fields([{ name: "images" }]);
 // resizeTourImages
 exports.resizeProductImages = catchAsync(async (req, res, next) => {
-  if (!req.files.images) return next();
+  // if (!req.files.images) return next();
+  const images = [...req.body.images];
   req.body.images = [];
   await Promise.all(
-    req.files.images.map(async (file, i) => {
-      const filename = `product-${user.req.id}-${Date.now()}-${i + 1}.jpeg`;
+    images.map(async (file, i) => {
+      const filename = `product-${req.body.name}-{i + 1}.jpeg`;
 
       await sharp(file.buffer)
         .resize(2000, 1333)
