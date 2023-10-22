@@ -4,6 +4,7 @@ const sharp = require("sharp");
 const Product = require("../models/product");
 const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/appError");
+const { errorMonitor } = require("nodemailer/lib/xoauth2");
 let products_F = null;
 const productsFilePath = `${__dirname}/../data/product.json`;
 try {
@@ -92,7 +93,7 @@ exports.getAllProducts = async (req, res) => {
 exports.getEachProduct = async (req, res) => {
   const ProductId = req.params.id;
   try {
-    const product = await Product.findById(ProductId);
+    const product = await Product.findById(ProductId).populate("reviews");
 
     if (!product) {
       return res.status(404).json({
@@ -134,7 +135,7 @@ exports.resizeProductImages = catchAsync(async (req, res, next) => {
   req.body.images = [];
   await Promise.all(
     req.files.images.map(async (file, i) => {
-      const filename = `product-${user.req.id}-${Date.now()}-${i + 1}.jpeg`;
+      const filename = `product-${i + 1}-${Date.now()}-${i + 1}.jpeg`;
 
       await sharp(file.buffer)
         .resize(2000, 1333)

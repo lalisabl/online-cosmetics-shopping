@@ -51,7 +51,7 @@ exports.createReview = catchAsync(async (req, res) => {
 
 exports.getReview = catchAsync(async (req, res, next) => {
   let query = Review.findById(req.params.id);
-  if (popOptions) query = query.populate(popOptions);
+  // if (popOptions) query = query.populate(popOptions);
   const doc = await query;
 
   if (!doc) {
@@ -60,8 +60,8 @@ exports.getReview = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: {
-      data: doc,
+    reviews: {
+      doc,
     },
   });
 });
@@ -74,7 +74,7 @@ exports.getAllReviews = catchAsync(async (req, res, next) => {
     status: "success",
     results: doc.length,
     data: {
-      data: doc,
+      reviews:doc,
     },
   });
 });
