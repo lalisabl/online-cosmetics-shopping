@@ -114,9 +114,10 @@ exports.getEachProduct = async (req, res) => {
     });
   }
 };
+
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith("image")) {
+  if (file.mimetype.startsWith("images")) {
     cb(null, true);
   } else {
     cb(new AppError("Not an image! Please upload only images.", 400), false);
@@ -125,18 +126,22 @@ const multerFilter = (req, file, cb) => {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/images/products"); // Destination folder where files will be stored
+    cb(null, "public/images/products");
   },
   filename: function (req, file, cb) {
     const sanitizedFileName = sanitize(file.originalname);
     cb(null, sanitizedFileName);
+    console.log;
   },
 });
 const upload = multer({
   storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 10,
+  },
 });
 // exports.uploadProductImages = upload.fields({ name: "images", maxCount: 3 });
-exports.uploadProductImages = upload.fields([{ name: "images" }]);
+exports.uploadProductImages = upload.single("images");
 // resizeTourImages
 exports.resizeProductImages = catchAsync(async (req, res, next) => {
   // if (!req.files.images) return next();
@@ -158,6 +163,9 @@ exports.resizeProductImages = catchAsync(async (req, res, next) => {
 });
 // createNewProduct
 exports.createNewProduct = async (req, res, next) => {
+  console.log(req.file);
+  const imageUrl = req.file ? req.file.filename : "";
+  //console.log(req.file)
   try {
     const newProduct = await Product.create(req.body);
     res.status(201).json({
