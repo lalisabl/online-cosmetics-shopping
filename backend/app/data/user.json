@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "name": "Naol fiqre",
+    "username": "naol",
+    "email": "naol@example.com",
+    "password": "naol123",
+    "photo": "user-1.jpg",
+    "role": "costumer",
+    "location": {
+      "latitude": 23,
+      "longitude": 23
+    }
+  },
+  {
+    "id": 2,
+    "username": "baba_smith",
+    "name": "Baba Fiqire",
+    "email": "baba@example.com",
+    "password": "baba123",
+    "photo": "user-2.jpg",
+    "role": "visitor",
+    "location": {
+      "latitude": 23,
+      "longitude": 23
+    }
+  },
+  {
+    "id": 3,
+    "username": "lbula",
+    "name": "Lalisa Bula",
+    "email": "lalisa@example.com",
+    "password": "lalisa123",
+    "photo": "user-3.jpg",
+    "role": "admin"
+  }
+]

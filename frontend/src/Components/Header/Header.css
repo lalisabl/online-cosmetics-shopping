@@ -1,0 +1,115 @@
+/* Header Styles */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+}
+
+.nav li button {
+  margin: 5px 15px;
+  padding-top: 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+}
+.nav li button:hover {
+  color: #000000;
+}
+
+.search input {
+  padding: 5px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 300px;
+}
+
+.search button {
+  margin: 5px 20px;
+  background-color: #ff6600;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.search button:hover {
+  background-color: #7b3609;
+  color: #fff;
+}
+
+.cart-icon {
+  font-size: 50px; /* Adjust the size as needed */
+}
+.cart p {
+  display: inline;
+  margin-left: 10px;
+  font-size: 20px;
+}
+
+.cart i {
+  margin-right: 5px;
+}
+
+.account {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav {
+    display: none;
+  }
+
+  .search {
+    margin: 10px 0;
+  }
+
+  .cart {
+    font-size: 18px;
+  }
+}
+
+.login,
+.signup {
+  margin: 5px;
+  -webkit-border-radius: 5;
+  -moz-border-radius: 5;
+  border-radius: 5px;
+  font-family: Arial;
+  color: #fff;
+  font-size: 16px;
+  background: #ff6600;
+  padding: 5px 10px 5px 10px;
+  text-decoration: none;
+  border: none;
+}
+
+.login:hover,
+.signup:hover {
+  background: #7b3609;
+  text-decoration: none;
+}

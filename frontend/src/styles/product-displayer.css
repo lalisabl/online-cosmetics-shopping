@@ -1,0 +1,8 @@
+.product-displayer .card{
+    padding-bottom: 40px;
+}
+.product-displayer .cart {
+  position: absolute;
+  bottom: 1%;
+  left: 20%;
+}

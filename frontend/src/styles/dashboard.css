@@ -1,0 +1,142 @@
+/* Reset some default styles */
+.navBar-header {
+  display: flex;
+  font-size: 18px;
+  margin: 0;
+  padding: 13px;
+  margin-bottom: 5px;
+  border-radius: 18px;
+  background-color: white;
+  justify-content: space-between;
+}
+.navBar-header .logo {
+  color: var(--color-primary);
+}
+.navBar-header .right-side-nav {
+  display: flex;
+  width: 30%;
+  justify-content: space-around;
+}
+.navBar-header .right-side-nav div:hover {
+  color: var(--color-primary);
+  cursor: pointer;
+}
+.nav-links a {
+  margin-right: 20px;
+  text-decoration: none;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background-color: white;
+  height: 100vh;
+  left: 0;
+  position: fixed;
+  border-radius: 8px;
+  padding: 20px;
+}
+.sidebar ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sidebar ul {
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 13px;
+  font-weight: 400;
+  font-size: larger;
+}
+.sidebar li:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  color: var(--color-primary);
+}
+/* Main content */
+.main-content {
+  flex-grow: 1;
+  position: relative;
+  left: 21%;
+  top: 25%;
+  max-width: 75vw;
+  padding: 20px;
+}
+
+.card-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.wider-displays-dshb {
+  width: 100%;
+  overflow: hidden;
+}
+.wider-displays-dshb .card {
+  display: flex;
+  margin: 5px;
+  min-height: 60px;
+  max-height: 70px;
+  flex-direction: row;
+}
+.wider-displays-dshb .manager-admin {
+  padding: 10px;
+}
+.wider-displays-dshb .card span {
+  margin: auto 3px;
+}
+.wider-displays-dshb .card img {
+  width: auto;
+  width: 100px;
+  margin: 3px;
+  height: 100%;
+  border-radius: 5px;
+  object-fit: contain;
+  align-self: center;
+}
+.wider-displays-dshb.user-manage img {
+  border-radius: 50%;
+  width: 60px;
+  height: auto;
+}
+.wider-displays-dshb .card .loading-card {
+  min-height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 16px;
+}
+
+.manager-admin {
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+}
+.manager-admin div {
+  margin-left: 3px;
+}
+.action-admin {
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sidebar i {
+  font-weight: 900;
+  font-size: larger;
+  margin-right: 3px;
+}
+
+.image-preview {
+  max-height: 120px;
+  overflow: hidden;
+
+}
+.image-preview img{
+  height: 120px;
+  margin-right: 5px;
+  width: auto;
+  border-radius: 8px;
+}

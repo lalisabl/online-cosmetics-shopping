@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Luxury Facial Cream",
+    "description": "A premium facial cream enriched with natural ingredients.",
+    "brand": "Brand Name",
+    "category": "Skincare",
+    "subcategory": "moisturizer",
+    "price": 29.99,
+    "stockQuantity": 100,
+    "images": [
+      "https://m.media-amazon.com/images/I/41NdG-RFAkL._AC_SL1050_",
+      "image_url_2"
+    ],
+    "sizeVolume": "50ml",
+    "weightQuantity": 20,
+    "colors": ["Red", "Pink", "Nude"],
+    "skinType": ["Oily", "Sensitive"],
+    "promotionsDiscounts": {
+      "discountPercentage": 10,
+      "promoCode": "SUMMER10",
+      "startDate": "2023-06-01",
+      "endDate": "2023-06-30"
+    },
+    "dateAdded": "2023-05-15",
+    "relatedProducts": ["Facial Serums_id_1", "Facial Cleansers_id_2"],
+    "tagsKeywords": ["cosmetics", "skincare", "moisturizer"],
+    "availabilityStatus": "In Stock",
+    "productVariants": [
+      {
+        "variantName": "Color",
+        "variantOptions": ["Red", "Pink", "Nude"],
+        "variantPrice": [29.99, 29.99, 29.99],
+        "variantStockQuantity": [20, 30, 50]
+      }
+    ]
+  }
+]
