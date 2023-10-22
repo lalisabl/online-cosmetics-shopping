@@ -14,7 +14,7 @@ export default function ProductManagement() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [deleteProd, setDeleteProduct] = useState(false);
-  
+
   useEffect(() => {
     axios
       .get("http://localhost:3000/api/v1/Products")
@@ -130,11 +130,11 @@ export function CreateProduct() {
     brand: "",
     category: "",
     subcategory: "",
-    price: 12.99,
-    stockQuantity: 50,
+    price: 0,
+    stockQuantity: 0,
     images: [],
-    sizeVolume: "4g",
-    weightQuantity: 10,
+    sizeVolume: "",
+    weightQuantity: 0,
     colors: ["Red Velvet", "Nude Charm", "Coral Crush"],
     skinType: ["white", "brown", "black"],
   });
@@ -149,7 +149,28 @@ export function CreateProduct() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Product Data Submitted:", productData);
+    const formData = new FormData(); 
+
+    // Add form data fields to the FormData object
+    Object.entries(productData).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    // Append the image files to the FormData object
+    productData.images.forEach((files, index) => {
+      formData.append("images", files);
+    });
+    console.log(formData);
+    axios
+      .post("http://localhost:3000/api/v1/Products/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Set the content type for file uploads
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleImageChange = (event) => {
@@ -186,7 +207,7 @@ export function CreateProduct() {
             <img key={index} src={image} alt={`Image ${index}`} />
           ))}
         </div>
-        <form onSubmit={handleSubmit} className="form">
+        <form  enctype="multipart/form-data" onSubmit={handleSubmit} className="form"  >
           {productData.images.length >= 3 ? (
             ""
           ) : (
@@ -274,7 +295,7 @@ export function CreateProduct() {
           <input
             type="text"
             name="colors"
-            value={productData.colors.join(", ")}
+            value={productData.colors}
             onChange={handleInputChange}
             className="form-control"
           />
@@ -283,7 +304,7 @@ export function CreateProduct() {
           <input
             type="text"
             name="tagsKeywords"
-            value={productData.tagsKeywords.join(", ")}
+            value={productData.tagsKeywords}
             onChange={handleInputChange}
             className="form-control"
           />

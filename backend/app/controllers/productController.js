@@ -125,13 +125,14 @@ const multerFilter = (req, file, cb) => {
 };
 const upload = multer({
   storage: multerStorage,
-  fileFilter: multerFilter,
+  multer: multerFilter,
 });
 // exports.uploadProductImages = upload.fields({ name: "images", maxCount: 3 });
 exports.uploadProductImages = upload.fields([{ name: "images" }]);
 // resizeTourImages
 exports.resizeProductImages = catchAsync(async (req, res, next) => {
-  if (!req.files.images) return next();
+  // if (!req.files.images) return next();
+  const images = [...req.body.images];
   req.body.images = [];
   await Promise.all(
     req.files.images.map(async (file, i) => {

@@ -1,13 +1,57 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Cart from "../Cart/Cart"; // Adjust the import path to match the location of your Cart component
 import Header from "../Header/Header";
 import { CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { LoadingCard, LoadingCardVert } from "../shared/LoadingCard";
+const AddToCart = ({ product }) => {
+  const [cartItems, setCartItems] = useState([]);
+  const [added, setAdded] = useState(false);
+  const userId = "650b195f5162ce66a16ab88e";
+  const q = 3;
+
+  const removeFromCart = () => {
+    setAdded(false);
+  };
+
+  const addToCart = () => {
+    axios
+      .post(`http://127.0.0.1:3000/api/v1/cart/addProducts/${product._id}`, {
+        userId: userId,
+        quantity: q,
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 201) {
+          setAdded(true);
+
+          setCartItems([...cartItems, product]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error adding to cart:", error);
+      });
+  };
+  return (
+    <div className="cart">
+      <button
+        className="add-cart"
+        onClick={() => addToCart(product)}
+        style={{
+          backgroundColor: added ? "#e6aab5" : "##f7a354",
+          color: added ? "black" : "white",
+        }}
+      >
+        {added ? "ADDED" : "ADD TO CART"}
+      </button>
+    </div>
+  );
+};
+
 function Product() {
   const [products, setProducts] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -24,43 +68,6 @@ function Product() {
         setError(true);
       });
   }, []);
-  // console.log(products);
-  const addToCart = (product) => {
-    axios
-      .post(`http://127.0.0.1:3000/api/v1/cart/addProducts/${product._id}`, {
-        productId: product.id,
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          // Update the cartItems state to track the added product
-          setCartItems([...cartItems, product]);
-        }
-      })
-      .catch((error) => {
-        console.error("Error adding to cart:", error);
-      });
-  };
-
-  const removeFromCart = (product) => {
-    // Send a DELETE request to remove the product from the cart
-    // You may need to adjust the URL and payload based on your API design
-    axios
-      .delete("http://your-api-url/remove-from-cart", {
-        data: { productId: product.id },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          // Update the cartItems state to remove the product
-          const updatedCartItems = cartItems.filter(
-            (item) => item.id !== product.id
-          );
-          setCartItems(updatedCartItems);
-        }
-      })
-      .catch((error) => {
-        console.error("Error removing from cart:", error);
-      });
-  };
 
   return (
     <>
@@ -97,23 +104,7 @@ function Product() {
                           4.8 <FontAwesomeIcon icon={faStar} />
                         </span>
                       </div>
-                      <div className="cart">
-                        {cartItems.some((item) => item.id === product.id) ? (
-                          <button
-                            className="remove-cart"
-                            onClick={() => removeFromCart(product)}
-                          >
-                            REMOVE FROM CART
-                          </button>
-                        ) : (
-                          <button
-                            className="add-cart"
-                            onClick={() => addToCart(product)}
-                          >
-                            ADD TO CART
-                          </button>
-                        )}
-                      </div>
+                      <AddToCart product={product} />
                     </CardBody>
                   </div>
                 ))
