@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+// const Review = require("./review");
 // Define the schema for the Product collection
 const productSchema = new mongoose.Schema({
   name: {
@@ -74,5 +75,10 @@ const productSchema = new mongoose.Schema({
     },
   ],
 });
-
+// virtual populate
+productSchema.virtual("reviews", {
+  ref: "Review",
+  foreignField: "product",
+  localField: "_id",
+});
 module.exports = mongoose.model("Product", productSchema);

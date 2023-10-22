@@ -18,7 +18,7 @@ const Login = () => {
         "http://localhost:3000/api/v1/users/login",
         { email, password }
       );
-      navigate("/admin");
+     // navigate("/admin");
     } catch (error) {
       console.error("Login error:", error);
     }

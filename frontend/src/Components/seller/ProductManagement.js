@@ -149,65 +149,112 @@ export function CreateProduct() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const formData = new FormData(); 
+    const formData = new FormData();
 
     // Add form data fields to the FormData object
     Object.entries(productData).forEach(([key, value]) => {
-      formData.append(key, value);
+      !(key === "images") && formData.append(key, value);
     });
 
-    // Append the image files to the FormData object
-    productData.images.forEach((files, index) => {
+    productData.images.forEach((files) => {
       formData.append("images", files);
     });
-    console.log(formData);
     axios
-      .post("http://localhost:3000/api/v1/Products/", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data", // Set the content type for file uploads
-        },
-      })
+      .post("http://localhost:3000/api/v1/Products/", formData)
       .then((res) => {
         console.log(res);
       })
       .catch((err) => console.log(err));
   };
 
-  const handleImageChange = (event) => {
-    const selectedImages = event.target.files;
-    const imageArray = [...productData.images]; // Clone the existing images
+  // const handleImageChange = (event) => {
+  //   const selectedImages = event.target.files;
+  //   const imageArray = [...productData.images]; // Clone the existing images
 
-    if (imageArray.length < 3) {
-      for (let i = 0; i < selectedImages.length; i++) {
-        if (imageArray.length < 3) {
-          const reader = new FileReader();
+  //   if (imageArray.length < 3) {
+  //     for (let i = 0; i < selectedImages.length; i++) {
+  //       if (imageArray.length < 3) {
+  //         const reader = new FileReader();
 
-          reader.onload = (e) => {
-            imageArray.push(e.target.result);
-            if (imageArray.length === selectedImages.length) {
-              setProductData({
-                ...productData,
-                images: imageArray,
-              });
-            }
-          };
+  //         reader.onload = (e) => {
+  //           imageArray.push(e.target.result);
+  //           if (imageArray.length === selectedImages.length) {
+  //             setProductData({
+  //               ...productData,
+  //               images: imageArray,
+  //             });
+  //           }
+  //         };
 
-          reader.readAsDataURL(selectedImages[i]);
+  //         reader.readAsDataURL(selectedImages[i]);
+  //       }
+  //     }
+  //   }
+  // };
+  const [images, setImages] = useState([]);
+  const [imagesPrev, setImagesPrev] = useState([]);
+
+  const handleImageChange = (e) => {
+    const selectedImages = e.target.files;
+    const imageArray = Array.from(selectedImages);
+    setImages(imageArray);
+
+    // Create an array to store image previews
+    const imagePreviewArray = [];
+
+    for (let i = 0; i < selectedImages.length; i++) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        imagePreviewArray.push(e.target.result);
+
+        // Check if we have created previews for all selected images
+        if (imagePreviewArray.length === selectedImages.length) {
+          setImagesPrev(imagePreviewArray); // Set the image previews
         }
-      }
+      };
+
+      reader.readAsDataURL(selectedImages[i]);
     }
   };
+  useEffect(() => {
+    const handleImageChange = (event) => {
+      const selectedImages = event.target.files;
+      const imageArray = [...productData.images];
+
+      if (imageArray.length < 3) {
+        for (let i = 0; i < selectedImages.length; i++) {
+          if (imageArray.length < 3) {
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+              imageArray.push(e.target.result);
+              imagesPrev = [...imageArray];
+            };
+
+            reader.readAsDataURL(selectedImages[i]);
+          }
+        }
+      }
+    };
+    productData.images = [...images];
+    console.log(productData.images);
+  }, [images]);
 
   return (
     <Card>
       <CardHeader className="text-center">Create new post</CardHeader>
       <CardBody className="ml-6 mr-6">
         <div className="image-preview">
-          {productData.images.map((image, index) => (
+          {imagesPrev.map((image, index) => (
             <img key={index} src={image} alt={`Image ${index}`} />
           ))}
         </div>
-        <form  enctype="multipart/form-data" onSubmit={handleSubmit} className="form"  >
+        <form
+          encType="multipart/form-data"
+          onSubmit={handleSubmit}
+          className="form"
+        >
           {productData.images.length >= 3 ? (
             ""
           ) : (
@@ -286,8 +333,8 @@ export function CreateProduct() {
           <label> Quantity:</label>
           <input
             type="number"
-            name="weightQuantity"
-            value={productData.weightQuantity}
+            name="stockQuantity"
+            value={productData.stockQuantity}
             onChange={handleInputChange}
             className="form-control"
           />

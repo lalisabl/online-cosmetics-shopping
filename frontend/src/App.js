@@ -17,7 +17,6 @@ function RouteEcommerce() {
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/sellerDashBoard" element={<SellerDashboard />} />
           <Route path="/" element={<Home />} />
-
           <Route path="/admin/" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/*" element={<NotFound />} />
@@ -37,7 +36,6 @@ function App() {
   return (
     <div className="App">
       <RouteEcommerce />
-      <Product />
     </div>
   );
 }

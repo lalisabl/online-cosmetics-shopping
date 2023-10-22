@@ -4,6 +4,7 @@ const sharp = require("sharp");
 const Product = require("../models/product");
 const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/appError");
+const { errorMonitor } = require("nodemailer/lib/xoauth2");
 let products_F = null;
 const productsFilePath = `${__dirname}/../data/product.json`;
 try {
@@ -92,7 +93,7 @@ exports.getAllProducts = async (req, res) => {
 exports.getEachProduct = async (req, res) => {
   const ProductId = req.params.id;
   try {
-    const product = await Product.findById(ProductId);
+    const product = await Product.findById(ProductId).populate("reviews");
 
     if (!product) {
       return res.status(404).json({
@@ -123,33 +124,20 @@ const multerFilter = (req, file, cb) => {
     cb(new AppError("Not an image! Please upload only images.", 400), false);
   }
 };
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/images/products");
-  },
-  filename: function (req, file, cb) {
-    const sanitizedFileName = sanitize(file.originalname);
-    cb(null, sanitizedFileName);
-    console.log;
-  },
-});
 const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 1024 * 1024 * 10,
-  },
+  storage: multerStorage,
+  multer: multerFilter,
 });
-// exports.uploadProductImages = upload.fields({ name: "images", maxCount: 3 });
-exports.uploadProductImages = upload.single("images");
+exports.uploadProductImages = upload.fields([{ name: "images" }]);
+//exports.uploadProductImages = upload.single("images");
 // resizeTourImages
 exports.resizeProductImages = catchAsync(async (req, res, next) => {
-  // if (!req.files.images) return next();
-  const images = [...req.body.images];
+  if (!req.files.images) return next();
+  //const images = [...req.body.images];
   req.body.images = [];
   await Promise.all(
-    images.map(async (file, i) => {
-      const filename = `product-${req.body.name}-{i + 1}.jpeg`;
+    req.files.images.map(async (file, i) => {
+      const filename = `product-${i + 1}-${Date.now()}-${i + 1}.jpeg`;
 
       await sharp(file.buffer)
         .resize(2000, 1333)
@@ -165,7 +153,7 @@ exports.resizeProductImages = catchAsync(async (req, res, next) => {
 exports.createNewProduct = async (req, res, next) => {
   console.log(req.file);
   const imageUrl = req.file ? req.file.filename : "";
-  //console.log(req.file)
+  console.log(req.file);
   try {
     const newProduct = await Product.create(req.body);
     res.status(201).json({
