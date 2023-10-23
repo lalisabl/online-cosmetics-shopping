@@ -26,11 +26,11 @@ router
   );
 router
   .route("/")
-  .get(productController.getAllProducts)
+  .get(authorizationController.protect, productController.getAllProducts)
   .post(
-   // authorizationController.protect,
+    // authorizationController.protect,
     productController.uploadProductImages,
-   // productController.resizeProductImages,
+    // productController.resizeProductImages,
     productController.createNewProduct
   );
 module.exports = router;

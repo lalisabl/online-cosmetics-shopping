@@ -36,10 +36,11 @@ const reviewSchema = new mongoose.Schema(
 reviewSchema.index({ product: 1, user: 1 }, { unique: true });
 
 reviewSchema.pre(/^find/, function (next) {
+  //   this.populate({
+  //     path: "product",
+  //     select: "name",
+  // }).
   this.populate({
-    path: "product",
-    select: "name",
-  }).populate({
     path: "user",
     select: "fullName",
   });
@@ -59,7 +60,6 @@ reviewSchema.statics.calcAverageRatings = async function (productId) {
       },
     },
   ]);
-  console.log(stats);
   if (stats.length > 0) {
     await Product.findByIdAndUpdate(productId, {
       ratingQuantity: stats[0].nRating,
@@ -72,30 +72,9 @@ reviewSchema.statics.calcAverageRatings = async function (productId) {
     });
   }
 };
-
 reviewSchema.post("save", function () {
   this.constructor.calcAverageRatings(this.product);
 });
-
-// reviewSchema.pre(/^findOneAnd/, async function (next) {
-//   const review = await this.findOne();  this.constructor.calcAverageRatings(this.product);
-
-//   this.review = review;
-//   console.log(review);
-//   next();
-// });
-reviewSchema.post(/^findOneAnd/, async function (doc) {
-  const productId = doc.product._id; // Assuming 'product' is the field in your review document that stores the product ID
-  console.log(productId);
-  await this.constructor.calcAverageRatings(productId);
-  // this.constructor.calcAverageRatings(this.product);
-});
-
-// reviewSchema.post(/^findOneAnd/, async function () {
-
-//   await this.constructor.calcAverageRatings(this.review.product);
-// });
-
 const Review = mongoose.model("Review", reviewSchema);
 
 module.exports = Review;
