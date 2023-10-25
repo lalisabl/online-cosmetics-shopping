@@ -8,6 +8,7 @@ import {
   faPencilAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { LoadingCardList } from "../shared/LoadingCard";
+import GenericModal from "../shared/GenericModal";
 
 export default function ProductManagement() {
   const [products, setProducts] = useState([]);
@@ -124,6 +125,7 @@ function Product({ product, deleteProduct, hideProduct, EditProduct }) {
 }
 
 export function CreateProduct() {
+  const [uploading, setUploading] = useState(false);
   const [productData, setProductData] = useState({
     name: "",
     description: "",
@@ -148,6 +150,7 @@ export function CreateProduct() {
   };
 
   const handleSubmit = (event) => {
+    setUploading(true);
     event.preventDefault();
     const formData = new FormData();
 
@@ -162,10 +165,17 @@ export function CreateProduct() {
     axios
       .post("http://localhost:3000/api/v1/Products/", formData)
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
+        if (res.status === 201) {
+          setUploading(false);
+        }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setUploading(false);
+      });
   };
+  useEffect(() => {}, [uploading]);
 
   // const handleImageChange = (event) => {
   //   const selectedImages = event.target.files;
@@ -213,161 +223,178 @@ export function CreateProduct() {
           setImagesPrev(imagePreviewArray); // Set the image previews
         }
       };
-
       reader.readAsDataURL(selectedImages[i]);
     }
   };
   useEffect(() => {
-    const handleImageChange = (event) => {
-      const selectedImages = event.target.files;
-      const imageArray = [...productData.images];
-
-      if (imageArray.length < 3) {
-        for (let i = 0; i < selectedImages.length; i++) {
-          if (imageArray.length < 3) {
-            const reader = new FileReader();
-
-            reader.onload = (e) => {
-              imageArray.push(e.target.result);
-              imagesPrev = [...imageArray];
-            };
-
-            reader.readAsDataURL(selectedImages[i]);
-          }
-        }
-      }
-    };
     productData.images = [...images];
-    console.log(productData.images);
+    // console.log(productData.images);
   }, [images]);
 
   return (
-    <Card>
-      <CardHeader className="text-center">Create new post</CardHeader>
-      <CardBody className="ml-6 mr-6">
-        <div className="image-preview">
-          {imagesPrev.map((image, index) => (
-            <img key={index} src={image} alt={`Image ${index}`} />
-          ))}
-        </div>
-        <form
-          encType="multipart/form-data"
-          onSubmit={handleSubmit}
-          className="form"
-        >
-          {productData.images.length >= 3 ? (
-            ""
-          ) : (
-            <label htmlFor="addImage">
-              <img width={160} src="image/addPhoto.png" />
-            </label>
-          )}
-          <br />
-          <input
-            type="file"
-            name="images"
-            id="addImage"
-            hidden={true}
-            onChange={handleImageChange}
-            className="form-control"
-            multiple
+    <>
+      {uploading ? (
+        <>
+          {" "}
+          <OperationMessage
+            class_name="alert-success"
+            msg={"successfully uploaded"}
           />
+        </>
+      ) : (
+        <>
+          <Card>
+            <CardHeader className="text-center">Create new post</CardHeader>
+            <CardBody className="ml-6 mr-6">
+              <div className="image-preview">
+                {imagesPrev.map((image, index) => (
+                  <img key={index} src={image} alt={`Image ${index}`} />
+                ))}
+              </div>
+              <form
+                encType="multipart/form-data"
+                onSubmit={handleSubmit}
+                className="form"
+              >
+                {productData.images.length >= 3 ? (
+                  ""
+                ) : (
+                  <label htmlFor="addImage">
+                    <img width={160} src="image/addPhoto.png" />
+                  </label>
+                )}
+                <br />
+                <input
+                  type="file"
+                  name="images"
+                  id="addImage"
+                  hidden={true}
+                  onChange={handleImageChange}
+                  className="form-control"
+                  multiple
+                />
 
-          <label>Name:</label>
-          <input
-            type="text"
-            name="name"
-            value={productData.name}
-            onChange={handleInputChange}
-            className="form-control"
-          />
-          <label>Description:</label>
-          <input
-            type="text"
-            name="description"
-            value={productData.description}
-            onChange={handleInputChange}
-            className="form-control"
-          />
-          <label>Brand:</label>
-          <input
-            type="text"
-            name="brand"
-            value={productData.brand}
-            onChange={handleInputChange}
-            className="form-control"
-          />
-          <label>Category:</label>
-          <input
-            type="text"
-            name="category"
-            value={productData.category}
-            onChange={handleInputChange}
-            className="form-control"
-          />
-          <label>Subcategory:</label>
-          <input
-            type="text"
-            name="subcategory"
-            value={productData.subcategory}
-            onChange={handleInputChange}
-            className="form-control"
-          />
-          <label>Price:</label>
-          <input
-            type="number"
-            name="price"
-            value={productData.price}
-            onChange={handleInputChange}
-            className="form-control"
-          />
+                <label>Name:</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={productData.name}
+                  onChange={handleInputChange}
+                  className="form-control"
+                />
+                <label>Description:</label>
+                <input
+                  type="text"
+                  name="description"
+                  value={productData.description}
+                  onChange={handleInputChange}
+                  className="form-control"
+                />
+                <label>Brand:</label>
+                <input
+                  type="text"
+                  name="brand"
+                  value={productData.brand}
+                  onChange={handleInputChange}
+                  className="form-control"
+                />
+                <label>Category:</label>
+                <input
+                  type="text"
+                  name="category"
+                  value={productData.category}
+                  onChange={handleInputChange}
+                  className="form-control"
+                />
+                <label>Subcategory:</label>
+                <input
+                  type="text"
+                  name="subcategory"
+                  value={productData.subcategory}
+                  onChange={handleInputChange}
+                  className="form-control"
+                />
+                <label>Price:</label>
+                <input
+                  type="number"
+                  name="price"
+                  value={productData.price}
+                  onChange={handleInputChange}
+                  className="form-control"
+                />
 
-          <label>Size/Volume:</label>
-          <input
-            type="text"
-            name="sizeVolume"
-            value={productData.sizeVolume}
-            onChange={handleInputChange}
-            className="form-control"
-          />
-          <label> Quantity:</label>
-          <input
-            type="number"
-            name="stockQuantity"
-            value={productData.stockQuantity}
-            onChange={handleInputChange}
-            className="form-control"
-          />
-          <label>Colors:</label>
-          <input
-            type="text"
-            name="colors"
-            value={productData.colors}
-            onChange={handleInputChange}
-            className="form-control"
-          />
+                <label>Size/Volume:</label>
+                <input
+                  type="text"
+                  name="sizeVolume"
+                  value={productData.sizeVolume}
+                  onChange={handleInputChange}
+                  className="form-control"
+                />
+                <label> Quantity:</label>
+                <input
+                  type="number"
+                  name="stockQuantity"
+                  value={productData.stockQuantity}
+                  onChange={handleInputChange}
+                  className="form-control"
+                />
+                <label>Colors:</label>
+                <input
+                  type="text"
+                  name="colors"
+                  value={productData.colors}
+                  onChange={handleInputChange}
+                  className="form-control"
+                />
 
-          <label>Tags/Keywords:</label>
-          <input
-            type="text"
-            name="tagsKeywords"
-            value={productData.tagsKeywords}
-            onChange={handleInputChange}
-            className="form-control"
-          />
-          <label>skin Type:</label>
-          <input
-            type="text"
-            name="skinType"
-            value={productData.skinType}
-            onChange={handleInputChange}
-            className="form-control"
-          />
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
-        </form>
-      </CardBody>
-    </Card>
+                <label>Tags/Keywords:</label>
+                <input
+                  type="text"
+                  name="tagsKeywords"
+                  value={productData.tagsKeywords}
+                  onChange={handleInputChange}
+                  className="form-control"
+                />
+                <label>skin Type:</label>
+                <input
+                  type="text"
+                  name="skinType"
+                  value={productData.skinType}
+                  onChange={handleInputChange}
+                  className="form-control"
+                />
+                <button type="submit" className="btn btn-primary">
+                  Submit
+                </button>
+              </form>
+            </CardBody>
+          </Card>
+        </>
+      )}
+    </>
   );
+}
+
+export function OperationMessage({ msg, class_name }) {
+  const [isModalOpen, setIsModalOpen] = useState(true);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  return (
+    <div>
+      <GenericModal isOpen={isModalOpen} onClose={closeModal}>
+        <Msg msg={msg} class_name={class_name} />
+      </GenericModal>
+    </div>
+  );
+}
+function Msg({ msg, class_name }) {
+  return <div className={`alert ` + class_name}>{msg}</div>;
 }
