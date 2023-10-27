@@ -1,7 +1,7 @@
 import "./App.css";
 
 import Header from "./Components/Header/Header";
-import Product from "./Components/Card/Product";
+import Product, { ProductDetails } from "./Components/Card/Product";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Loading from "./Components/shared/loadingSVG";
 import Dashboard from "./Components/Admin/AdminDashboard";
@@ -14,6 +14,7 @@ function RouteEcommerce() {
       <BrowserRouter>
         <Routes>
           <Route exact path="/products" element={<Product />} />
+          <Route exact path="/products/:id" element={<ProductDetails />} />
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/sellerDashBoard" element={<SellerDashboard />} />
           <Route path="/" element={<Home />} />
@@ -37,7 +38,6 @@ function App() {
   return (
     <div className="App">
       <RouteEcommerce />
-      <Product />
     </div>
   );
 }
