@@ -1,0 +1,50 @@
+.Product-details {
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 1.2rem;
+}
+.carddetail {
+  display: flex;
+  gap: 2rem;
+}
+.cardimg {
+  width: 48%;
+  border: 3px solid #fcf2f2;
+}
+.cardbody {
+  width: 48%;
+  background-color: #fcf2f2;
+  padding: 1.2rem;
+  position: relative;
+}
+.card-img:hover .card-image {
+  transform: scale(1);
+}
+.form {
+  position: absolute;
+  bottom: 0;
+  width: 90%;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+}
+.text {
+  outline: none;
+  width: 100%;
+  border-radius: 2rem;
+  height: 3rem;
+  padding: 2rem;
+  border: none;
+}
+.search-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: rgb(35, 239, 239);
+}
+.form button {
+  margin-left: -3rem;
+  background-color: #fff;
+  outline: none;
+  border: none;
+}

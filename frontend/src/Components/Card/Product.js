@@ -85,7 +85,7 @@ export default function Product() {
                     <div
                       className="card-img"
                       onClick={() => {
-                        navigate("/products/" + product._id);
+                        navigate(`/products/${product._id}`);
                       }}
                     >
                       <img
@@ -103,7 +103,9 @@ export default function Product() {
                       <div
                         className="product-description"
                         onClick={() => {
-                          navigate("/products/" + product._id);
+                          navigate(`/products/${product._id}`);
+
+                          // navigate("/products/" + product._id);
                         }}
                       >
                         {product.description}
@@ -148,62 +150,4 @@ function PreLoading({ n }) {
   ));
 
   return <>{cards}</>;
-}
-
-export function ProductDetails() {
-  const { id } = useParams();
-  const [error, setError] = useState(false);
-
-  const [product, setProduct] = useState({});
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-  //
-  useEffect(() => {
-    setLoading(true);
-    axios
-      .get(`http://127.0.0.1:3000/api/v1/Products/${id}`) // Replace with your API endpoint
-      .then((response) => {
-        setProduct(response.data.data.product);
-        setLoading(false);
-        console.log(response.data.data.product);
-      });
-  }, []);
-  return (
-    <div className="Product-details">
-      {loading && <LoadingCardVert />}
-      {error && (
-        <div className="alert alert-danger">
-          error happened while fetching data
-        </div>
-      )}
-      {!loading && !error && <ProductDet product={product} />}
-    </div>
-  );
-}
-function ProductDet({ product }) {
-  return (
-    <div className="card">
-      <div className="card-img">
-        <img
-          className="card-image"
-          src={"http://localhost:3000/images/products/" + product.images[0]}
-          alt={product.name}
-          variant="top"
-        />
-      </div>
-      <div className="card-body">
-        <div className="product-title">{product.name}</div>
-        <div className="product-description">{product.description}</div>
-        <div className="product-price">
-          <span className="price">{product.price} birr</span>
-          /piece
-        </div>
-        <div className="rating">
-          <span className="av-rating">
-            4.8 <FontAwesomeIcon icon={faStar} />
-          </span>
-        </div>
-      </div>
-    </div>
-  );
 }
