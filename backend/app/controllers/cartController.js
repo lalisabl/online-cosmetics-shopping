@@ -3,9 +3,8 @@ const Product = require("../models/product");
 const User = require("../models/user");
 const mongoose = require("mongoose");
 exports.addToCart = async (req, res) => {
-  console.log(req.body);
   try {
-    const userId = req.body.userId;
+    const userId = req.user.id;
     const quantity = req.body.quantity;
     const productId = req.params.cartItemId;
     const product = await Product.findById(productId);

@@ -79,21 +79,8 @@ userSchema.methods.validatePassword = async function (
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
-userSchema.query.selectFields = function (fields) {
-  for (const field of fields) {
-    this.select(field);
-  }
-  return this;
-};
 // userSchema.pre(/^find/, function (next) {
-//   const Fields = [
-//     "_id",
-//     "fullName",
-//     "username",
-//     "email",
-//     "role",
-//     "phoneNumber",
-//   ];
+//   const Fields = ["_id", "fullName", "email", "role", "phoneNumber"];
 //   this.selectFields(Fields);
 //   next();
 // });
