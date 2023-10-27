@@ -8,11 +8,13 @@ const loginLimiter = rateLimit({
 // const middleWare = require("../../config/middleware");
 const userController = require("../controllers/userController");
 const authoController = require("../controllers/authControler");
-router.route("/").get(
-  authoController.protect,
-  authoController.restrictsto("admin"),
-  userController.getAllUsers
-);
+router
+  .route("/")
+  .get(
+    authoController.protect,
+    authoController.restrictsto("admin"),
+    userController.getAllUsers
+  );
 
 router
   .route("/me")
@@ -26,11 +28,7 @@ router
   .route("/:userId")
   .get(userController.getOneUser)
   .delete(userController.deleteUser);
-<<<<<<< HEAD
 router.get("/logout", authoController.logoutUser);
-=======
-  
->>>>>>> e0eb2afc7bd8169bb9bd8a42b13aff20fc86c443
 router.post("/register", authoController.createNewAccount);
 router.post("/login", authoController.loginUsers);
 router.post("/forgotPassword", authoController.forgotPassword);
