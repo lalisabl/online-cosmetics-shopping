@@ -10,9 +10,10 @@ const userController = require("../controllers/userController");
 const authoController = require("../controllers/authControler");
 router.route("/").get(
   authoController.protect,
-  // authoController.restrictsto("admin"),
+  authoController.restrictsto("admin"),
   userController.getAllUsers
 );
+
 router
   .route("/me")
   .get(
@@ -20,13 +21,18 @@ router
     userController.getMe,
     userController.getOneUser
   );
+
 router
   .route("/:userId")
   .get(userController.getOneUser)
   .delete(userController.deleteUser);
+<<<<<<< HEAD
 router.get("/logout", authoController.logoutUser);
+=======
+  
+>>>>>>> e0eb2afc7bd8169bb9bd8a42b13aff20fc86c443
 router.post("/register", authoController.createNewAccount);
-router.post("/login", loginLimiter, authoController.loginUsers);
+router.post("/login", authoController.loginUsers);
 router.post("/forgotPassword", authoController.forgotPassword);
 router.patch("/resetPassword/:token", authoController.resetPassword);
 router.patch(

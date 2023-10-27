@@ -7,6 +7,7 @@ import Loading from "./Components/shared/loadingSVG";
 import Dashboard from "./Components/Admin/AdminDashboard";
 import Login from "./login";
 import SellerDashboard from "./Components/seller/SellerDashboard";
+import { OperationMessage } from "./Components/seller/ProductManagement";
 
 function RouteEcommerce() {
   return (
@@ -17,7 +18,6 @@ function RouteEcommerce() {
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/sellerDashBoard" element={<SellerDashboard />} />
           <Route path="/" element={<Home />} />
-
           <Route path="/admin/" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/*" element={<NotFound />} />
@@ -37,7 +37,6 @@ function App() {
   return (
     <div className="App">
       <RouteEcommerce />
-      <Product />
     </div>
   );
 }

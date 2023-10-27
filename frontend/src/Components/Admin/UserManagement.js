@@ -39,6 +39,7 @@ export default function UserManagement() {
         setError(true);
       });
   }, [deleted]);
+  
   return (
     <div>
       {!loading ? (

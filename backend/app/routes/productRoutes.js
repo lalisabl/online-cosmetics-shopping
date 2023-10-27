@@ -20,17 +20,14 @@ router
     productController.updateProduct
   )
   .delete(
-    authorizationController.protect,
+    //   authorizationController.protect,
     // authorizationController.restrictsto("admin"),
     productController.deleteProduct
   );
-router
-  .route("/")
-  .get(authorizationController.protect, productController.getAllProducts)
-  .post(
-    // authorizationController.protect,
-    productController.uploadProductImages,
-    // productController.resizeProductImages,
-    productController.createNewProduct
-  );
+router.route("/").get(productController.getAllProducts).post(
+  // authorizationController.protect,
+  productController.uploadProductImages,
+   productController.resizeProductImages,
+  productController.createNewProduct
+);
 module.exports = router;

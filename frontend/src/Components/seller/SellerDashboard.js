@@ -26,6 +26,18 @@ function SellerDashboard() {
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState(null);
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/v1/users/me", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (!(res.data.data.data.role === "seller")) {
+          navigate("/login");
+        }
+      });
+  }, []);
+
   function handleSidebarItemClick(item) {
     setSelectedItem(item);
   }
