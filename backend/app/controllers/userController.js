@@ -28,8 +28,10 @@ const upload = multer({
 });
 exports.uploadUserPhoto = upload.single("image");
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
+  console.log(req.file);
   if (!req.file) return next();
   req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
+  console.log(req.filename);
   await sharp(req.file.buffer)
     .resize(500, 500)
     .toFormat("jpeg")
@@ -37,24 +39,6 @@ exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
     .toFile(`public/images/users/${req.file.filename}`);
   next();
 });
-exports.deleteUser = async (req, res, next) => {
-  const userId = req.params.userId;
-  try {
-    const user = await User.findByIdAndRemove(userId);
-    if (!user) {
-      throw new Error(`There is no user with ${userId} _id`);
-    } else {
-      return res.status(204).json({
-        status: "success",
-        data: {
-          user: {},
-        },
-      });
-    }
-  } catch (err) {
-    next(err);
-  }
-};
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
   Object.keys(obj).forEach((el) => {
@@ -102,3 +86,21 @@ exports.getOneUser = catchAsync(async (req, res, next) => {
     },
   });
 });
+exports.deleteUser = async (req, res, next) => {
+  const userId = req.params.userId;
+  try {
+    const user = await User.findByIdAndRemove(userId);
+    if (!user) {
+      throw new Error(`There is no user with ${userId} _id`);
+    } else {
+      return res.status(204).json({
+        status: "success",
+        data: {
+          user: {},
+        },
+      });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
