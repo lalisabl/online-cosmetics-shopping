@@ -1,11 +1,11 @@
 const Order = require("../models/order");
 const Cart = require("../models/cart");
+const User = require("../models/user");
 const Product = require("../models/product");
-// Create a new order
-exports.createOrder = async (req, res) => {
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+exports.getCheckoutSessios = async (req, res) => {
   try {
-    const userId = req.params.userId;
-    const userCart = await Cart.findOne({ user: userId }).populate(
+    const userCart = await Cart.findOne({ user: req.user.id }).populate(
       "items.product"
     );
     if (!userCart) {
@@ -21,26 +21,36 @@ exports.createOrder = async (req, res) => {
         message: "Product not found in the Cart.",
       });
     }
-    const totalAmount = products.reduce((total, cartProduct) => {
-      return total + cartProduct.quantity * cartProduct.product.price;
-    }, 0);
-    const { orderNumber, shippingAddress, paymentMethod } = req.body;
-    const newOrder = new Order({
-      orderNumber,
-      totalAmount,
-      products,
-      shippingAddress,
-      paymentMethod,
-      user: userId,
+    const items = products.map((cartProduct) => {
+      return {
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: cartProduct.product.name,
+            description: cartProduct.product.description,
+          },
+          unit_amount: cartProduct.product.price * 100,
+        },
+        quantity: cartProduct.quantity,
+      };
     });
-    const savedOrder = await newOrder.save();
-    await Cart.findByIdAndUpdate(userCart._id, { items: [] });
-
-    res.status(201).json({
+    // success_url: `${req.protocol}://${req.get('host')}/my-tours/?tour=${
+    //   req.params.tourId
+    // }&user=${req.user.id}&price=${tour.price}`,
+    const testProducts = products.map((item) => item._id);
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: items,
+      mode: "payment",
+      success_url: `http://127.0.0.1:3000/api/v1/Overview?products=${testProducts.join(
+        ","
+      )}&user=${req.user.id}&totalPrice=${userCart.totalPrice}`,
+      cancel_url: `http://127.0.0.1:3000/api/v1/Products`,
+      customer_email: req.user.email,
+    });
+    res.status(200).json({
       status: "success",
-      data: {
-        order: savedOrder,
-      },
+      session,
     });
   } catch (err) {
     res.status(400).json({
@@ -48,6 +58,30 @@ exports.createOrder = async (req, res) => {
       message: err,
     });
   }
+};
+
+exports.createBookingCheckout = async (req, res, next) => {
+  let { products, user, totalPrice } = req.query;
+  if (!products || !user || !totalPrice) next();
+  console.log(products, user, totalPrice);
+  const cart = await Cart.findOne({ user: user });
+  const product = cart.items.map((cartProduct) => {
+    return {
+      product: cartProduct.product,
+    };
+  });
+  totalPrice = cart.totalPrice;
+  const order = new Order({
+    user: user,
+    products: product,
+    totalPrice: totalPrice,
+    paymentMethod: "Credit Card",
+    paymentStatus: "Paid",
+    orderStatus: "Pending",
+  });
+  await order.save();
+  await Cart.findByIdAndUpdate(cart._id, { items: [], totalPrice: 0 });
+  res.redirect(req.originalUrl.split("?")[0]);
 };
 //get all Orders in a database
 exports.getAllOrders = async (req, res) => {
@@ -67,34 +101,9 @@ exports.getAllOrders = async (req, res) => {
     });
   }
 };
-// Get details of a specific order by ID
-exports.getDetailOfOrder = async (req, res) => {
-  try {
-    const order = await Order.findById(req.params.id);
-    if (!order) {
-      res.status(404).json({
-        status: "fail",
-        message: "Order not found",
-      });
-      return;
-    }
-    res.status(200).json({
-      status: "success",
-      data: {
-        order,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({
-      status: "fail",
-      message: err.message,
-    });
-  }
-};
-
 exports.getUserOrderHistory = async (req, res) => {
   try {
-    const userId = req.params.userId; // Use the authenticated user's ID
+    const userId = req.user.id; // Use the authenticated user's ID
     let orders = await Order.find({ user: userId });
     orders = await Order.find({ user: userId }).populate({
       path: "products.product",
@@ -122,13 +131,12 @@ exports.getUserOrderHistory = async (req, res) => {
     });
   }
 };
-
-// this fucntion is used to identify busiest month
+//this fucntion is used to identify busiest month
 exports.busyMonth = async (req, res) => {
   try {
     const year = req.params.year * 1;
     const plan = await Order.aggregate([
-      //   { $unwind: "$products" },
+      //{ $unwind: "$products" },
       {
         $match: {
           orderDate: {
@@ -137,12 +145,11 @@ exports.busyMonth = async (req, res) => {
           },
         },
       },
-
       {
         $group: {
           _id: { $month: "$orderDate" },
           numOrders: { $sum: 1 },
-          orders: { $push: "$orderNumber" },
+          // orders: { $push: "$orderNumber" },
         },
       },
       {

@@ -102,7 +102,3 @@ exports.getOneUser = catchAsync(async (req, res, next) => {
     },
   });
 });
-exports.myProfile = async (req, res) => {
-  let data = req.userData;
-  res.status(201).json({ data });
-};

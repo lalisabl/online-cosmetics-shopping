@@ -163,7 +163,9 @@ export function CreateProduct() {
       formData.append("images", files);
     });
     axios
-      .post("http://localhost:3000/api/v1/Products/", formData)
+      .post("http://localhost:3000/api/v1/Products/", formData, {
+        withCredentials: true,
+      })
       .then((res) => {
         console.log(res.data);
         if (res.status === 201) {

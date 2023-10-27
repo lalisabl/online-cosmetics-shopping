@@ -31,7 +31,10 @@ const userSchema = new mongoose.Schema({
   },
   passwordResetToken: String,
   passwordResetExpires: Date,
-  photo: String,
+  photo: {
+    type: String,
+    default: "default.jpg",
+  },
   role: {
     type: String,
     enum: Object.values(ROLES),
@@ -48,6 +51,10 @@ const userSchema = new mongoose.Schema({
   lockedUntil: {
     type: Date,
     default: null,
+  },
+  isActive: {
+    type: Boolean,
+    default: false,
   },
   address: String,
   phoneNumber: String,
@@ -79,24 +86,11 @@ userSchema.methods.validatePassword = async function (
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
-userSchema.query.selectFields = function (fields) {
-  for (const field of fields) {
-    this.select(field);
-  }
-  return this;
-};
-userSchema.pre(/^find/, function (next) {
-  const Fields = [
-    "_id",
-    "fullName",
-    "username",
-    "email",
-    "role",
-    "phoneNumber",
-  ];
-  this.selectFields(Fields);
-  next();
-});
+// userSchema.pre(/^find/, function (next) {
+//   const Fields = ["_id", "fullName", "email", "role", "phoneNumber"];
+//   this.selectFields(Fields);
+//   next();
+// });
 userSchema.methods.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32).toString("hex");
 

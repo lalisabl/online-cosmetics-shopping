@@ -2,7 +2,7 @@ import React from "react"; // Import your CSS file
 
 export function LoadingCard({ more }) {
   return (
-    <div className="loading-card">
+    <div style={{ marginBottom: "5px" }} className="loading-card">
       <span className="loading-text">{more}</span>
     </div>
   );

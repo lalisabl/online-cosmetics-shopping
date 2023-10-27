@@ -132,11 +132,69 @@
 .image-preview {
   max-height: 120px;
   overflow: hidden;
-
 }
-.image-preview img{
+.image-preview img {
   height: 120px;
   margin-right: 5px;
   width: auto;
   border-radius: 8px;
+}
+
+/* USER PROFILE SECTION */
+.user-profile img {
+  border-radius: 50%;
+  max-height: 100px;
+  aspect-ratio: 1;
+}
+.user-profile {
+  position: relative;
+  margin-bottom: 15px;
+}
+.user-profile .edit-my-profile {
+  position: absolute;
+  top: 3%;
+  right: 2%;
+}
+.user-profile .edit-my-profile:hover {
+  color: var(--color-primary);
+  cursor: pointer;
+}
+.user-info {
+  position: relative;
+}
+.user-info:hover {
+  cursor: pointer;
+  
+  color: var(--color-primary);
+}
+.user-info img {
+  border-radius: 50%;
+  max-width: 30px;
+  margin-right: 4px;
+}
+.user-info:hover img {
+  border: 1px solid var(--color-primary);
+}
+.user-info .logMenu {
+  position: absolute;
+  color: black;
+  padding: 0 35px;
+  background-color: white;
+  z-index: 10;
+  display: none;
+  border-radius: 5px;
+  border-bottom: 1px solid rgba(158, 158, 158, 0.37);
+}
+.user-info .logMenu .row {
+  color: black;
+}
+.user-info .logMenu .row:hover {
+  color: var(--color-primary);
+  cursor: pointer;
+}
+.user-info:hover .logMenu {
+  display: block;
+}
+.user-info .logMenu:hover {
+  display: block;
 }

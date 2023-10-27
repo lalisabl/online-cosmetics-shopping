@@ -5,6 +5,7 @@ const { promisify } = require("util");
 const sendEmail = require("../../utils/email");
 const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/appError");
+
 // token expired after a given minute
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.SECRET_KEY, {
@@ -83,9 +84,7 @@ exports.loginUsers = catchAsync(async (req, res, next) => {
     );
   }
   // Check if password is correct
-  user = await User.findOne({ email })
-    .select("+password")
-    .select("loginAttempts");
+  user = await User.findOne({ email }).select("+password");
   if (!(await user.validatePassword(password, user.password))) {
     user.loginAttempts++;
     await user.save();
@@ -104,7 +103,11 @@ exports.protect = catchAsync(async (req, res, next) => {
     token = req.headers.authorization.split(" ")[1];
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
-    // console.log(req.cookies.jwt);
+  }
+  if (!token) {
+    return next(
+      new AppError("You are not logged in! Please log in to get access.", 401)
+    );
   }
   // 2) Verification token
   const decoded = await promisify(jwt.verify)(token, process.env.SECRET_KEY);
@@ -181,4 +184,12 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   await user.save();
   createSendToken(user, 200, res);
 });
+// logout the user
+exports.logoutUser = (req, res) => {
+  res.cookie("jwt", "loggedout", {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({ status: "success" });
+};
 exports.resetPassword = async (req, res, next) => {};
