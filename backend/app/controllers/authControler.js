@@ -97,21 +97,14 @@ exports.loginUsers = catchAsync(async (req, res, next) => {
 exports.protect = catchAsync(async (req, res, next) => {
   //Getting token and check if it is there
   let token;
-  console.log(req.cookies);
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
   } else if (req.cookies.jwt) {
-    console.log("hello");
-    token = req.Cookies.jwt;
-    console.log(token);
-  }
-  if (!token) {
-    return next(
-      new AppError("You are not logged in! Please log in to get access.", 401)
-    );
+    token = req.cookies.jwt;
+    // console.log(req.cookies.jwt);
   }
   // 2) Verification token
   const decoded = await promisify(jwt.verify)(token, process.env.SECRET_KEY);
@@ -121,6 +114,11 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
   req.user = currentUser;
   next();
+  if (!token) {
+    return next(
+      new AppError("You are not logged in! Please log in to get access.", 401)
+    );
+  }
 });
 exports.restrictsto = (role) => {
   return (req, res, next) => {

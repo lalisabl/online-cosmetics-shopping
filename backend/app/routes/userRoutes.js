@@ -10,7 +10,7 @@ const userController = require("../controllers/userController");
 const authoController = require("../controllers/authControler");
 router.route("/").get(
   authoController.protect,
-  // authoController.restrictsto("admin"),
+  authoController.restrictsto("admin"),
   userController.getAllUsers
 );
 router
