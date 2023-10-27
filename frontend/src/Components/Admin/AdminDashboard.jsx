@@ -21,6 +21,7 @@ import AdminNotification from "./AdminNotification";
 import Setting from "./Setting";
 import ReportGenerator from "./ReportGenerator";
 import { UserProfile } from "../seller/SellerDashboard";
+import ProfileSettings from "./Setting";
 
 const APIURL = "";
 function Dashboard() {
@@ -124,7 +125,7 @@ function Sidebar({ onItemClick }) {
         <li onClick={() => onItemClick(<ReportGenerator />)}>
           <FontAwesomeIcon icon={faChartBar} /> Reports
         </li>
-        <li onClick={() => onItemClick(<onItemClick />)}>
+        <li onClick={() => onItemClick(<ProfileSettings />)}>
           <FontAwesomeIcon icon={faGear} /> settings
         </li>
       </ul>

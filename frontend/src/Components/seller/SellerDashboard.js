@@ -89,7 +89,7 @@ export function UserProfile({ user, onItemClick }) {
   const navigate = useNavigate();
   function logOut() {
     axios
-      .get("http:localhost:3000/api/v1/users/logout", {
+      .get("http://localhost:3000/api/v1/users/logout", {
         withCredentials: true,
       })
       .then((res) => {
@@ -110,7 +110,6 @@ export function UserProfile({ user, onItemClick }) {
         <h4 style={{ color: "black" }}>Do you really want to logout? </h4>
         <div className="m-auto">
           {" "}
-          <button className="btn btn-warning m-2">close</button>
           <button onClick={logOut} className="btn btn-danger m-2">
             logout
           </button>
@@ -123,15 +122,14 @@ export function UserProfile({ user, onItemClick }) {
           {" "}
           <img
             src={
-              user.image
-                ? `http://localhost:3000/images/products/` + user.image
+              user.photo
+                ? `http://localhost:3000/images/users/` + user.photo
                 : "./image/userplaceholder.jpg"
             }
           />
           <span>{user.username}</span>
         </>
         <div className="logMenu">
-          <Row onClick={() => onItemClick(<ProfileSettings />)} >Profile</Row>
           <Row onClick={() => setLogMenu(true)}>LogOut</Row>
         </div>
       </div>

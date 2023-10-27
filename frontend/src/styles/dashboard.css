@@ -162,6 +162,11 @@
 .user-info {
   position: relative;
 }
+.user-info:hover {
+  cursor: pointer;
+  
+  color: var(--color-primary);
+}
 .user-info img {
   border-radius: 50%;
   max-width: 30px;
@@ -185,6 +190,7 @@
 }
 .user-info .logMenu .row:hover {
   color: var(--color-primary);
+  cursor: pointer;
 }
 .user-info:hover .logMenu {
   display: block;
