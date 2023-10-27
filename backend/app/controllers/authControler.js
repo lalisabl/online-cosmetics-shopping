@@ -84,9 +84,7 @@ exports.loginUsers = catchAsync(async (req, res, next) => {
     );
   }
   // Check if password is correct
-  user = await User.findOne({ email })
-    .select("+password")
-    .select("loginAttempts");
+  user = await User.findOne({ email }).select("+password");
   if (!(await user.validatePassword(password, user.password))) {
     user.loginAttempts++;
     await user.save();
