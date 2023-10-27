@@ -104,11 +104,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     token = req.headers.authorization.split(" ")[1];
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
-  }
-  if (!token) {
-    return next(
-      new AppError("You are not logged in! Please log in to get access.", 401)
-    );
+    // console.log(req.cookies.jwt);
   }
   // 2) Verification token
   const decoded = await promisify(jwt.verify)(token, process.env.SECRET_KEY);
@@ -118,6 +114,11 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
   req.user = currentUser;
   next();
+  if (!token) {
+    return next(
+      new AppError("You are not logged in! Please log in to get access.", 401)
+    );
+  }
 });
 exports.restrictsto = (role) => {
   return (req, res, next) => {

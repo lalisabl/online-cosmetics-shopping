@@ -16,7 +16,8 @@ const Login = () => {
     try {
       const response = await axios.post(
         "http://localhost:3000/api/v1/users/login",
-        { email, password }
+        { email, password },
+        { withCredentials: true }
       );
       navigate("/admin");
     } catch (error) {

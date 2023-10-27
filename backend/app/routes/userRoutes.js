@@ -9,8 +9,8 @@ const loginLimiter = rateLimit({
 const userController = require("../controllers/userController");
 const authoController = require("../controllers/authControler");
 router.route("/").get(
-  // authoController.protect,
-  // authoController.restrictsto("admin"),
+  authoController.protect,
+  authoController.restrictsto("admin"),
   userController.getAllUsers
 );
 router
