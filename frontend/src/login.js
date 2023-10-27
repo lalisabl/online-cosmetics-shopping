@@ -14,12 +14,21 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/v1/users/login",
-        { email, password },
-        { withCredentials: true }
-      );
-      navigate("/admin");
+      const response = await axios
+        .post(
+          "http://localhost:3000/api/v1/users/login",
+          { email, password },
+          { withCredentials: true }
+        )
+        .then((res) => {
+          if (res.data.data.user.role === "admin") {
+            navigate("/admin");
+          } else if (res.data.data.user.role === "seller") {
+            navigate("/sellerDashBoard");
+          } else {
+            navigate("/products");
+          }
+        });
     } catch (error) {
       console.error("Login error:", error);
     }

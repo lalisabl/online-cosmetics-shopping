@@ -13,6 +13,7 @@ router.route("/").get(
   authoController.restrictsto("admin"),
   userController.getAllUsers
 );
+
 router
   .route("/me")
   .get(
@@ -20,12 +21,14 @@ router
     userController.getMe,
     userController.getOneUser
   );
+
 router
   .route("/:userId")
   .get(userController.getOneUser)
   .delete(userController.deleteUser);
+  
 router.post("/register", authoController.createNewAccount);
-router.post("/login", loginLimiter, authoController.loginUsers);
+router.post("/login", authoController.loginUsers);
 router.post("/forgotPassword", authoController.forgotPassword);
 router.patch("/resetPassword/:token", authoController.resetPassword);
 router.patch(
