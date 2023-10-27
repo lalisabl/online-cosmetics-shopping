@@ -5,6 +5,7 @@ const { promisify } = require("util");
 const sendEmail = require("../../utils/email");
 const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/appError");
+
 // token expired after a given minute
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.SECRET_KEY, {
@@ -97,16 +98,13 @@ exports.loginUsers = catchAsync(async (req, res, next) => {
 exports.protect = catchAsync(async (req, res, next) => {
   //Getting token and check if it is there
   let token;
-  console.log(req.cookies);
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
   } else if (req.cookies.jwt) {
-    console.log("hello");
-    token = req.Cookies.jwt;
-    console.log(token);
+    token = req.cookies.jwt;
   }
   if (!token) {
     return next(
@@ -183,4 +181,12 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   await user.save();
   createSendToken(user, 200, res);
 });
+// logout the user
+exports.logoutUser = (req, res) => {
+  res.cookie("jwt", "loggedout", {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({ status: "success" });
+};
 exports.resetPassword = async (req, res, next) => {};

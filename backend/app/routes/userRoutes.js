@@ -24,6 +24,7 @@ router
   .route("/:userId")
   .get(userController.getOneUser)
   .delete(userController.deleteUser);
+router.get("/logout", authoController.logoutUser);
 router.post("/register", authoController.createNewAccount);
 router.post("/login", loginLimiter, authoController.loginUsers);
 router.post("/forgotPassword", authoController.forgotPassword);

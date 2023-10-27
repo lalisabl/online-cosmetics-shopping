@@ -93,8 +93,15 @@ exports.getAllProducts = async (req, res) => {
 exports.getEachProduct = async (req, res) => {
   const ProductId = req.params.id;
   try {
-    const product = await Product.findById(ProductId).populate("reviews");
-
+    const product = await Product.findById(ProductId).populate({
+      path: "reviews",
+      select: "review rating user",
+      populate: {
+        path: "user",
+        model: "User",
+        select: "fullName photo",
+      },
+    });
     if (!product) {
       return res.status(404).json({
         status: "fail",
