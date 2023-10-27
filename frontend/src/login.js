@@ -25,7 +25,7 @@ const Login = () => {
             navigate("/admin");
           } else if (res.data.data.user.role === "seller") {
             navigate("/sellerDashBoard");
-          } else {
+          } else  {
             navigate("/products");
           }
         });

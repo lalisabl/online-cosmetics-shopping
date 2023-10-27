@@ -85,18 +85,18 @@ userSchema.query.selectFields = function (fields) {
   }
   return this;
 };
-userSchema.pre(/^find/, function (next) {
-  const Fields = [
-    "_id",
-    "fullName",
-    "username",
-    "email",
-    "role",
-    "phoneNumber",
-  ];
-  this.selectFields(Fields);
-  next();
-});
+// userSchema.pre(/^find/, function (next) {
+//   const Fields = [
+//     "_id",
+//     "fullName",
+//     "username",
+//     "email",
+//     "role",
+//     "phoneNumber",
+//   ];
+//   this.selectFields(Fields);
+//   next();
+// });
 userSchema.methods.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32).toString("hex");
 
