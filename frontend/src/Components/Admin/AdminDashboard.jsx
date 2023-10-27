@@ -20,33 +20,32 @@ import UserManagement from "./UserManagement";
 import AdminNotification from "./AdminNotification";
 import Setting from "./Setting";
 import ReportGenerator from "./ReportGenerator";
+import { UserProfile } from "../seller/SellerDashboard";
 
 const APIURL = "";
 function Dashboard() {
-  const [username, setUsername] = useState("");
-  const [isLoading, setLoading] = useState(false);
+  const [user, setUser] = useState([]);
+  const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         "http://localhost:3001/api/dashboard",
-  //         { withCredentials: true }
-  //       );
-  //       setUsername(response.data.user.username);
-  //       //ff  console.log(response.data.user.username);
-  //     } catch (error) {
-  //       // navigate("/login");
-  //       console.error("Fetching user data error:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchUserData();
-  // }, []);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/v1/users/me", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setLoading(false);
+        setUser(res.data.data.data);
+        if (!(res.data.data.data.role === "admin")) {
+          navigate("/login");
+        }
+      })
+      .catch((err) => {
+        navigate("/login");
+        setLoading(false);
+      });
+  }, []);
   function handleSidebarItemClick(item) {
     setSelectedItem(item);
   }
@@ -55,7 +54,7 @@ function Dashboard() {
   }
   return (
     <div>
-      <Navbar />
+      <Navbar onItemClick={handleSidebarItemClick} user={user} />
       <div className="dashboard-container">
         <Sidebar onItemClick={handleSidebarItemClick} />
         <MainDis element={selectedItem} />
@@ -63,7 +62,7 @@ function Dashboard() {
     </div>
   );
 }
-function Navbar() {
+function Navbar({ user, onItemClick }) {
   return (
     <nav className="navBar-header">
       <div className="logo">Dashboard Logo</div>
@@ -74,9 +73,13 @@ function Navbar() {
         </div>
         <div>
           <FontAwesomeIcon icon={faBell} />
-          <span className="notify">Notifications<span className="notification-num">23</span> </span>
+          <span className="notify">
+            Notifications<span className="notification-num">23</span>{" "}
+          </span>
         </div>
-        <div className="user-info"> Username</div>
+        <div>
+          <UserProfile onItemClick={onItemClick} user={user} />
+        </div>
       </div>
     </nav>
   );
@@ -113,12 +116,15 @@ function Sidebar({ onItemClick }) {
           <FontAwesomeIcon icon={faUsers} /> User management
         </li>
         <li onClick={() => onItemClick(<AdminNotification />)}>
-          <FontAwesomeIcon icon={faBell} /> <span className="notify">Notifications<span className="notification-num">23</span> </span> 
+          <FontAwesomeIcon icon={faBell} />{" "}
+          <span className="notify">
+            Notifications<span className="notification-num">23</span>{" "}
+          </span>
         </li>
         <li onClick={() => onItemClick(<ReportGenerator />)}>
           <FontAwesomeIcon icon={faChartBar} /> Reports
         </li>
-        <li onClick={() => onItemClick(<Setting />)}>
+        <li onClick={() => onItemClick(<onItemClick />)}>
           <FontAwesomeIcon icon={faGear} /> settings
         </li>
       </ul>

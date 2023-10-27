@@ -32,6 +32,7 @@ router
   .delete(userController.deleteUser);
 router.post("/forgotPassword", authoController.forgotPassword);
 router.patch("/resetPassword/:token", authoController.resetPassword);
+
 router.patch(
   "/updateMe",
   authoController.protect,
@@ -39,9 +40,11 @@ router.patch(
   userController.resizeUserPhoto,
   userController.updateMe
 );
+
 router.patch(
   "/updatePassword",
   authoController.protect,
   authoController.updatePassword
 );
+
 module.exports = router;
