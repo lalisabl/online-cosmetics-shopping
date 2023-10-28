@@ -9,6 +9,7 @@ import Login from "./login";
 import SellerDashboard from "./Components/seller/SellerDashboard";
 import { OperationMessage } from "./Components/seller/ProductManagement";
 import { ProductDetails } from "./Components/Card/ProductDetails";
+import RegistrationForm from "./Components/shared/userRegistrationForm";
 function RouteEcommerce() {
   return (
     <>
@@ -21,6 +22,7 @@ function RouteEcommerce() {
           <Route path="/" element={<Home />} />
           <Route path="/admin/" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<RegistrationForm />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

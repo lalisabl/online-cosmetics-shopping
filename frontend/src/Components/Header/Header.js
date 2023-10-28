@@ -57,8 +57,8 @@ const Header = () => {
         <UserProfile user={user} />
       ) : (
         <div className="account">
-          <button className="login">Login</button>
-          <button className="signup">SignUp</button>
+          <button onClick={()=>navigate('/login')} className="login">Login</button>
+          <button onClick={()=>navigate('/register')} className="signup">SignUp</button>
         </div>
       )}
     </header>
