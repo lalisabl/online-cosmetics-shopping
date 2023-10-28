@@ -13,7 +13,7 @@ router.route("/category/:category").get(productController.productsCategories);
 router.route("/subcategory/:subcategory").get(productController.subcategories);
 router
   .route("/:id")
-  .get(productController.getEachProduct)
+  .get(authorizationController.protect, productController.getEachProduct)
   .patch(
     authorizationController.protect,
     // authorizationController.restrictsto("admin"),
@@ -27,7 +27,7 @@ router
 router.route("/").get(productController.getAllProducts).post(
   // authorizationController.protect,
   productController.uploadProductImages,
-   productController.resizeProductImages,
+  productController.resizeProductImages,
   productController.createNewProduct
 );
 module.exports = router;
