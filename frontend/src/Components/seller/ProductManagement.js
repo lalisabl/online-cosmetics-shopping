@@ -256,7 +256,6 @@ export function CreateProduct() {
               <form
                 encType="multipart/form-data"
                 onSubmit={handleSubmit}
-                className="form"
               >
                 {productData.images.length >= 3 ? (
                   ""

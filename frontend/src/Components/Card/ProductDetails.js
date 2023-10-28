@@ -60,7 +60,7 @@ export function ProductDetails() {
     console.log(updatedProduct.rating, updatedProduct.review);
     axios
       .post(
-        `http://127.0.0.1:3000/api/v1/Products/${id}/reviews/`,
+        `http://localhost:3000/api/v1/Products/${id}/reviews/`,
         updatedProduct,
         { withCredentials: true }
       )
