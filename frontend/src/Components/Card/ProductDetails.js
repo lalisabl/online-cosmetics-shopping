@@ -16,6 +16,7 @@ export function ProductDetails() {
   const navigate = useNavigate();
   const [comment, setcomment] = useState("");
   //
+
   useEffect(() => {
     setLoading(true);
     axios
@@ -66,12 +67,10 @@ export function ProductDetails() {
       )
       .then((response) => {
         console.log(response);
-        // Handle the response as needed
         setcomment("");
       })
       .catch((error) => {
         console.error(error);
-        // Handle errors
       });
   }
 
