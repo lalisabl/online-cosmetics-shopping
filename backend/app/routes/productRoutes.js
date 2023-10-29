@@ -13,7 +13,7 @@ router.route("/category/:category").get(productController.productsCategories);
 router.route("/subcategory/:subcategory").get(productController.subcategories);
 router
   .route("/:id")
-  .get(authorizationController.protect, productController.getEachProduct)
+  .get(productController.getEachProduct)
   .patch(
     authorizationController.protect,
     // authorizationController.restrictsto("admin"),

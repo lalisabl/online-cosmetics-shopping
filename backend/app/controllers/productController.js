@@ -95,11 +95,10 @@ exports.getEachProduct = async (req, res) => {
   try {
     const product = await Product.findById(ProductId).populate({
       path: "reviews",
-      select: "review rating user",
+      select: "review rating",
       populate: {
         path: "user",
         model: "User",
-        select: "fullName photo",
       },
     });
     if (!product) {
