@@ -99,7 +99,7 @@ exports.getEachProduct = async (req, res) => {
       populate: {
         path: "user",
         model: "User",
-        select: "fullName photo",
+        // select: "fullName photo",
       },
     });
     if (!product) {
@@ -112,7 +112,17 @@ exports.getEachProduct = async (req, res) => {
     return res.status(200).json({
       status: "success",
       data: {
-        product: product,
+        product: {
+          _id: product._id,
+          reviews: product.reviews,
+          name: product.name,
+          description: product.description,
+          images: product.images,
+          price: product.price,
+          ratingQuantity: product.ratingQuantity,
+          ratingsAverage: product.ratingsAverage,
+          category: product.category,
+        },
       },
     });
   } catch (err) {
