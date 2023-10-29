@@ -41,16 +41,23 @@ const Header = ({ search }) => {
 
   return (
     <header className="header">
-      <div className="logo">WUBIT</div>
+      <div
+        onClick={() => {
+          window.location.href = "./";
+        }}
+        className="logo"
+      >
+        <img src="/image/wubit_logo.png" />
+      </div>
 
       <nav className="nav">
         <ul>
-          <li>
-            {" "}
-            <button>Products</button>
-          </li>
-          <li>
-            <button>Catagories</button>
+          <li
+            onClick={() => {
+              window.location.href = "/products";
+            }}
+          >
+            Products
           </li>
         </ul>
       </nav>

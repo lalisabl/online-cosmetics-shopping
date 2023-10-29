@@ -4,7 +4,7 @@ import Cart from "../Cart/Cart"; // Adjust the import path to match the location
 import Header from "../Header/Header";
 import { CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faSort } from "@fortawesome/free-solid-svg-icons";
 import { LoadingCard, LoadingCardVert } from "../shared/LoadingCard";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 const AddToCart = ({ product }) => {
@@ -24,7 +24,6 @@ const AddToCart = ({ product }) => {
         quantity: q,
       })
       .then((response) => {
-        console.log(response);
         if (response.status === 201) {
           setAdded(true);
 
@@ -56,97 +55,119 @@ export default function Product() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    axios
-      .get("http://127.0.0.1:3000/api/v1/Products/") // Replace with your API endpoint
-      .then((response) => {
-        setProducts(response.data.data.Products);
-        setLoading(false);
-        console.log(response.data.data.Products);
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
-        setError(true);
-      });
-  }, []);
-  const [search, setSearch] = useState("");
-  useEffect(() => {
-    navigate(`/products?q=${search}`);
-    console.log(search);
-  }, [search]);
+  const [search, setSearch] = useState("all");
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const query = searchParams.get("q");
-  const sort = searchParams.get("sort");
-  const setSearching = () => {};
+  const newURL = `${location.pathname}?${searchParams}`;
+  useEffect(() => {
+    setLoading(true);
+    navigate(newURL);
+    axios
+      .get(`http://127.0.0.1:3000/api/v1/Products?${searchParams}`)
+      .then((response) => {
+        setProducts(response.data.data.Products);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        setError(true);
+      });
+  }, [newURL]);
+
+
+  function TruncatedDescription({ product }) {
+    const maxChars = 50; 
+    const truncatedDescription =
+      product.description.length > maxChars
+        ? product.description.slice(0, maxChars) + "..."
+        : product.description;
+  
+    const descriptionWithReadMore =
+      product.description.length > maxChars
+        ? `${truncatedDescription} <a href="/products/${product._id}">(Read More)</a>`
+        : truncatedDescription;
+  
+    return (
+      <div
+        className="product-description"
+        dangerouslySetInnerHTML={{ __html: descriptionWithReadMore }}
+      />
+    );
+  }
   return (
     <>
       <Header search={setSearch} />
-      <div className="cardContainer">
-        <div className="cards product-displayer">
-          {!loading ? (
-            !error ? (
-              products.length > 0 ? (
-                products.map((product) => (
-                  <div key={product._id} className="card">
-                    <div
-                      className="card-img"
-                      onClick={() => {
-                        navigate(`/products/${product._id}`);
-                      }}
-                    >
-                      <img
-                        className="card-image"
-                        src={
-                          "http://localhost:3000/images/products/" +
-                          product.images[0]
-                        }
-                        alt={product.name}
-                        variant="top"
-                      />
-                    </div>
-                    <CardBody>
-                      <div className="product-title">{product.name}</div>
+      <Filter />
+      <div className="product-pg">
+        <div>
+          <Category />
+        </div>
+        <div className="cardContainer">
+          <div className="cards product-displayer">
+            {!loading ? (
+              !error ? (
+                products.length > 0 ? (
+                  products.map((product) => (
+                    <div key={product._id} className="card">
                       <div
-                        className="product-description"
+                        className="card-img"
                         onClick={() => {
                           navigate(`/products/${product._id}`);
-
-                          // navigate("/products/" + product._id);
                         }}
                       >
-                        {product.description}
+                        <img
+                          className="card-image"
+                          src={
+                            "http://localhost:3000/images/products/" +
+                            product.images[0]
+                          }
+                          alt={product.name}
+                          variant="top"
+                        />
                       </div>
-                      <div className="product-price">
-                        <span className="price">{product.price} birr</span>
-                        /piece
-                      </div>
-                      <div className="rating">
-                        <span className="av-rating">
-                          {product.ratingsAverage}{" "}
-                          <FontAwesomeIcon icon={faStar} />
-                        </span>
-                      </div>
-                      <AddToCart product={product} />
-                    </CardBody>
+                      <CardBody>
+                        <div className="product-title">{product.name}</div>
+                        <div
+                          className="product-description"
+                          onClick={() => {
+                            navigate(`/products/${product._id}`);
+
+                            // navigate("/products/" + product._id);
+                          }}
+                        >
+                          <TruncatedDescription product={product} />
+                        </div>
+                        <div className="product-price">
+                          <span className="price">{product.price} birr</span>
+                          /piece
+                        </div>
+                        <div className="rating">
+                          <span className="av-rating">
+                            {product.ratingsAverage}{" "}
+                            <FontAwesomeIcon icon={faStar} />
+                          </span>
+                        </div>
+                        <AddToCart product={product} />
+                      </CardBody>
+                    </div>
+                  ))
+                ) : (
+                  <div className="alert alert-dark">
+                    No product found currently pls try later
                   </div>
-                ))
+                )
               ) : (
-                <div>No product here</div>
+                <div className="alert alert-danger">
+                  error happened while fetching data
+                </div>
               )
             ) : (
-              <div className="alert alert-danger">
-                error happened while fetching data
-              </div>
-            )
-          ) : (
-            <>
-              <PreLoading n={8} />
-            </>
-          )}
+              <>
+                <PreLoading n={8} />
+              </>
+            )}
+          </div>
         </div>
       </div>
     </>
@@ -163,6 +184,160 @@ function PreLoading({ n }) {
   return <>{cards}</>;
 }
 
-function Filter({ setFilter }) {
-  return <div></div>;
+export function Filter({ setFilter }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const filter = searchParams.get("sort");
+
+  const handleCategoryClick = (newCategory) => {
+    searchParams.set("sort", newCategory);
+    const updatedSearchParams = searchParams.toString();
+    const newURL = `${location.pathname}?${updatedSearchParams}`;
+    navigate(newURL);
+  };
+  return (
+    <div className="filter">
+      <ul>
+        <span>
+          {" "}
+          <FontAwesomeIcon icon={faSort} /> <span>Filter</span>
+        </span>
+        <li
+          className={filter === "price" && `active`}
+          onClick={() => {
+            handleCategoryClick("price");
+          }}
+        >
+          price
+        </li>
+        <li
+          className={filter === "latest" && `active`}
+          onClick={() => {
+            handleCategoryClick("latest");
+          }}
+        >
+          latest
+        </li>
+        <li
+          className={filter === "old" && `active`}
+          onClick={() => {
+            handleCategoryClick("old");
+          }}
+        >
+          old
+        </li>
+      </ul>
+    </div>
+  );
+}
+
+export function Category() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const category = searchParams.get("category");
+
+  const handleCategoryClick = (newCategory) => {
+    searchParams.set("category", newCategory);
+    const updatedSearchParams = searchParams.toString();
+    const newURL = `${location.pathname}?${updatedSearchParams}`;
+    navigate(newURL);
+  };
+
+  return (
+    <div className="Category-side">
+      <h5>Categories</h5>
+      <ul>
+        <li
+          onClick={() => {
+            handleCategoryClick("skincare");
+          }}
+          className={category === "skincare" && `active`}
+        >
+          Skincare
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("makeup");
+          }}
+          className={category === "makeup" && `active`}
+        >
+          Makeup
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("haircare");
+          }}
+          className={category === "haircare" && `active`}
+        >
+          Haircare
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("fragrances");
+          }}
+          className={category === "fragrances" && `active`}
+        >
+          Fragrances
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("bath");
+          }}
+          className={category === "bath" && `active`}
+        >
+          Bath and Body
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("nail");
+          }}
+          className={category === "nail" && `active`}
+        >
+          Nail Care
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("organic");
+          }}
+          className={category === "organic" && `active`}
+        >
+          Organic and Natural
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("gift");
+          }}
+          className={category === "gift" && `active`}
+        >
+          Gift Sets
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("accessories");
+          }}
+          className={category === "accessories" && `active`}
+        >
+          Accessories
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("best");
+          }}
+          className={category === "best" && `active`}
+        >
+          Best Sellers
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("new");
+          }}
+          className={category === "new" && `active`}
+        >
+          New Arrivals
+        </li>
+      </ul>
+    </div>
+  );
 }

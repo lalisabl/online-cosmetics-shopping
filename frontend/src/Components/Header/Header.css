@@ -3,11 +3,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #333;
-  color: #fff;
-  padding: 10px 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+  background-color: #ff336613;
+  color: black;
+  border-bottom: 1px solid #ff33662f;
+  font-family: sans-serif;
+  padding: 0px 20px;
+  padding-right: 50px;
+  margin: auto;
 }
 
 .header a {
@@ -16,52 +18,55 @@
 }
 
 .logo {
-  font-size: 24px;
-  font-weight: bold;
+  height: 50px;
+  cursor: pointer;
 }
-
+.logo img {
+  max-height: 100%;
+}
 .nav ul {
   list-style: none;
   padding: 0;
   display: flex;
 }
 
-.nav li button {
+.nav li {
   margin: 5px 15px;
   padding-top: 20px;
-  background-color: #333;
-  color: #fff;
   border: none;
+  cursor: pointer;
 }
-.nav li button:hover {
-  color: #000000;
+.nav li:hover {
+  color: var(--color-primary);
 }
 
 .search input {
   padding: 5px;
-  border: none;
   border-radius: 4px;
-  font-size: 16px;
+  border-color: #ff3366;
   width: 300px;
+  border-radius: 16px;
 }
 
 .search button {
   margin: 5px 20px;
-  background-color: #ff6600;
+  background-color: var(--color-primary);
   color: #fff;
   border: none;
-  border-radius: 4px;
+
+  -moz-border-radius: 20;
+  border-radius: 20px;
   padding: 5px 10px;
   cursor: pointer;
   font-size: 16px;
 }
 .search button:hover {
-  background-color: #7b3609;
+  background-color: #ff3366;
   color: #fff;
 }
 
 .cart-icon {
-  font-size: 50px; /* Adjust the size as needed */
+  font-size: 50px;
 }
 .cart p {
   display: inline;
