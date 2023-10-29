@@ -38,7 +38,7 @@
 }
 body {
   background-color: #f5f3f5;
-  font-family: Roboto, Helvetica, Tahoma, Arial, Microsoft YaHei, sans-serif;
+  font-family: sans-serif;
 }
 /* html {
   font-size: 62.07%;
@@ -194,7 +194,7 @@ body {
   background: rgb(255, 255, 255);
   padding: 1px;
   width: 100%;
-  border-bottom: 1px solid rgb(204, 195, 195);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.161);
 }
 .filter ul {
   list-style: none;
@@ -220,15 +220,31 @@ body {
 .Category-side {
   position: absolute;
   left: 1%;
+  background-color: white;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid rgba(128, 128, 128, 0.16);
 }
 .Category-side ul {
   list-style: none;
+  margin-left: 10px;
+}
+.Category-side h5 {
+  text-decoration: underline;
+  text-decoration-color: #eb2f64;
+  font-size: medium;
+  font-weight: 700;
 }
 .Category-side ul li {
   margin: 2px;
 }
 .Category-side ul li:hover,
 .Category-side ul .active {
+  text-decoration: underline;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+.active {
   text-decoration: underline;
   color: var(--color-primary);
   cursor: pointer;
