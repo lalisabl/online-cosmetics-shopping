@@ -8,14 +8,21 @@
   gap: 2rem;
 }
 .cardimg {
-  width: 48%;
+  width: 42%;
   border: 3px solid #fcf2f2;
+  margin-left: 1rem;
+  display: flex;
+  position: relative;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 1rem 0 0 1rem;
 }
 .cardbody {
   width: 48%;
   background-color: #fcf2f2;
   padding: 1.2rem;
   position: relative;
+  border-radius: 0 1rem 1rem 0;
 }
 .card-img:hover .card-image {
   transform: scale(1);
@@ -24,17 +31,17 @@
   position: absolute;
   bottom: 0;
   width: 90%;
-  padding: 1rem;
+  padding: 0.7rem;
   display: flex;
   align-items: center;
+  margin-top: 2rem;
 }
 .text {
   outline: none;
   width: 100%;
   border-radius: 2rem;
-  height: 3rem;
-  padding: 2rem;
   border: none;
+  padding: 1rem;
 }
 .search-icon {
   width: 1.2rem;
@@ -46,4 +53,37 @@
   background-color: #fff;
   outline: none;
   border: none;
+}
+.desc {
+  font-weight: 700;
+}
+.ratings {
+  display: flex;
+  align-items: center;
+}
+.slider__btn {
+  border: 3px solid #28b485;
+  background: rgba(255, 255, 255, 0.7);
+  font-family: inherit;
+  color: #333;
+  border-radius: 50%;
+  height: 2.5rem;
+  width: 2.5rem;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+.slider__btn:focus {
+  outline: inherit;
+}
+.btn--left {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: 10;
+}
+.btn--right {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  z-index: 10;
 }
