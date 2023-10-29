@@ -33,11 +33,15 @@ export default function Review({ id }) {
         </div>
       )}
       {!loading && !error && (
-        <div className="reviews">
-          {reviews.map((review) => (
-            <ReviewDet key={review._id} review={review} />
-          ))}
-        </div>
+        <>
+          {" "}
+          <h2 className="rev">Featured reviews</h2>
+          <div className="reviews">
+            {reviews.map((review) => (
+              <ReviewDet key={review._id} review={review} />
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
@@ -46,16 +50,18 @@ function ReviewDet({ review }) {
   console.log(review.user);
   return (
     <div className="reviewdet">
-      <div className="user-image">
-        <img
-          src={
-            review.user.photo
-              ? `http://localhost:3000/images/users/` + review.user.photo
-              : "./image/userplaceholder.jpg"
-          }
-        />
+      <div className="reviewhead">
+        <div className="user-image">
+          <img
+            src={
+              review.user.photo
+                ? `http://localhost:3000/images/users/` + review.user.photo
+                : "./image/userplaceholder.jpg"
+            }
+          />
+        </div>
+        <div className="reviewheader">{review.user.fullName}</div>
       </div>
-      <div className="reviewheader">{review.user.fullName}</div>
 
       <div className="reviw">
         <p>{review.review}</p>

@@ -1,23 +1,37 @@
 .reviews {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin-top: 2rem;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+  grid-gap: 4rem;
+  margin: 5px auto;
+  width: 90%;
 }
 .reviewdet {
-  background-color: #f2f1f1;
-  width: 30%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: 4px 4px 8px #cbcbcb, -4px -4px 8px #ffffff;
-  border-radius: 10px;
+  border-bottom: 0.1px solid #000;
+  border-top: 0.1px solid #000;
+  padding: 0.8rem;
 }
 
 .user-image img {
   height: 40px;
   aspect-ratio: 1;
   border-radius: 50%;
+}
+.reviewhead {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.user-image {
+  margin-right: 0.8rem;
+}
+.reviewheader {
+  font-weight: 700;
+}
+.rev {
+  text-align: center;
+  padding: 1rem;
 }

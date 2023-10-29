@@ -8,8 +8,12 @@
   gap: 2rem;
 }
 .cardimg {
-  width: 48%;
+  width: 42%;
   border: 3px solid #fcf2f2;
+  margin-left: 1rem;
+  display: flex;
+  position: relative;
+  align-items: center;
 }
 .cardbody {
   width: 48%;
@@ -46,4 +50,29 @@
   background-color: #fff;
   outline: none;
   border: none;
+}
+.desc {
+  font-weight: 700;
+}
+.ratings {
+  display: flex;
+  align-items: center;
+}
+.slider__btn {
+  background-color: #ff7730;
+  outline: none;
+  border: none;
+  padding: 1rem;
+  border-radius: 50%;
+  font-weight: 900;
+}
+.btn--left {
+  position: absolute;
+  top: 50%;
+  left: 0;
+}
+.btn--right {
+  position: absolute;
+  top: 50%;
+  right: 0;
 }
