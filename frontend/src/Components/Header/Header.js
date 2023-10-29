@@ -8,7 +8,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserProfile } from "../seller/SellerDashboard";
 
-const Header = () => {
+const Header = ({ search }) => {
   const [user, setUser] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,6 +30,15 @@ const Header = () => {
       });
   }, []);
 
+  const [searchQ, setSearchQ] = useState("");
+  const setSearch = (e) => {
+    setSearchQ(e.target.value);
+  };
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    search(searchQ);
+  };
+
   return (
     <header className="header">
       <div className="logo">WUBIT</div>
@@ -45,10 +54,14 @@ const Header = () => {
           </li>
         </ul>
       </nav>
-      <div className="search">
-        <input type="text" placeholder="Search for products" />
+      <form onSubmit={handleSearchSubmit} className="search">
+        <input
+          type="text"
+          onChange={setSearch}
+          placeholder="Search for products"
+        />
         <button>Search</button>
-      </div>
+      </form>
       <div className="cart">
         <p>Cart</p>
         <FontAwesomeIcon icon={faCartShopping} size="2xl" />{" "}
@@ -57,8 +70,12 @@ const Header = () => {
         <UserProfile user={user} />
       ) : (
         <div className="account">
-          <button onClick={()=>navigate('/login')} className="login">Login</button>
-          <button onClick={()=>navigate('/register')} className="signup">SignUp</button>
+          <button onClick={() => navigate("/login")} className="login">
+            Login
+          </button>
+          <button onClick={() => navigate("/register")} className="signup">
+            SignUp
+          </button>
         </div>
       )}
     </header>

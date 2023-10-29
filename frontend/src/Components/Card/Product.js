@@ -6,7 +6,7 @@ import { CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { LoadingCard, LoadingCardVert } from "../shared/LoadingCard";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 const AddToCart = ({ product }) => {
   const [cartItems, setCartItems] = useState([]);
   const [added, setAdded] = useState(false);
@@ -71,10 +71,20 @@ export default function Product() {
         setError(true);
       });
   }, []);
+  const [search, setSearch] = useState("");
+  useEffect(() => {
+    navigate(`/products?q=${search}`);
+    console.log(search);
+  }, [search]);
 
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const query = searchParams.get("q");
+  const sort = searchParams.get("sort");
+  const setSearching = () => {};
   return (
     <>
-      <Header />
+      <Header search={setSearch} />
       <div className="cardContainer">
         <div className="cards product-displayer">
           {!loading ? (
@@ -150,4 +160,8 @@ function PreLoading({ n }) {
   ));
 
   return <>{cards}</>;
+}
+
+function Filter({ setFilter }) {
+  return <div></div>;
 }
