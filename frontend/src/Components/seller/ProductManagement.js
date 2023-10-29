@@ -170,6 +170,20 @@ export function CreateProduct() {
         console.log(res.data);
         if (res.status === 201) {
           setUploading(false);
+          setProductData({
+            name: "",
+            description: "",
+            brand: "",
+            category: "",
+            subcategory: "",
+            price: 0,
+            stockQuantity: 0,
+            images: [],
+            sizeVolume: "",
+            weightQuantity: 0,
+            colors: ["Red Velvet", "Nude Charm", "Coral Crush"],
+            skinType: ["white", "brown", "black"],
+          });
         }
       })
       .catch((err) => {
@@ -253,10 +267,7 @@ export function CreateProduct() {
                   <img key={index} src={image} alt={`Image ${index}`} />
                 ))}
               </div>
-              <form
-                encType="multipart/form-data"
-                onSubmit={handleSubmit}
-              >
+              <form encType="multipart/form-data" onSubmit={handleSubmit}>
                 {productData.images.length >= 3 ? (
                   ""
                 ) : (
@@ -300,13 +311,24 @@ export function CreateProduct() {
                   className="form-control"
                 />
                 <label>Category:</label>
-                <input
-                  type="text"
-                  name="category"
+                <select
                   value={productData.category}
                   onChange={handleInputChange}
+                  name="category"
                   className="form-control"
-                />
+                >
+                  <option>select one</option>
+                  <option value={"skincare"}>Skincare</option>
+                  <option value={"makeup"}>Makeup</option>
+                  <option value={"haircare"}>Haircare</option>
+                  <option value={"fragrances"}>Fragrances</option>
+                  <option value={"bath"}>Bath and Body</option>
+                  <option value={"nail"}>Nail Care</option>
+                  <option value={"organic"}>Organic and Natural</option>
+                  <option value={"gift"}>Gift Sets</option>
+                  <option value={"accessories"}>Accessories</option>
+                </select>
+
                 <label>Subcategory:</label>
                 <input
                   type="text"

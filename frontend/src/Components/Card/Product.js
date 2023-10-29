@@ -56,47 +56,32 @@ export default function Product() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    axios
-      .get("http://127.0.0.1:3000/api/v1/Products/")
-      .then((response) => {
-        setProducts(response.data.data.Products);
-        setLoading(false);
-        //  console.log(response.data.data.Products);
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
-        setError(true);
-      });
-  }, []);
   const [search, setSearch] = useState("all");
-  useEffect(() => {
-    navigate(`/products?q=haircare`);
-    axios
-      .get(`http://127.0.0.1:3000/api/v1/Products?category=makeup`)
-      .then((response) => {
-        setProducts(response.data.data.Products);
-        setLoading(false);
-        //   console.log(response.data.data.Products);
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
-        setError(true);
-      });
-  }, [search]);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
+  const newURL = `${location.pathname}?${searchParams}`;
+  useEffect(() => {
+    setLoading(true);
+    navigate(newURL);
+    axios
+      .get(`http://127.0.0.1:3000/api/v1/Products?${searchParams}`)
+      .then((response) => {
+        setProducts(response.data.data.Products);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+        setError(true);
+      });
+  }, [newURL]);
   return (
     <>
       <Header search={setSearch} />
       <Filter />
       <div className="product-pg">
         <div>
-          {" "}
           <Category />
         </div>
         <div className="cardContainer">
@@ -149,7 +134,9 @@ export default function Product() {
                     </div>
                   ))
                 ) : (
-                  <div>No product here</div>
+                  <div className="alert alert-dark">
+                    No product found currently pls try later
+                  </div>
                 )
               ) : (
                 <div className="alert alert-danger">
