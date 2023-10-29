@@ -3,11 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoadingCard } from "../shared/LoadingCard";
 import { Card, CardBody, Row } from "reactstrap";
-import {
-  faTrash,
-  faEyeSlash,
-  faPencilAlt,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCamera, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function ProfileSettings() {
@@ -44,7 +40,7 @@ export default function ProfileSettings() {
           <Card className="user-profile">
             {edit ? (
               <CardBody>
-                <EditProfile back={()=>setEdit(false)} user={user} />
+                <EditProfile back={() => setEdit(false)} user={user} />
               </CardBody>
             ) : (
               <CardBody>
@@ -78,7 +74,7 @@ export default function ProfileSettings() {
 }
 function EditProfile({ user, back }) {
   const [success, setSuccess] = useState(false);
-  const [formData, setFormData] = useState({
+  const [Data, setData] = useState({
     fullName: user.fullName,
     username: user.username,
     email: user.email,
@@ -87,12 +83,36 @@ function EditProfile({ user, back }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setData({ ...Data, [name]: value });
+  };
+
+  const [image, setImage] = useState("");
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form data submitted:", formData);
+    const formData = new FormData();
+
+    // Add form data fields to the FormData object
+    Object.entries(Data).forEach(([key, value]) => {
+      key !== "image" && formData.append(key, value);
+    });
+
+    formData.append("photo", image);
+
+    axios
+      .patch("http://localhost:3000/api/v1/users/updateMe", formData, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res.status);
+      })
+      .catch((err) => {
+        console.log(err.status);
+      });
   };
 
   return (
@@ -100,16 +120,31 @@ function EditProfile({ user, back }) {
       <button onClick={back} className="btn btn-secondary">
         back
       </button>
-      <form className="form" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="image"></label>
+          <label className="user-profile-edit" htmlFor="image">
+            <img
+              src={
+                image
+                  ? URL.createObjectURL(image)
+                  : user.photo
+                  ? `http://localhost:3000/images/users/` + user.photo
+                  : "./image/userplaceholder.jpg"
+              }
+            />
+            <span className="photo-replace-icon">
+              {" "}
+              <FontAwesomeIcon icon={faCamera} />
+            </span>
+          </label>
           <input
+            hidden
             className="form-control"
             type="file"
             id="image"
             name="image"
-            value={formData.image}
-            onChange={handleChange}
+            value={Data.image}
+            onChange={handleImageChange}
           />
         </div>
         <div>
@@ -119,7 +154,7 @@ function EditProfile({ user, back }) {
             type="text"
             id="fullName"
             name="fullName"
-            value={formData.fullName}
+            value={Data.fullName}
             onChange={handleChange}
           />
         </div>
@@ -130,7 +165,7 @@ function EditProfile({ user, back }) {
             type="text"
             id="username"
             name="username"
-            value={formData.username}
+            value={Data.username}
             onChange={handleChange}
           />
         </div>
@@ -141,7 +176,7 @@ function EditProfile({ user, back }) {
             type="email"
             id="email"
             name="email"
-            value={formData.email}
+            value={Data.email}
             onChange={handleChange}
           />
         </div>
@@ -152,7 +187,7 @@ function EditProfile({ user, back }) {
             type="tel"
             id="phoneNumber"
             name="phoneNumber"
-            value={formData.phoneNumber ? formData.phoneNumber : "Enter Phone number"}
+            value={Data.phoneNumber ? Data.phoneNumber : "Enter Phone number"}
             onChange={handleChange}
           />
         </div>

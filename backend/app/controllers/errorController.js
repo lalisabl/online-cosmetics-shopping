@@ -50,13 +50,13 @@ const sendErrorProd = (err, res) => {
 };
 
 module.exports = (err, req, res, next) => {
-  console.log(err);
+  // console.log(err);
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
   if (process.env.NODE_ENV === "development") {
     sendErrorDev(err, req, res);
   } else if (process.env.NODE_ENV === "production") {
-    // let error = { ...err };
+    let error = { ...err };
     if (error.kind === "ObjectId") error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDuplicateFieldError(error);
     if (error._message === "Product validation failed")

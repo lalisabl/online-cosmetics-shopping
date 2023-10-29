@@ -141,15 +141,21 @@
 }
 
 /* USER PROFILE SECTION */
+.user-profile-edit img,
 .user-profile img {
   border-radius: 50%;
   max-height: 100px;
   aspect-ratio: 1;
+  object-fit: cover;
+  object-position: top;
 }
+
+.user-profile-edit,
 .user-profile {
   position: relative;
   margin-bottom: 15px;
 }
+
 .user-profile .edit-my-profile {
   position: absolute;
   top: 3%;
@@ -159,12 +165,36 @@
   color: var(--color-primary);
   cursor: pointer;
 }
+.user-profile-edit .photo-replace-icon {
+  position: absolute;
+  font-size: xx-large;
+  left: 0;
+  padding: 26px 34px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.595);
+  color: white;
+  display: none;
+  top: 0;
+  transition: opacity 3s ease-in-out, transform 0.3s ease-in-out;
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.user-profile-edit:hover .photo-replace-icon {
+  display: block;
+  cursor: pointer;
+  opacity: 0.3;
+  transition: opacity 3s ease-in-out, transform 0.3s ease-in-out;
+  opacity: 1;
+  transform: scale(0.8);
+  transform: scale(1);
+}
+
 .user-info {
   position: relative;
 }
 .user-info:hover {
   cursor: pointer;
-  
   color: var(--color-primary);
 }
 .user-info img {

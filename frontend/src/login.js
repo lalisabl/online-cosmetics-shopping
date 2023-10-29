@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Card, CardBody } from "reactstrap";
 
 // ... (other imports)
 
@@ -25,7 +26,7 @@ const Login = () => {
             navigate("/admin");
           } else if (res.data.data.user.role === "seller") {
             navigate("/sellerDashBoard");
-          } else  {
+          } else {
             navigate("/products");
           }
         });
@@ -35,25 +36,41 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
+    <div className="registration">
+      <Card className=" mb-2 mt-2">
+        <img src="./image/wubit_logo.png" />
+      </Card>
+      <Card>
+        {" "}
+        <h4>Login</h4>
+        <CardBody>
+          <form onSubmit={handleLogin}>
+            <div className="m-1">
+              <input
+                type="text"
+                placeholder="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="form-control"
+              />
+            </div>
+            <div className="m-1">
+              <input
+                type="password"
+                className="form-control"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <button className="btn btn-primary" type="submit">
+              Login
+            </button>
+          </form>
+        </CardBody>
+      </Card>
     </div>
   );
 };
