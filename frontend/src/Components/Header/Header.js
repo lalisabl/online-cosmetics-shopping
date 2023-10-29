@@ -54,7 +54,7 @@ const Header = ({ search }) => {
         <ul>
           <li
             onClick={() => {
-              window.location.href = "./products";
+              window.location.href = "/products";
             }}
           >
             Products

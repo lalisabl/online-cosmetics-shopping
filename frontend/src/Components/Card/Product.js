@@ -184,7 +184,7 @@ function PreLoading({ n }) {
   return <>{cards}</>;
 }
 
-function Filter({ setFilter }) {
+export function Filter({ setFilter }) {
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -232,7 +232,7 @@ function Filter({ setFilter }) {
   );
 }
 
-function Category() {
+export function Category() {
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
