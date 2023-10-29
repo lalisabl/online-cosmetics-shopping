@@ -46,7 +46,15 @@ function ReviewDet({ review }) {
   console.log(review.user);
   return (
     <div className="reviewdet">
-      <div className="user-image"></div>
+      <div className="user-image">
+        <img
+          src={
+            review.user.photo
+              ? `http://localhost:3000/images/users/` + review.user.photo
+              : "./image/userplaceholder.jpg"
+          }
+        />
+      </div>
       <div className="reviewheader">{review.user.fullName}</div>
 
       <div className="reviw">

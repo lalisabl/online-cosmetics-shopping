@@ -4,7 +4,7 @@ import Cart from "../Cart/Cart"; // Adjust the import path to match the location
 import Header from "../Header/Header";
 import { CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faSort } from "@fortawesome/free-solid-svg-icons";
 import { LoadingCard, LoadingCardVert } from "../shared/LoadingCard";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 const AddToCart = ({ product }) => {
@@ -59,11 +59,11 @@ export default function Product() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:3000/api/v1/Products/") // Replace with your API endpoint
+      .get("http://127.0.0.1:3000/api/v1/Products/")
       .then((response) => {
         setProducts(response.data.data.Products);
         setLoading(false);
-        console.log(response.data.data.Products);
+        //  console.log(response.data.data.Products);
       })
       .catch((error) => {
         console.error(error);
@@ -71,82 +71,100 @@ export default function Product() {
         setError(true);
       });
   }, []);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("all");
   useEffect(() => {
-    navigate(`/products?q=${search}`);
-    console.log(search);
+    navigate(`/products?category=haircare`);
+    axios
+      .get(`http://127.0.0.1:3000/api/v1/Products?category=makeup`)
+      .then((response) => {
+        setProducts(response.data.data.Products);
+        setLoading(false);
+        //   console.log(response.data.data.Products);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+        setError(true);
+      });
   }, [search]);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const query = searchParams.get("q");
   const sort = searchParams.get("sort");
-  const setSearching = () => {};
   return (
     <>
       <Header search={setSearch} />
-      <div className="cardContainer">
-        <div className="cards product-displayer">
-          {!loading ? (
-            !error ? (
-              products.length > 0 ? (
-                products.map((product) => (
-                  <div key={product._id} className="card">
-                    <div
-                      className="card-img"
-                      onClick={() => {
-                        navigate(`/products/${product._id}`);
-                      }}
-                    >
-                      <img
-                        className="card-image"
-                        src={
-                          "http://localhost:3000/images/products/" +
-                          product.images[0]
-                        }
-                        alt={product.name}
-                        variant="top"
-                      />
-                    </div>
-                    <CardBody>
-                      <div className="product-title">{product.name}</div>
+      <Filter />
+      <div className="product-pg">
+        <div>
+          {" "}
+          <Category />
+        </div>
+
+        <div className="cardContainer">
+          <div className="cards product-displayer">
+            {!loading ? (
+              !error ? (
+                products.length > 0 ? (
+                  products.map((product) => (
+                    <div key={product._id} className="card">
                       <div
-                        className="product-description"
+                        className="card-img"
                         onClick={() => {
                           navigate(`/products/${product._id}`);
-
-                          // navigate("/products/" + product._id);
                         }}
                       >
-                        {product.description}
+                        <img
+                          className="card-image"
+                          src={
+                            "http://localhost:3000/images/products/" +
+                            product.images[0]
+                          }
+                          alt={product.name}
+                          variant="top"
+                        />
                       </div>
-                      <div className="product-price">
-                        <span className="price">{product.price} birr</span>
-                        /piece
-                      </div>
-                      <div className="rating">
-                        <span className="av-rating">
-                          {product.ratingsAverage}{" "}
-                          <FontAwesomeIcon icon={faStar} />
-                        </span>
-                      </div>
-                      <AddToCart product={product} />
-                    </CardBody>
-                  </div>
-                ))
+                      <CardBody>
+                        <div className="product-title">{product.name}</div>
+                        <div
+                          className="product-description"
+                          onClick={() => {
+                            navigate(`/products/${product._id}`);
+
+                            // navigate("/products/" + product._id);
+                          }}
+                        >
+                          {product.description}
+                        </div>
+                        <div className="product-price">
+                          <span className="price">{product.price} birr</span>
+                          /piece
+                        </div>
+                        <div className="rating">
+                          <span className="av-rating">
+                            {product.ratingsAverage}{" "}
+                            <FontAwesomeIcon icon={faStar} />
+                          </span>
+                        </div>
+                        <AddToCart product={product} />
+                      </CardBody>
+                    </div>
+                  ))
+                ) : (
+                  <div>No product here</div>
+                )
               ) : (
-                <div>No product here</div>
+                <div className="alert alert-danger">
+                  error happened while fetching data
+                </div>
               )
             ) : (
-              <div className="alert alert-danger">
-                error happened while fetching data
-              </div>
-            )
-          ) : (
-            <>
-              <PreLoading n={8} />
-            </>
-          )}
+              <>
+                <PreLoading n={8} />
+              </>
+            )}
+          </div>
         </div>
       </div>
     </>
@@ -164,5 +182,45 @@ function PreLoading({ n }) {
 }
 
 function Filter({ setFilter }) {
-  return <div></div>;
+  return (
+    <div className="filter">
+      <ul>
+        <span>
+          {" "}
+          <FontAwesomeIcon icon={faSort} /> <span>Filter</span>
+        </span>
+        <li>price</li>
+        <li>latest</li>
+        <li>old</li>
+      </ul>
+    </div>
+  );
+}
+
+function Category() {
+  const [active, setActive] = useState("");
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const category = searchParams.get("category");
+
+  return (
+    <div className="Category-side">
+      <ul>
+        <li onClick={()=>{}} className={category === "skincare" && `active`}>Skincare</li>
+        <li className={category === "makeup" && `active`}>Makeup</li>
+        <li className={category === "haircare" && `active`}>Haircare</li>
+        <li className={category === "fragrances" && `active`}>Fragrances</li>
+        <li className={category === "bath" && `active`}>Bath and Body</li>
+        <li className={category === "nail" && `active`}>Nail Care</li>
+        <li className={category === "organic" && `active`}>
+          Organic and Natural
+        </li>
+        <li className={category === "gift" && `active`}>Gift Sets</li>
+        <li className={category === "accessories" && `active`}>Accessories</li>
+        <li className={category === "best" && `active`}>Best Sellers</li>
+        <li className={category === "new" && `active`}>New Arrivals</li>
+      </ul>
+    </div>
+  );
 }
