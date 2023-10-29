@@ -76,6 +76,27 @@ export default function Product() {
         setError(true);
       });
   }, [newURL]);
+
+
+  function TruncatedDescription({ product }) {
+    const maxChars = 50; 
+    const truncatedDescription =
+      product.description.length > maxChars
+        ? product.description.slice(0, maxChars) + "..."
+        : product.description;
+  
+    const descriptionWithReadMore =
+      product.description.length > maxChars
+        ? `${truncatedDescription} <a href="/products/${product._id}">(Read More)</a>`
+        : truncatedDescription;
+  
+    return (
+      <div
+        className="product-description"
+        dangerouslySetInnerHTML={{ __html: descriptionWithReadMore }}
+      />
+    );
+  }
   return (
     <>
       <Header search={setSearch} />
@@ -117,7 +138,7 @@ export default function Product() {
                             // navigate("/products/" + product._id);
                           }}
                         >
-                          {product.description}
+                          <TruncatedDescription product={product} />
                         </div>
                         <div className="product-price">
                           <span className="price">{product.price} birr</span>

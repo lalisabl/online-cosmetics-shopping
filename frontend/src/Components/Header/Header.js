@@ -52,8 +52,13 @@ const Header = ({ search }) => {
 
       <nav className="nav">
         <ul>
-          <li>Products</li>
-          <li>Catagories</li>
+          <li
+            onClick={() => {
+              window.location.href = "./products";
+            }}
+          >
+            Products
+          </li>
         </ul>
       </nav>
       <form onSubmit={handleSearchSubmit} className="search">
