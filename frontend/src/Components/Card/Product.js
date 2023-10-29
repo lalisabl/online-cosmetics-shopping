@@ -73,7 +73,7 @@ export default function Product() {
   }, []);
   const [search, setSearch] = useState("all");
   useEffect(() => {
-    navigate(`/products?category=haircare`);
+    navigate(`/products?q=haircare`);
     axios
       .get(`http://127.0.0.1:3000/api/v1/Products?category=makeup`)
       .then((response) => {
@@ -90,8 +90,6 @@ export default function Product() {
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const query = searchParams.get("q");
-  const sort = searchParams.get("sort");
   return (
     <>
       <Header search={setSearch} />
@@ -101,7 +99,6 @@ export default function Product() {
           {" "}
           <Category />
         </div>
-
         <div className="cardContainer">
           <div className="cards product-displayer">
             {!loading ? (
@@ -182,6 +179,17 @@ function PreLoading({ n }) {
 }
 
 function Filter({ setFilter }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const filter = searchParams.get("sort");
+
+  const handleCategoryClick = (newCategory) => {
+    searchParams.set("sort", newCategory);
+    const updatedSearchParams = searchParams.toString();
+    const newURL = `${location.pathname}?${updatedSearchParams}`;
+    navigate(newURL);
+  };
   return (
     <div className="filter">
       <ul>
@@ -189,37 +197,140 @@ function Filter({ setFilter }) {
           {" "}
           <FontAwesomeIcon icon={faSort} /> <span>Filter</span>
         </span>
-        <li>price</li>
-        <li>latest</li>
-        <li>old</li>
+        <li
+          className={filter === "price" && `active`}
+          onClick={() => {
+            handleCategoryClick("price");
+          }}
+        >
+          price
+        </li>
+        <li
+          className={filter === "latest" && `active`}
+          onClick={() => {
+            handleCategoryClick("latest");
+          }}
+        >
+          latest
+        </li>
+        <li
+          className={filter === "old" && `active`}
+          onClick={() => {
+            handleCategoryClick("old");
+          }}
+        >
+          old
+        </li>
       </ul>
     </div>
   );
 }
 
 function Category() {
-  const [active, setActive] = useState("");
-
+  const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const category = searchParams.get("category");
 
+  const handleCategoryClick = (newCategory) => {
+    searchParams.set("category", newCategory);
+    const updatedSearchParams = searchParams.toString();
+    const newURL = `${location.pathname}?${updatedSearchParams}`;
+    navigate(newURL);
+  };
+
   return (
     <div className="Category-side">
+      <h5>Categories</h5>
       <ul>
-        <li onClick={()=>{}} className={category === "skincare" && `active`}>Skincare</li>
-        <li className={category === "makeup" && `active`}>Makeup</li>
-        <li className={category === "haircare" && `active`}>Haircare</li>
-        <li className={category === "fragrances" && `active`}>Fragrances</li>
-        <li className={category === "bath" && `active`}>Bath and Body</li>
-        <li className={category === "nail" && `active`}>Nail Care</li>
-        <li className={category === "organic" && `active`}>
+        <li
+          onClick={() => {
+            handleCategoryClick("skincare");
+          }}
+          className={category === "skincare" && `active`}
+        >
+          Skincare
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("makeup");
+          }}
+          className={category === "makeup" && `active`}
+        >
+          Makeup
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("haircare");
+          }}
+          className={category === "haircare" && `active`}
+        >
+          Haircare
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("fragrances");
+          }}
+          className={category === "fragrances" && `active`}
+        >
+          Fragrances
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("bath");
+          }}
+          className={category === "bath" && `active`}
+        >
+          Bath and Body
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("nail");
+          }}
+          className={category === "nail" && `active`}
+        >
+          Nail Care
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("organic");
+          }}
+          className={category === "organic" && `active`}
+        >
           Organic and Natural
         </li>
-        <li className={category === "gift" && `active`}>Gift Sets</li>
-        <li className={category === "accessories" && `active`}>Accessories</li>
-        <li className={category === "best" && `active`}>Best Sellers</li>
-        <li className={category === "new" && `active`}>New Arrivals</li>
+        <li
+          onClick={() => {
+            handleCategoryClick("gift");
+          }}
+          className={category === "gift" && `active`}
+        >
+          Gift Sets
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("accessories");
+          }}
+          className={category === "accessories" && `active`}
+        >
+          Accessories
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("best");
+          }}
+          className={category === "best" && `active`}
+        >
+          Best Sellers
+        </li>
+        <li
+          onClick={() => {
+            handleCategoryClick("new");
+          }}
+          className={category === "new" && `active`}
+        >
+          New Arrivals
+        </li>
       </ul>
     </div>
   );
