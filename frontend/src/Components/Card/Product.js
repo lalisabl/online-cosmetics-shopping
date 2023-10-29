@@ -126,7 +126,8 @@ export default function Product() {
                       </div>
                       <div className="rating">
                         <span className="av-rating">
-                          4.8 <FontAwesomeIcon icon={faStar} />
+                          {product.ratingsAverage}{" "}
+                          <FontAwesomeIcon icon={faStar} />
                         </span>
                       </div>
                       <AddToCart product={product} />
