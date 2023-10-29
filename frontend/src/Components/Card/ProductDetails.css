@@ -2,6 +2,7 @@
   border-radius: 10px;
   overflow: hidden;
   padding: 1.2rem;
+  margin-left: 14%;
 }
 .carddetail {
   display: flex;
@@ -15,6 +16,9 @@
   position: relative;
   align-items: center;
   overflow: hidden;
+  
+  height: max-content;
+  padding-bottom: 80px;
   border-radius: 1rem 0 0 1rem;
 }
 .cardbody {
