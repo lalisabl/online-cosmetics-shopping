@@ -37,7 +37,6 @@ export function ProductDetails() {
         setLoading(false);
       })
       .catch((error) => {
-        console.error(error);
         setLoading(false);
         setError(true);
       });
@@ -56,9 +55,7 @@ export function ProductDetails() {
         updatedProduct,
         { withCredentials: true }
       )
-      .then((response) => {
-        console.log(response);
-      })
+      .then((response) => {})
       .catch((error) => {
         console.error(error);
       })
@@ -110,7 +107,7 @@ function ProductDet({
     <div className="det">
       <div className=" carddetail">
         <div className="cardimg">
-          <button class="slider__btn btn--left" onClick={() => slideLeft}>
+          <button className="slider__btn btn--left" onClick={slideLeft}>
             &larr;
           </button>
           <img
@@ -121,7 +118,7 @@ function ProductDet({
             alt={product.name}
             variant="top"
           />
-          <button class="slider__btn btn--right" onClick={() => slideRight}>
+          <button className="slider__btn btn--right" onClick={slideRight}>
             &rarr;
           </button>
         </div>

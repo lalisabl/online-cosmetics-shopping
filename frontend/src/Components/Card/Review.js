@@ -16,7 +16,6 @@ export default function Review({ id }) {
       .then((response) => {
         setReview(response.data.data.product.reviews);
         setLoading(false);
-        console.log(response.data.data.product.reviews);
       })
       .catch((error) => {
         console.error(error);
@@ -34,7 +33,6 @@ export default function Review({ id }) {
       )}
       {!loading && !error && (
         <>
-          {" "}
           <h2 className="rev">Featured reviews</h2>
           <div className="reviews">
             {reviews.map((review) => (
@@ -47,7 +45,6 @@ export default function Review({ id }) {
   );
 }
 function ReviewDet({ review }) {
-  console.log(review.user);
   return (
     <div className="reviewdet">
       <div className="reviewhead">

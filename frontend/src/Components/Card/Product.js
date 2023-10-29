@@ -24,7 +24,6 @@ const AddToCart = ({ product }) => {
         quantity: q,
       })
       .then((response) => {
-        console.log(response);
         if (response.status === 201) {
           setAdded(true);
 
@@ -71,7 +70,6 @@ export default function Product() {
         setLoading(false);
       })
       .catch((error) => {
-        console.error(error);
         setLoading(false);
         setError(true);
       });
