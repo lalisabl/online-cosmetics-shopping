@@ -2,6 +2,7 @@ const fs = require("fs");
 const multer = require("multer");
 const sharp = require("sharp");
 const Product = require("../models/product");
+const FuzzySearch = require("fuzzy-search");
 const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/appError");
 const { errorMonitor } = require("nodemailer/lib/xoauth2");
@@ -73,7 +74,6 @@ exports.getAllProducts = async (req, res) => {
       .sort()
       .limiting()
       .paginatinating();
-
     const Products = await features.query;
     res.status(200).json({
       status: "success",
@@ -302,6 +302,37 @@ exports.subcategories = async (req, res) => {
     res.status(404).json({
       status: "fail",
       message: error,
+    });
+  }
+};
+exports.multiSearch = async (req, res) => {
+  try {
+    const searchQuery = req.query.search || "";
+    const products = await Product.find({
+      $or: [
+        { name: { $regex: searchQuery, $options: "i" } },
+        { category: { $regex: searchQuery, $options: "i" } },
+        { subcategory: { $regex: searchQuery, $options: "i" } },
+        { description: { $regex: searchQuery, $options: "i" } },
+      ],
+    });
+    const searcher = new FuzzySearch(
+      products,
+      ["name", "category", "subcategory", "description"],
+      {
+        caseSensitive: false,
+      }
+    );
+    const searchResults = searcher.search(searchQuery);
+    return res.status(200).json({
+      status: "success",
+      ProNumb: searchResults.length,
+      data: searchResults,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: "fail",
+      message: err.message,
     });
   }
 };
