@@ -1,0 +1,24 @@
+.producttitle {
+  line-height: 1.3;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 500;
+  display: inline-block;
+  color: #fff;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  padding: 0.4rem 2rem;
+  background-color: #ba265d;
+  clip-path: polygon(23% 0, 100% 0, 100% 100%, 0 100%);
+}
+.cardd {
+  box-shadow: 4px 4px 8px gray, -4px -4px 8px gray;
+}
+.cardss {
+  grid-gap: 3rem;
+  display: flex;
+  justify-content: center;
+  width: 90%;
+}

@@ -2,6 +2,7 @@ import React from "react";
 import "./Home.css";
 import Header from "../Header/Header";
 import Login from "../../login";
+import HomeCard from "./HomeCard";
 export default function Home() {
   return (
     <div className="home">
@@ -15,6 +16,9 @@ export default function Home() {
             <Login />
           </div>
         </div>
+      </div>
+      <div className="homeCard">
+        <HomeCard />
       </div>
     </div>
   );
