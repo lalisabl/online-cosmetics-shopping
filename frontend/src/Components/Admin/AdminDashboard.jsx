@@ -66,7 +66,14 @@ function Dashboard() {
 function Navbar({ user, onItemClick }) {
   return (
     <nav className="navBar-header">
-      <div className="logo">Dashboard Logo</div>
+      <div
+        onClick={() => {
+          window.location.href = "./";
+        }}
+        className="logo"
+      >
+        <img src="/image/wubit_logo.png" />
+      </div>
       <div className="nav-links Login-signUp right-side-nav">
         <div>
           <FontAwesomeIcon icon={faHome} />
@@ -87,13 +94,17 @@ function Navbar({ user, onItemClick }) {
 }
 
 function MainDis({ element }) {
+  return <main className="main-content">{element ? element : <Dsb />}</main>;
+}
+function Dsb() {
   return (
-    <main className="main-content">
-      {element ? element : "Select an item from the sidebar"}
-    </main>
+    <>
+      <Card>User management</Card>
+      <Card>product management</Card>
+      <Card>system management</Card>
+    </>
   );
 }
-
 function Sidebar({ onItemClick }) {
   const [activeMenuItem, setActiveMenuItem] = useState("");
   const navigate = useNavigate();

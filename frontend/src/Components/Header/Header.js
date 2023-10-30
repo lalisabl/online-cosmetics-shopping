@@ -63,7 +63,7 @@ const Header = ({ search,newChange }) => {
     <header className="header">
       <div
         onClick={() => {
-          window.location.href = "./";
+          window.location.href = "/";
         }}
         className="logo"
       >

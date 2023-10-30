@@ -90,11 +90,12 @@
   cursor: pointer;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.096);
+  background-color: rgba(0, 0, 0, 0.196);
 }
 .cart-disp {
   z-index: 100;
   min-width: 800px;
+  max-width: 800px;
   position: absolute;
   right: 1%;
   top: 10%;
@@ -109,8 +110,22 @@
   font-size: 14px;
   font-weight: bold;
 }
-
-
+.link{
+  color: pink;
+}
+.cart-items  .card {
+max-height: 400px;
+max-width: 160px;
+}
+.cart-items .product-title, .cart-items .product-price{
+  padding: 0;
+  margin: 0;
+}
+.cart-items .card-img img {
+  min-height: 3rem;
+  max-height: 8rem;
+  object-fit: cover;
+}
 /* Responsive Design */
 @media (max-width: 768px) {
   .nav {

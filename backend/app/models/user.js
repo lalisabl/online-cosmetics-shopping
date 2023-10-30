@@ -6,6 +6,7 @@ const validator = require("validator");
 const ROLES = {
   CUSTOMER: "customer",
   ADMIN: "admin",
+  SELLER: "seller",
 };
 
 const userSchema = new mongoose.Schema({

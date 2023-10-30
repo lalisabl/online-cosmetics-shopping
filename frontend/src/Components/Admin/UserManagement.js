@@ -39,7 +39,7 @@ export default function UserManagement() {
         setError(true);
       });
   }, [deleted]);
-  
+
   return (
     <div>
       {!loading ? (
@@ -73,6 +73,20 @@ export default function UserManagement() {
 
 function User({ user, DeleteUSer }) {
   const [loading, setLoading] = useState(true);
+  const [role, setRole] = useState("");
+  const handleRoleChange = (e) => {
+    setRole(e.target.value);
+    axios
+      .patch(
+        `http://localhost:3000/api/v1/users/giveRole/${user._id}`,
+        { role: role },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {})
+      .catch((err) => {});
+  };
 
   return (
     <div className="wider-displays-dshb user-manage">
@@ -103,12 +117,30 @@ function User({ user, DeleteUSer }) {
               <FontAwesomeIcon icon={faBan} />
               Ban
             </button>
-            <select className="btn btn-dark">
-              <option value={""}>Change role</option>
-              <option value={"admin"}>Admin</option>
-              <option value={"seller"}>Seller</option>
-              <option value={"normal"}>normal</option>
-            </select>
+            {user.role !== "admin" ? (
+              <select
+                name="role"
+                onChange={handleRoleChange}
+                className="btn btn-dark"
+              >
+                <option value={""}>{user.role}</option>
+                <option value={"admin"}>Admin</option>
+                <option value={"seller"}>Seller</option>
+                <option value={"customer"}>normal</option>
+              </select>
+            ) : (
+              <select
+                disabled
+                name="role"
+                onChange={handleRoleChange}
+                className="btn btn-dark"
+              >
+                <option value={""}>{user.role}</option>
+                <option value={"admin"}>Admin</option>
+                <option value={"seller"}>Seller</option>
+                <option value={"customer"}>normal</option>
+              </select>
+            )}
           </div>
         </div>
       </Card>

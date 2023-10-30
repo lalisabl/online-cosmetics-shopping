@@ -54,7 +54,7 @@ export default function Carts({ closeCart, removed }) {
 
     const descriptionWithReadMore =
       product.description.length > maxChars
-        ? `${truncatedDescription} <a href="/products/${product._id}">(Read More)</a>`
+        ? `${truncatedDescription} <span className="link" href="/products/${product._id}">Read More</span>`
         : truncatedDescription;
 
     return (
@@ -88,7 +88,8 @@ export default function Carts({ closeCart, removed }) {
         {!error ? (
           !loading ? (
             <>
-              <h2>Your Shopping Cart</h2>
+              <h4>Your Shopping Cart</h4>
+              <hr />
               <div className="cart-items">
                 <div className="cards product-displayer">
                   {products.length > 0 ? (
@@ -126,12 +127,7 @@ export default function Carts({ closeCart, removed }) {
                             </span>
                             /piece
                           </div>
-                          <div className="rating">
-                            <span className="av-rating">
-                              {i.product.ratingsAverage}{" "}
-                              <FontAwesomeIcon icon={faStar} />
-                            </span>
-                          </div>
+
                           <RemoveFromCart
                             itemId={i.product._id}
                             deleted={() => setChange(!change)}
@@ -151,7 +147,7 @@ export default function Carts({ closeCart, removed }) {
                 </div>
               </div>
               <div className="cart-footer">
-                <button>Checkout</button>
+                <button className="add-cart">Order now</button>
               </div>
             </>
           ) : (
