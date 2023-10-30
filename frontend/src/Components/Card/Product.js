@@ -8,15 +8,11 @@ import { faStar, faSort } from "@fortawesome/free-solid-svg-icons";
 import { LoadingCard, LoadingCardVert } from "../shared/LoadingCard";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import GenericModal from "../shared/GenericModal";
-export const AddToCart = ({ product }) => {
+export const AddToCart = ({ product, Added }) => {
   const [cartItems, setCartItems] = useState([]);
   const [added, setAdded] = useState(false);
-  const userId = "650b195f5162ce66a16ab88e";
   const [quantity, setQuantity] = useState(9);
 
-  const removeFromCart = () => {
-    setAdded(false);
-  };
   const handlechange = (e) => {
     setQuantity(e.target.value);
   };
@@ -34,6 +30,7 @@ export const AddToCart = ({ product }) => {
       .then((response) => {
         if (response.status === 201) {
           setAdded(true);
+          Added();
           setCartItems([...cartItems, product]);
         }
       })
@@ -142,9 +139,10 @@ export default function Product() {
       />
     );
   }
+  const [change, setChange] = useState(false);
   return (
     <>
-      <Header search={setSearch} />
+      <Header newChange={change} search={setSearch} />
       <Filter />
       <div className="product-pg">
         <div>
@@ -195,7 +193,10 @@ export default function Product() {
                             <FontAwesomeIcon icon={faStar} />
                           </span>
                         </div>
-                        <AddToCart product={product} />
+                        <AddToCart
+                          Added={() => setChange(!change)}
+                          product={product}
+                        />
                       </CardBody>
                     </div>
                   ))
