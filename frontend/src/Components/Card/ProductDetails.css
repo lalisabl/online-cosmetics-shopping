@@ -16,7 +16,7 @@
   position: relative;
   align-items: center;
   overflow: hidden;
-  
+
   height: max-content;
   padding-bottom: 80px;
   border-radius: 1rem 0 0 1rem;
@@ -31,6 +31,7 @@
 .card-img:hover .card-image {
   transform: scale(1);
 }
+
 .form {
   position: absolute;
   bottom: 0;

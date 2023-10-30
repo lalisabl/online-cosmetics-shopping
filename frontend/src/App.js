@@ -10,6 +10,7 @@ import SellerDashboard from "./Components/seller/SellerDashboard";
 import { OperationMessage } from "./Components/seller/ProductManagement";
 import { ProductDetails } from "./Components/Card/ProductDetails";
 import RegistrationForm from "./Components/shared/userRegistrationForm";
+import Home from "./Components/Home/Home";
 function RouteEcommerce() {
   return (
     <>
@@ -19,7 +20,8 @@ function RouteEcommerce() {
           <Route exact path="/products/:id" element={<ProductDetails />} />
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/sellerDashBoard" element={<SellerDashboard />} />
-          <Route path="/" element={<Home />} />
+          <Route index element={<Home />} />
+
           <Route path="/admin/" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<RegistrationForm />} />
