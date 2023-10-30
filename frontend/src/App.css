@@ -262,3 +262,19 @@ body {
 .cardContainer {
   margin-left: 14.5%;
 }
+
+/* cart part */
+.adding-to-card {
+}
+.adding-to-card img {
+  max-height: 40px;
+  width: auto;
+  margin-right: 5px;
+  border-radius: 5px;
+}
+.adding-to-card .btn-primary{
+  background: var(--color-primary);
+  background-color: var(--color-primary);
+  outline: #ba265d;
+  border: #ba265d;
+}
