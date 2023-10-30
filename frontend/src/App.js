@@ -31,13 +31,7 @@ function RouteEcommerce() {
     </>
   );
 }
-function Home() {
-  return (
-    <>
-      <h1>hello home</h1>
-    </>
-  );
-}
+
 function App() {
   return (
     <div className="App">
