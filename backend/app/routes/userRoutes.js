@@ -10,13 +10,11 @@ const authoController = require("../controllers/authControler");
 router.post("/register", authoController.createNewAccount);
 router.post("/login", authoController.loginUsers);
 router.get("/logout", authoController.logoutUser);
-router
-  .route("/")
-  .get(
-    authoController.protect,
-    authoController.restrictsto("admin"),
-    userController.getAllUsers
-  );
+router.route("/").get(
+  authoController.protect,
+  // authoController.restrictsto("admin"),
+  userController.getAllUsers
+);
 
 router
   .route("/me")
@@ -40,7 +38,7 @@ router.patch(
   userController.resizeUserPhoto,
   userController.updateMe
 );
-
+router.patch("/giveRole/:id", userController.updateOne);
 router.patch(
   "/updatePassword",
   authoController.protect,

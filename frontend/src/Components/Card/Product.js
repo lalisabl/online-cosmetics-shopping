@@ -7,26 +7,33 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faSort } from "@fortawesome/free-solid-svg-icons";
 import { LoadingCard, LoadingCardVert } from "../shared/LoadingCard";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-const AddToCart = ({ product }) => {
+import GenericModal from "../shared/GenericModal";
+export const AddToCart = ({ product }) => {
   const [cartItems, setCartItems] = useState([]);
   const [added, setAdded] = useState(false);
   const userId = "650b195f5162ce66a16ab88e";
-  const q = 3;
+  const [quantity, setQuantity] = useState(9);
 
   const removeFromCart = () => {
     setAdded(false);
   };
-
-  const addToCart = () => {
+  const handlechange = (e) => {
+    setQuantity(e.target.value);
+  };
+  const addToCart = (e) => {
+    e.preventDefault();
+    console.log(quantity);
     axios
-      .post(`http://127.0.0.1:3000/api/v1/cart/addProducts/${product._id}`, {
-        userId: userId,
-        quantity: q,
-      })
+      .post(
+        `http://localhost:3000/api/v1/cart/addProducts/${product._id}`,
+        {
+          quantity: quantity,
+        },
+        { withCredentials: true }
+      )
       .then((response) => {
         if (response.status === 201) {
           setAdded(true);
-
           setCartItems([...cartItems, product]);
         }
       })
@@ -34,19 +41,60 @@ const AddToCart = ({ product }) => {
         console.error("Error adding to cart:", error);
       });
   };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   return (
-    <div className="cart">
-      <button
-        className="add-cart"
-        onClick={() => addToCart(product)}
-        style={{
-          backgroundColor: added ? "#e6aab5" : "##f7a354",
-          color: added ? "black" : "white",
-        }}
-      >
-        {added ? "ADDED" : "ADD TO CART"}
-      </button>
-    </div>
+    <>
+      {isModalOpen ? (
+        <GenericModal isOpen={isModalOpen} onClose={closeModal}>
+          <div className="adding-to-card">
+            <div>
+              <img
+                className="card-image"
+                src={
+                  "http://localhost:3000/images/products/" + product.images[0]
+                }
+                alt={product.name}
+                variant="top"
+              />
+              <span>{product.name}</span>
+            </div>
+            <div>available in stock:{product.stockQuantity}</div>
+            <form onSubmit={addToCart}>
+              <label>How many do you want:</label>
+              <input type="number" name="quantity" onChange={handlechange} />
+              <button type="submit" className="btn add-cart">
+                Add it
+              </button>
+              {added ? (
+                <>
+                  <span className="alert alert-success">
+                    Successfully added
+                  </span>
+                  <span hidden> {setTimeout(closeModal, 1000)}</span>
+                </>
+              ) : (
+                <></>
+              )}
+            </form>
+          </div>
+        </GenericModal>
+      ) : (
+        <></>
+      )}
+      <div className="cart">
+        <button className="add-cart" onClick={openModal}>
+          ADD TO CART
+        </button>
+      </div>
+    </>
   );
 };
 
@@ -75,19 +123,18 @@ export default function Product() {
       });
   }, [newURL]);
 
-
   function TruncatedDescription({ product }) {
-    const maxChars = 50; 
+    const maxChars = 50;
     const truncatedDescription =
       product.description.length > maxChars
         ? product.description.slice(0, maxChars) + "..."
         : product.description;
-  
+
     const descriptionWithReadMore =
       product.description.length > maxChars
         ? `${truncatedDescription} <a href="/products/${product._id}">(Read More)</a>`
         : truncatedDescription;
-  
+
     return (
       <div
         className="product-description"

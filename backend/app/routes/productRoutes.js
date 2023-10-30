@@ -4,7 +4,7 @@ const productController = require("./../controllers/productController");
 const authorizationController = require("../controllers/authControler");
 const reviewRouter = require("./reviewRoutes");
 router.use("/:productId/reviews", reviewRouter);
-
+router.route("/multiSearch").get(productController.multiSearch);
 router
   .route("/top-3-cheap")
   .get(productController.aliasTopProducts, productController.getAllProducts);

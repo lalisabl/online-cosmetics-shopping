@@ -67,7 +67,7 @@ exports.loginUsers = catchAsync(async (req, res, next) => {
         new AppError("Account is locked. Please try again later!", 401)
       );
     } else {
-      // If the lockout period has passed, reset the login attempts and unlock the account
+      //If the lockout period has passed, reset the login attempts and unlock the account
       user.loginAttempts = 0;
       user.isLocked = false;
       user.lockedUntil = null;
