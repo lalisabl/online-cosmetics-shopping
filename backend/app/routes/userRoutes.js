@@ -38,7 +38,7 @@ router.patch(
   userController.resizeUserPhoto,
   userController.updateMe
 );
-router.patch("/giveRole/:id", userController.updateOne);
+router.patch("/giveRole/:id", authoController.protect, authoController.restrictsto("admin"), userController.updateOne);
 router.patch(
   "/updatePassword",
   authoController.protect,

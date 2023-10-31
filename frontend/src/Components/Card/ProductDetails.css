@@ -16,7 +16,7 @@
   position: relative;
   align-items: center;
   overflow: hidden;
-  
+
   height: max-content;
   padding-bottom: 80px;
   border-radius: 1rem 0 0 1rem;
@@ -31,6 +31,7 @@
 .card-img:hover .card-image {
   transform: scale(1);
 }
+
 .form {
   position: absolute;
   bottom: 0;
@@ -59,14 +60,14 @@
   border: none;
 }
 .desc {
-  font-weight: 700;
+  font-weight: 500;
 }
 .ratings {
   display: flex;
   align-items: center;
 }
 .slider__btn {
-  border: 3px solid #28b485;
+  border: 3px solid #eb2f64;
   background: rgba(255, 255, 255, 0.7);
   font-family: inherit;
   color: #333;
