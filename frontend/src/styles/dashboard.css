@@ -228,3 +228,13 @@
 .user-info .logMenu:hover {
   display: block;
 }
+
+.dashboard-card{
+  margin: 5px auto;
+  width: 98%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  grid-gap: 17px;
+}.dashboard-card .card {
+  min-height: 190px;
+}

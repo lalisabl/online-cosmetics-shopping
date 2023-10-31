@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Loading() {
+export default function LoadingSVG() {
   return (
     <div className="loading">
       <svg
@@ -12,9 +12,9 @@ export default function Loading() {
       >
         <defs>
           <linearGradient x1="8.042%" y1="0%" x2="65.682%" y2="23.865%" id="a">
-            <stop stopColor="#29a329" stopOpacity="0" offset="0%" />
-            <stop stopColor="#29a329" stopOpacity=".631" offset="63.146%" />
-            <stop stopColor="#29a329" offset="100%" />
+            <stop stopColor="#ff3366" stopOpacity="0" offset="0%" />
+            <stop stopColor="#ff3366" stopOpacity=".631" offset="63.146%" />
+            <stop stopColor="#ff3366" offset="100%" />
           </linearGradient>
         </defs>
         <g fill="none" fillRule="evenodd">
@@ -34,7 +34,7 @@ export default function Loading() {
                 repeatCount="indefinite"
               />
             </path>
-            <circle fill="#29a329" cx="36" cy="18" r="1">
+            <circle fill="#ff3366" cx="36" cy="18" r="1">
               <animateTransform
                 attributeName="transform"
                 type="rotate"

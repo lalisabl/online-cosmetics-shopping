@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Card, CardImg, CardTitle } from "reactstrap";
+import { Card, CardBody, CardImg, CardTitle } from "reactstrap";
 import { timeAgo } from "../shared/SharedComp";
 import "./../../styles/dashboard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -98,11 +98,35 @@ function MainDis({ element }) {
 }
 function Dsb() {
   return (
-    <>
-      <Card>User management</Card>
-      <Card>product management</Card>
-      <Card>system management</Card>
-    </>
+    <div className="dashboard-card">
+      <Card>
+        <CardBody>User management</CardBody>
+      </Card>
+      <Card>
+        {" "}
+        <CardBody>User management</CardBody>
+      </Card>
+      <Card>
+        {" "}
+        <CardBody>User management</CardBody>
+      </Card>
+      <Card>
+        {" "}
+        <CardBody>User management</CardBody>
+      </Card>
+      <Card>
+        {" "}
+        <CardBody>User management</CardBody>
+      </Card>
+      <Card>
+        {" "}
+        <CardBody>User management</CardBody>
+      </Card>
+      <Card>
+        {" "}
+        <CardBody>User management</CardBody>
+      </Card>
+    </div>
   );
 }
 function Sidebar({ onItemClick }) {
@@ -122,7 +146,8 @@ function Sidebar({ onItemClick }) {
           <FontAwesomeIcon icon={faHome} /> Dashboard
         </li>
         <li onClick={() => onItemClick(<ProductManagement />)}>
-          <FontAwesomeIcon icon={faClipboardList} /> product management
+          <FontAwesomeIcon icon={faClipboardList} />{" "}
+          <CardBody>User management</CardBody>
         </li>
         <li onClick={() => onItemClick(<UserManagement />)}>
           <FontAwesomeIcon icon={faUsers} /> User management

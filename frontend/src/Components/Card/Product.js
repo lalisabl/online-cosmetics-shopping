@@ -216,6 +216,8 @@ export default function Product() {
               </>
             )}
           </div>
+          <button>next page</button>
+          {}
         </div>
       </div>
     </>

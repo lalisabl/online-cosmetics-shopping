@@ -31,7 +31,7 @@ export default function Carts({ closeCart, removed }) {
       .catch((err) => {
         setLoading(false);
         setError(err.response.data.message);
-        console.log(err.response.status);
+        // console.log(err.response.status);
         if (err.response.status === 401) {
           setLoggedIn(false);
         }
@@ -63,6 +63,21 @@ export default function Carts({ closeCart, removed }) {
         dangerouslySetInnerHTML={{ __html: descriptionWithReadMore }}
       />
     );
+  }
+  function handleOrderNow() {
+    setLoading(true);
+    axios
+      .get("http://localhost:3000/api/v1/Orders/checkout-session", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setLoading(false);
+        window.location.href = res.data.session.url;
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   }
   return (
     <>
@@ -127,6 +142,7 @@ export default function Carts({ closeCart, removed }) {
                             </span>
                             /piece
                           </div>
+                          <span>quantity:{i.quantity}</span>
 
                           <RemoveFromCart
                             itemId={i.product._id}
@@ -147,7 +163,9 @@ export default function Carts({ closeCart, removed }) {
                 </div>
               </div>
               <div className="cart-footer">
-                <button className="add-cart">Order now</button>
+                <button onClick={handleOrderNow} className="add-cart">
+                  Order now
+                </button>
               </div>
             </>
           ) : (
