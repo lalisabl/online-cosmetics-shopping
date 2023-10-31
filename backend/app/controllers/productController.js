@@ -24,10 +24,25 @@ class APIfeatures {
     this.query = query;
     this.queryString = queryString;
   }
+  multfilter() {
+    const searchQuery = this.queryString.search || "";
+    if (typeof searchQuery === "string") {
+      const regexSearch = {
+        $or: [
+          { name: { $regex: searchQuery, $options: "i" } },
+          { category: { $regex: searchQuery, $options: "i" } },
+          { subcategory: { $regex: searchQuery, $options: "i" } },
+          { description: { $regex: searchQuery, $options: "i" } },
+        ],
+      };
+      this.query.find(regexSearch);
+    }
+    return this;
+  }
   filter() {
     //1 build query
     const queryObj = { ...this.queryString };
-    const excludedFields = ["page", "limit", "sort", "fields"];
+    const excludedFields = ["page", "limit", "sort", "fields", "search"];
     excludedFields.forEach((el) => delete queryObj[el]);
     // advanced query
     let queryStr = JSON.stringify(queryObj);
@@ -35,7 +50,7 @@ class APIfeatures {
       /\b(gte|gt|lte|lt|eq)\b/g,
       (match) => `$${match}`
     );
-    this.query = Product.find(JSON.parse(queryStr));
+    this.query = this.query.find(JSON.parse(queryStr));
     return this;
   }
   sort() {
@@ -64,12 +79,12 @@ class APIfeatures {
     return this;
   }
 }
-
 // get all products
 exports.getAllProducts = async (req, res) => {
   try {
     //4 excute query
     const features = new APIfeatures(Product.find(), req.query)
+      .multfilter()
       .filter()
       .sort()
       .limiting()
@@ -83,6 +98,7 @@ exports.getAllProducts = async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
     res.status(404).json({
       status: "fail",
       message: err,
@@ -131,7 +147,6 @@ exports.getEachProduct = async (req, res) => {
     });
   }
 };
-
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("images")) {
@@ -167,9 +182,7 @@ exports.resizeProductImages = catchAsync(async (req, res, next) => {
 });
 // createNewProduct
 exports.createNewProduct = async (req, res, next) => {
-  console.log(req.file);
   const imageUrl = req.file ? req.file.filename : "";
-  console.log(req.file);
   try {
     const newProduct = await Product.create(req.body);
     res.status(201).json({
@@ -308,22 +321,15 @@ exports.subcategories = async (req, res) => {
 exports.multiSearch = async (req, res) => {
   try {
     const searchQuery = req.query.search || "";
-    const products = await Product.find({
+    const regexSearch = {
       $or: [
         { name: { $regex: searchQuery, $options: "i" } },
         { category: { $regex: searchQuery, $options: "i" } },
         { subcategory: { $regex: searchQuery, $options: "i" } },
         { description: { $regex: searchQuery, $options: "i" } },
       ],
-    });
-    const searcher = new FuzzySearch(
-      products,
-      ["name", "category", "subcategory", "description"],
-      {
-        caseSensitive: false,
-      }
-    );
-    const searchResults = searcher.search(searchQuery);
+    };
+    const searchResults = await Product.find(regexSearch);
     return res.status(200).json({
       status: "success",
       ProNumb: searchResults.length,

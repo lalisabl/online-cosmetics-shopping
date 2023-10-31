@@ -71,7 +71,6 @@ userSchema.pre("save", function (next) {
   if (!this.isModified("password")) {
     return next();
   }
-
   const saltRounds = 10; // Number of salt rounds for bcrypt
   bcrypt.hash(this.password, saltRounds, (err, hash) => {
     if (err) {
@@ -89,16 +88,12 @@ userSchema.methods.validatePassword = async function (
 };
 userSchema.methods.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32).toString("hex");
-
   this.passwordResetToken = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
-
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-
   return resetToken;
 };
 const User = mongoose.model("User", userSchema);
-
 module.exports = User;

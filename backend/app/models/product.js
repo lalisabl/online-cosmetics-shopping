@@ -64,8 +64,8 @@ const productSchema = new mongoose.Schema({
       ref: "Product",
     },
   ],
-  tagsKeywords: [String],
   availabilityStatus: String,
+  tagsKeywords: [String],
   productVariants: [
     {
       variantName: String,

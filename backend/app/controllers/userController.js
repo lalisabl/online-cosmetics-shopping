@@ -88,17 +88,18 @@ exports.getOneUser = catchAsync(async (req, res, next) => {
 exports.deleteUser = async (req, res, next) => {
   const userId = req.params.userId;
   try {
-    const user = await User.findByIdAndRemove(userId);
+    const user = await User.findById(userId);
     if (!user) {
       throw new Error(`There is no user with ${userId} _id`);
-    } else {
-      return res.status(204).json({
-        status: "success",
-        data: {
-          user: {},
-        },
-      });
     }
+    user.isActive = user.isActive == false ? true : false;
+    await user.save();
+    return res.status(204).json({
+      status: "success",
+      data: {
+        user: user,
+      },
+    });
   } catch (err) {
     next(err);
   }
@@ -108,11 +109,9 @@ exports.updateOne = catchAsync(async (req, res, next) => {
     new: true,
     runValidators: true,
   });
-
   if (!doc) {
     return next(new AppError("No document found with that ID", 404));
   }
-
   res.status(200).json({
     status: "success",
     data: {

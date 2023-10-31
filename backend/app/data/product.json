@@ -7,10 +7,7 @@
     "subcategory": "moisturizer",
     "price": 29.99,
     "stockQuantity": 100,
-    "images": [
-      "https://m.media-amazon.com/images/I/41NdG-RFAkL._AC_SL1050_",
-      "image_url_2"
-    ],
+    "images": ["defualt.jpg", "image_url_2.jpg"],
     "sizeVolume": "50ml",
     "weightQuantity": 20,
     "colors": ["Red", "Pink", "Nude"],

@@ -34,17 +34,12 @@ exports.getCheckoutSessios = async (req, res) => {
         quantity: cartProduct.quantity,
       };
     });
-    // success_url: `${req.protocol}://${req.get('host')}/my-tours/?tour=${
-    //   req.params.tourId
-    // }&user=${req.user.id}&price=${tour.price}`,
     const testProducts = products.map((item) => item._id);
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: items,
       mode: "payment",
-      success_url: `http://127.0.0.1:3000/api/v1/Overview?products=${testProducts.join(
-        ","
-      )}&user=${req.user.id}&totalPrice=${userCart.totalPrice}`,
+      success_url: `http://127.0.0.1:3000/api/v1/Products`,
       cancel_url: `http://127.0.0.1:3000/api/v1/Products`,
       customer_email: req.user.email,
     });
@@ -53,6 +48,7 @@ exports.getCheckoutSessios = async (req, res) => {
       session,
     });
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       status: "fail",
       message: err,
@@ -61,10 +57,7 @@ exports.getCheckoutSessios = async (req, res) => {
 };
 
 exports.createBookingCheckout = async (req, res, next) => {
-  let { products, user, totalPrice } = req.query;
-  if (!products || !user || !totalPrice) next();
-  console.log(products, user, totalPrice);
-  const cart = await Cart.findOne({ user: user });
+  const cart = await Cart.findOne({ user: req.user.id });
   const product = cart.items.map((cartProduct) => {
     return {
       product: cartProduct.product,
@@ -72,7 +65,7 @@ exports.createBookingCheckout = async (req, res, next) => {
   });
   totalPrice = cart.totalPrice;
   const order = new Order({
-    user: user,
+    user: req.user.id,
     products: product,
     totalPrice: totalPrice,
     paymentMethod: "Credit Card",
