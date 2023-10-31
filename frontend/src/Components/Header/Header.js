@@ -4,11 +4,11 @@ import "./Header.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faHome } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { UserProfile } from "../seller/SellerDashboard";
 import Carts from "../Cart/Cart";
 
-const Header = ({ search,newChange }) => {
+const Header = ({newChange }) => {
   const [user, setUser] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -36,8 +36,15 @@ const Header = ({ search,newChange }) => {
   };
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    search(searchQ);
+    searchParams.set("search", searchQ);
+    const updatedSearchParams = searchParams.toString();
+    const newURL = `${location.pathname}?${updatedSearchParams}`;
+    navigate(newURL);
   };
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const filter = searchParams.get("sort");
 
   const [productsLen, setProductsLen] = useState("");
   const [change, setChange] = useState(false);
@@ -57,7 +64,7 @@ const Header = ({ search,newChange }) => {
           setIsLoggedIn(false);
         }
       });
-  }, [change,newChange]);
+  }, [change, newChange]);
   const [openCart, setCartOpen] = useState(false);
   return (
     <header className="header">

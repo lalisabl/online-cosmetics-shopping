@@ -8,17 +8,28 @@ import { faStar, faSort } from "@fortawesome/free-solid-svg-icons";
 import { LoadingCard, LoadingCardVert } from "../shared/LoadingCard";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import GenericModal from "../shared/GenericModal";
+import Login from "../../login";
 export const AddToCart = ({ product, Added }) => {
   const [cartItems, setCartItems] = useState([]);
   const [added, setAdded] = useState(false);
   const [quantity, setQuantity] = useState(9);
 
+  const [isLoggedIn, setLoggedIn] = useState(true);
+  const [inputError, setInputError] = useState(false);
+  const [inputErrorMsg, setInputErrorMsg] = useState("");
   const handlechange = (e) => {
-    setQuantity(e.target.value);
+    setInputError(false);
+    setInputErrorMsg("");
+    const value = e.target.value;
+    if (isNaN(value) || parseFloat(value) <= 0) {
+      setInputError(true);
+      setInputErrorMsg("not valid phone number");
+    } else {
+      setQuantity(e.target.value);
+    }
   };
   const addToCart = (e) => {
     e.preventDefault();
-    console.log(quantity);
     axios
       .post(
         `http://localhost:3000/api/v1/cart/addProducts/${product._id}`,
@@ -35,6 +46,9 @@ export const AddToCart = ({ product, Added }) => {
         }
       })
       .catch((error) => {
+        if (error.response.status === 401) {
+          setLoggedIn(false);
+        }
         console.error("Error adding to cart:", error);
       });
   };
@@ -47,8 +61,33 @@ export const AddToCart = ({ product, Added }) => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  const [isLoginModalOpen, setLoginIsModalOpen] = useState(false);
+  useEffect(() => {
+    setLoginIsModalOpen(!isLoggedIn);
+    setIsModalOpen(false);
+  }, [isLoggedIn]);
+  const closeLoginModal = () => {
+    setLoginIsModalOpen(false);
+    setLoggedIn(true);
+  };
   return (
     <>
+      {!isLoggedIn ? (
+        <div className="login-modal">
+          <GenericModal
+            isOpen={isLoginModalOpen}
+            onClose={closeLoginModal}
+            children={
+              <>
+                <Login />
+              </>
+            }
+          />
+        </div>
+      ) : (
+        <></>
+      )}
       {isModalOpen ? (
         <GenericModal isOpen={isModalOpen} onClose={closeModal}>
           <div className="adding-to-card">
@@ -67,6 +106,11 @@ export const AddToCart = ({ product, Added }) => {
             <form onSubmit={addToCart}>
               <label>How many do you want:</label>
               <input type="number" name="quantity" onChange={handlechange} />
+              {inputError ? (
+                <div className="alert alert-danger">{inputErrorMsg}</div>
+              ) : (
+                <></>
+              )}
               <button type="submit" className="btn add-cart">
                 Add it
               </button>
@@ -100,11 +144,12 @@ export default function Product() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
-  const [search, setSearch] = useState("all");
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const newURL = `${location.pathname}?${searchParams}`;
+
+
   useEffect(() => {
     setLoading(true);
     navigate(newURL);
@@ -142,7 +187,7 @@ export default function Product() {
   const [change, setChange] = useState(false);
   return (
     <>
-      <Header newChange={change} search={setSearch} />
+      <Header newChange={change}  />
       <Filter />
       <div className="product-pg">
         <div>

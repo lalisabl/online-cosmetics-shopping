@@ -46,23 +46,29 @@ export default function Review({ id }) {
 }
 function ReviewDet({ review }) {
   return (
-    <div className="reviewdet">
-      <div className="reviewhead">
-        <div className="user-image">
-          <img
-            src={
-              review.user.photo
-                ? `http://localhost:3000/images/users/` + review.user.photo
-                : "./image/userplaceholder.jpg"
-            }
-          />
-        </div>
-        <div className="reviewheader">{review.user.fullName}</div>
-      </div>
+    <>
+      {review.user ? (
+        <div className="reviewdet">
+          <div className="reviewhead">
+            <div className="user-image">
+              <img
+                src={
+                  review.user.photo
+                    ? `http://localhost:3000/images/users/` + review.user.photo
+                    : "./image/userplaceholder.jpg"
+                }
+              />
+            </div>
+            <div className="reviewheader">{review.user.fullName}</div>
+          </div>
 
-      <div className="reviw">
-        <p>{review.review}</p>
-      </div>
-    </div>
+          <div className="reviw">
+            <p>{review.review}</p>
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
+    </>
   );
 }

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Card, CardImg, CardTitle, Row } from "reactstrap";
+import { Card, CardBody, CardImg, CardTitle, Row } from "reactstrap";
 import { timeAgo } from "../shared/SharedComp";
 import "./../../styles/dashboard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -136,11 +136,52 @@ export function UserProfile({ user, onItemClick }) {
     </>
   );
 }
+
 function MainDis({ element }) {
+  return <main className="main-content">{element ? element : <Dsb />}</main>;
+}
+function Dsb() {
+  const [userNum, setUseNum] = useState("");
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/v1/users", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setUseNum(res.data.totalUser);
+      })
+      .catch((err) => {});
+  });
   return (
-    <main className="main-content">
-      {element ? element : "Select an item from the sidebar"}
-    </main>
+    <div className="dashboard-card">
+      <Card>
+        <CardBody>{userNum} Users </CardBody>
+      </Card>
+      <Card>
+        {" "}
+        <CardBody>User management</CardBody>
+      </Card>
+      <Card>
+        {" "}
+        <CardBody>User management</CardBody>
+      </Card>
+      <Card>
+        {" "}
+        <CardBody>User management</CardBody>
+      </Card>
+      <Card>
+        {" "}
+        <CardBody>User management</CardBody>
+      </Card>
+      <Card>
+        {" "}
+        <CardBody>User management</CardBody>
+      </Card>
+      <Card>
+        {" "}
+        <CardBody>User management</CardBody>
+      </Card>
+    </div>
   );
 }
 

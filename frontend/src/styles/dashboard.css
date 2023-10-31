@@ -1,13 +1,20 @@
 /* Reset some default styles */
 .navBar-header {
   display: flex;
+  position: fixed;
   font-size: 18px;
-  margin: 0;
-  padding: 13px;
+  margin: auto;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  padding: 10px;
+  width: 99.8vw;
   margin-bottom: 5px;
   border-radius: 18px;
   background-color: white;
   justify-content: space-between;
+
+  box-shadow: 0 0 7px 2px rgba(7, 7, 7, 0.12);
 }
 .navBar-header .logo {
   color: var(--color-primary);
@@ -25,13 +32,18 @@
   margin-right: 20px;
   text-decoration: none;
 }
-
+.dashboard-container {
+  position: relative;
+  margin-top: 5.7%;
+}
 /* Sidebar */
 .sidebar {
   width: 250px;
   background-color: white;
   height: 100vh;
   left: 0;
+
+  box-shadow: 0 0 7px 2px rgba(7, 7, 7, 0.072);
   position: fixed;
   border-radius: 8px;
   padding: 20px;
@@ -229,12 +241,13 @@
   display: block;
 }
 
-.dashboard-card{
+.dashboard-card {
   margin: 5px auto;
   width: 98%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
   grid-gap: 17px;
-}.dashboard-card .card {
+}
+.dashboard-card .card {
   min-height: 190px;
 }

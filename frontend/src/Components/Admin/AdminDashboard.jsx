@@ -97,10 +97,21 @@ function MainDis({ element }) {
   return <main className="main-content">{element ? element : <Dsb />}</main>;
 }
 function Dsb() {
+  const [userNum, setUseNum] = useState("");
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/v1/users", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setUseNum(res.data.totalUser);
+      })
+      .catch((err) => {});
+  });
   return (
     <div className="dashboard-card">
       <Card>
-        <CardBody>User management</CardBody>
+        <CardBody>{userNum} Users </CardBody>
       </Card>
       <Card>
         {" "}
@@ -146,8 +157,7 @@ function Sidebar({ onItemClick }) {
           <FontAwesomeIcon icon={faHome} /> Dashboard
         </li>
         <li onClick={() => onItemClick(<ProductManagement />)}>
-          <FontAwesomeIcon icon={faClipboardList} />{" "}
-          <CardBody>User management</CardBody>
+          <FontAwesomeIcon icon={faClipboardList} /> Product management
         </li>
         <li onClick={() => onItemClick(<UserManagement />)}>
           <FontAwesomeIcon icon={faUsers} /> User management
