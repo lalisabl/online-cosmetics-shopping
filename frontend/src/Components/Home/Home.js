@@ -3,6 +3,7 @@ import "./Home.css";
 import Header from "../Header/Header";
 import Login from "../../login";
 import HomeCard from "./HomeCard";
+import Footer from "./Footer";
 export default function Home() {
   return (
     <div className="home">
@@ -19,6 +20,7 @@ export default function Home() {
       </div>
       <div className="homeCard">
         <HomeCard />
+        <Footer />
       </div>
     </div>
   );
