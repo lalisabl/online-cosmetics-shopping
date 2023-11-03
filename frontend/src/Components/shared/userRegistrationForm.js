@@ -149,7 +149,7 @@ export default function RegistrationForm() {
             >
               Submit
             </button>
-            <span>
+            <span className="m-2">
               have account ? <a href="/login">Login</a>{" "}
             </span>
           </form>

@@ -68,7 +68,7 @@ const Login = () => {
             <button className="btn btn-primary" type="submit">
               Login
             </button>
-            <span>don't have account ? <a href="/register" >Register</a> </span>
+            <span className="m-2">don't have account ? <a href="/register" >Register</a> </span>
           </form>
         </CardBody>
       </Card>
