@@ -279,3 +279,17 @@ body {
   outline: #ba265d;
   border: #ba265d;
 }
+@media screen and (max-width: 768px) {
+  .cardContainer {
+    margin-left: 0;
+  }
+  .cards {
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    grid-gap: 5px;
+  }
+  .card-img img {
+    min-height: 5rem;
+    max-height: 10rem;
+    object-fit: cover;
+  }
+}

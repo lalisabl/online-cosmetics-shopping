@@ -8,7 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { UserProfile } from "../seller/SellerDashboard";
 import Carts from "../Cart/Cart";
 
-const Header = ({newChange }) => {
+const Header = ({ newChange }) => {
   const [user, setUser] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -66,6 +66,20 @@ const Header = ({newChange }) => {
       });
   }, [change, newChange]);
   const [openCart, setCartOpen] = useState(false);
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 768);
+    }
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <header className="header">
       <div
@@ -102,11 +116,11 @@ const Header = ({newChange }) => {
           onChange={setSearch}
           placeholder="Search for products"
         />
-        <button>Search</button>
+        <button className={isMobile && "mobile-hidden"}>Search</button>
       </form>
       <div onClick={() => setCartOpen(true)} className="cart">
         <p style={{ position: "relative" }}>
-          Cart
+          <span className={isMobile && "mobile-hidden"}>Cart</span>
           <i>
             <FontAwesomeIcon icon={faCartShopping} />
           </i>
@@ -124,8 +138,8 @@ const Header = ({newChange }) => {
       {isLoggedIn ? (
         <UserProfile user={user} />
       ) : (
-        <div className="account">
-          <button onClick={() => navigate("/login")} className="login">
+        <div className="account" >
+          <button  onClick={() => navigate("/login")} className={ isMobile ? "mobile-hidden":"login"}>
             Login
           </button>
           <button onClick={() => navigate("/register")} className="signup">

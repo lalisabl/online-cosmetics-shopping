@@ -71,6 +71,9 @@ export const AddToCart = ({ product, Added }) => {
     setLoginIsModalOpen(false);
     setLoggedIn(true);
   };
+
+
+
   return (
     <>
       {!isLoggedIn ? (
@@ -177,6 +180,7 @@ export default function Product() {
         ? `${truncatedDescription} <a href="/products/${product._id}">(Read More)</a>`
         : truncatedDescription;
 
+ 
     return (
       <div
         className="product-description"
@@ -185,6 +189,7 @@ export default function Product() {
     );
   }
   const [change, setChange] = useState(false);
+ 
   return (
     <>
       <Header newChange={change}  />
@@ -295,7 +300,7 @@ export function Filter({ setFilter }) {
       <ul>
         <span>
           {" "}
-          <FontAwesomeIcon icon={faSort} /> <span>Filter</span>
+          <FontAwesomeIcon icon={faSort} /> <span>Categories</span>
         </span>
         <li
           className={filter === "price" && `active`}
@@ -338,9 +343,21 @@ export function Category() {
     const newURL = `${location.pathname}?${updatedSearchParams}`;
     navigate(newURL);
   };
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth <= 768);
+    }
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
-    <div className="Category-side">
+    <div  className={isMobile ? "mobile-hidden":"Category-side"}>
       <h5>Categories</h5>
       <ul>
         <li
